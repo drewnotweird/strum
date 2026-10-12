@@ -44,6 +44,16 @@ function SongPlayer({ song }) {
   const strumRef = useRef(null)
   const stepRef = useRef(0)
   const slotRef = useRef(-1)
+  const nowRef = useRef(null)
+  const nextRef = useRef(null)
+  const flyRef = useRef(null)
+
+  // Snapshot the NEXT card before it changes, so it can be flown into the NOW slot
+  const prepareFly = () => {
+    const card = nextRef.current
+    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    flyRef.current = { rect: card.getBoundingClientRect(), ghost: card.cloneNode(true) }
+  }
 
   const paintSlot = () => {
     const row = strumRef.current
@@ -55,6 +65,41 @@ function SongPlayer({ song }) {
   }
 
   useLayoutEffect(paintSlot, [stepIndex, countIn])
+
+  useLayoutEffect(() => {
+    const fly = flyRef.current
+    flyRef.current = null
+    if (!fly || !nowRef.current) return
+    const { rect, ghost } = fly
+    const to = nowRef.current.getBoundingClientRect()
+    Object.assign(ghost.style, {
+      position: 'fixed',
+      left: `${rect.left}px`,
+      top: `${rect.top}px`,
+      width: `${rect.width}px`,
+      height: `${rect.height}px`,
+      margin: '0',
+      zIndex: '50',
+      pointerEvents: 'none',
+      transformOrigin: 'top left',
+    })
+    document.body.appendChild(ghost)
+    const move = `translate(${to.left - rect.left}px, ${to.top - rect.top}px) scale(${to.width / rect.width}, ${to.height / rect.height})`
+    const duration = 340
+    const easing = 'cubic-bezier(0.25, 0.8, 0.3, 1)'
+    ghost.animate(
+      [{ transform: 'none', opacity: 1 }, { opacity: 1, offset: 0.55 }, { transform: move, opacity: 0 }],
+      { duration, easing }
+    ).onfinish = () => ghost.remove()
+    nowRef.current.animate(
+      [{ opacity: 0, transform: 'scale(0.97)' }, { opacity: 1, transform: 'none' }],
+      { duration, easing: 'ease-out' }
+    )
+    nextRef.current?.animate(
+      [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }],
+      { duration: duration * 0.8, delay: duration * 0.35, easing, fill: 'backwards' }
+    )
+  }, [stepIndex])
 
   useEffect(() => {
     const player = createPlayer({
@@ -72,6 +117,7 @@ function SongPlayer({ song }) {
         const { step, slot } = timeline[i]
         slotRef.current = slot
         if (step !== stepRef.current) {
+          if (step === stepRef.current + 1) prepareFly()
           stepRef.current = step
           setStepIndex(step)
         } else {
@@ -94,6 +140,7 @@ function SongPlayer({ song }) {
   const goTo = (step) => {
     const s = Math.max(0, Math.min(steps.length - 1, step))
     setEnded(false)
+    if (s === stepRef.current + 1 && !ended) prepareFly()
     stepRef.current = s
     setStepIndex(s)
     if (playerRef.current.isPlaying()) {
@@ -178,7 +225,7 @@ function SongPlayer({ song }) {
       </header>
 
       <section className="stage">
-        <div className={`now ${ended ? 'is-ended' : ''}`}>
+        <div ref={nowRef} className={`now ${ended ? 'is-ended' : ''}`}>
           <span className="stage__label">{ended ? 'Finished' : `Now · ${now.section}`}</span>
           {ended ? (
             <div className="now__done">
@@ -206,7 +253,13 @@ function SongPlayer({ song }) {
           )}
         </div>
 
-        <div className="next">
+        <div
+          ref={nextRef}
+          className={`next ${next && !ended ? 'is-tappable' : ''}`}
+          onClick={next && !ended ? () => goTo(stepIndex + 1) : undefined}
+          role={next && !ended ? 'button' : undefined}
+          aria-label={next && !ended ? `Move ${chordLabel(next.chord)} up to now` : undefined}
+        >
           <span className="stage__label">Next{next && next.section !== now.section ? ` · ${next.section}` : ''}</span>
           {next && !ended ? (
             <>

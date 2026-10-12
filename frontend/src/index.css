@@ -567,3 +567,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 /* The capo badge can sit over the top-right blob, so give it its own backing */
 .player__head .badge { background: var(--surface); border: 2px solid var(--green); }
+
+/* Tapping NEXT moves it up into NOW */
+.next.is-tappable { cursor: pointer; transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s; }
+.next.is-tappable:hover { border-color: var(--line-dark); }
+.next.is-tappable:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
