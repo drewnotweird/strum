@@ -48,11 +48,21 @@ function SongPlayer({ song }) {
   const nextRef = useRef(null)
   const flyRef = useRef(null)
 
-  // Snapshot the NEXT card before it changes, so it can be flown into the NOW slot
+  // Before the chord changes, note where the NEXT chord sits and copy the outgoing NOW
+  // chord, so the layout effect below can animate between the two
   const prepareFly = () => {
-    const card = nextRef.current
-    if (!card || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    flyRef.current = { rect: card.getBoundingClientRect(), ghost: card.cloneNode(true) }
+    const next = nextRef.current
+    const now = nowRef.current
+    if (!next || !now || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const rect = (sel) => next.querySelector(sel)?.getBoundingClientRect()
+    flyRef.current = {
+      name: rect('.chord-name--next'),
+      diagram: rect('.diagram--next'),
+      leaving: ['.chord-name--now', '.diagram--now', '.strum']
+        .map((sel) => now.querySelector(sel))
+        .filter(Boolean)
+        .map((el) => ({ rect: el.getBoundingClientRect(), el: el.cloneNode(true) })),
+    }
   }
 
   const paintSlot = () => {
@@ -66,39 +76,68 @@ function SongPlayer({ song }) {
 
   useLayoutEffect(paintSlot, [stepIndex, countIn])
 
+  // Shared-element move: the NEXT chord name and diagram travel to their NOW spots
+  // (true size, no stretching), the old NOW chord fades away, the rest eases in.
   useLayoutEffect(() => {
     const fly = flyRef.current
     flyRef.current = null
-    if (!fly || !nowRef.current) return
-    const { rect, ghost } = fly
-    const to = nowRef.current.getBoundingClientRect()
-    Object.assign(ghost.style, {
-      position: 'fixed',
-      left: `${rect.left}px`,
-      top: `${rect.top}px`,
-      width: `${rect.width}px`,
-      height: `${rect.height}px`,
-      margin: '0',
-      zIndex: '50',
-      pointerEvents: 'none',
-      transformOrigin: 'top left',
+    const now = nowRef.current
+    if (!fly || !now) return
+
+    const ease = 'cubic-bezier(0.3, 1.2, 0.45, 1)'
+    const duration = 380
+
+    // Old NOW content: pinned copies that shrink and fade where they stood
+    fly.leaving.forEach(({ rect, el }) => {
+      Object.assign(el.style, {
+        position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`,
+        width: `${rect.width}px`, height: `${rect.height}px`, margin: '0',
+        zIndex: '40', pointerEvents: 'none', transformOrigin: 'center',
+      })
+      document.body.appendChild(el)
+      el.animate(
+        [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.9)' }],
+        { duration: 160, easing: 'ease-in', fill: 'forwards' }
+      ).onfinish = () => el.remove()
     })
-    document.body.appendChild(ghost)
-    const move = `translate(${to.left - rect.left}px, ${to.top - rect.top}px) scale(${to.width / rect.width}, ${to.height / rect.height})`
-    const duration = 340
-    const easing = 'cubic-bezier(0.25, 0.8, 0.3, 1)'
-    ghost.animate(
-      [{ transform: 'none', opacity: 1 }, { opacity: 1, offset: 0.55 }, { transform: move, opacity: 0 }],
-      { duration, easing }
-    ).onfinish = () => ghost.remove()
-    nowRef.current.animate(
-      [{ opacity: 0, transform: 'scale(0.97)' }, { opacity: 1, transform: 'none' }],
-      { duration, easing: 'ease-out' }
+
+    // Lift NOW above NEXT while its chord travels in from there
+    now.style.zIndex = '2'
+    now.style.overflow = 'visible'
+    const pairs = [
+      [fly.name, now.querySelector('.chord-name--now'), 'height'],
+      [fly.diagram, now.querySelector('.diagram--now'), 'width'],
+    ]
+    const moves = pairs.map(([from, el, axis]) => {
+      if (!from || !el) return null
+      const to = el.getBoundingClientRect()
+      const scale = from[axis] / to[axis]
+      el.style.transformOrigin = 'top left'
+      return el.animate(
+        [
+          { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${scale})` },
+          { transform: 'none' },
+        ],
+        { duration, easing: ease }
+      ).finished
+    })
+    Promise.all(moves).then(() => {
+      now.style.zIndex = ''
+      now.style.overflow = ''
+    }).catch(() => {})
+
+    now.querySelector('.strum')?.animate(
+      [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 260, delay: 140, easing: 'ease-out', fill: 'backwards' }
     )
-    nextRef.current?.animate(
-      [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }],
-      { duration: duration * 0.8, delay: duration * 0.35, easing, fill: 'backwards' }
+    now.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.012)', offset: 0.7 }, { transform: 'scale(1)' }],
+      { duration: duration + 80, easing: 'ease-out' }
     )
+    Array.from(nextRef.current?.children || []).forEach((el, i) => el.animate(
+      [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 280, delay: 170 + i * 40, easing: ease, fill: 'backwards' }
+    ))
   }, [stepIndex])
 
   useEffect(() => {
