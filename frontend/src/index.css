@@ -66,7 +66,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 }
 
 .home__head p {
-  margin: 0 0 32px;
+  margin: 0 0 24px;
   color: var(--muted);
   font-size: 19px;
 }
@@ -76,13 +76,13 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .song-card {
   display: grid;
   gap: 4px;
-  padding: 18px 20px;
+  padding: 14px 18px;
   background: var(--surface);
   border-radius: 16px;
   text-decoration: none;
@@ -90,14 +90,29 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .song-card:hover { background: var(--soft); }
 
-.song-card__title { font-size: 24px; font-weight: 900; }
-.song-card__artist { color: var(--muted); }
+.song-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-.song-card__meta, .song-card__chords {
+.song-card__title { font-size: 21px; font-weight: 900; line-height: 1.15; }
+.song-card__top .level { flex: none; margin-top: 2px; }
+
+.song-card__artist {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.song-card__chords {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .level, .badge, .mini-chord {
@@ -572,3 +587,99 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .next.is-tappable { cursor: pointer; transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s; }
 .next.is-tappable:hover { border-color: var(--line-dark); }
 .next.is-tappable:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
+
+/* Home filter: search box plus level toggles */
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.search {
+  flex: 1 1 280px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 0 14px;
+  height: 54px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+}
+
+.search:focus-within { border-color: var(--green); }
+
+.search svg { width: 22px; height: 22px; flex: none; fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; }
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.search input::placeholder { color: #b3ae9f; font-weight: 700; }
+.search input::-webkit-search-cancel-button { display: none; }
+
+.search__clear {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border: 0;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.levels { display: flex; gap: 8px; }
+
+.level-filter {
+  height: 54px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
+}
+
+.level-filter:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
+
+.level-filter--1.is-on { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+.level-filter--2.is-on { background: #fff4cc; border-color: #f0c22e; color: #b38400; }
+.level-filter--3.is-on { background: #ffdfe0; border-color: #f07b7b; color: #d62a2a; }
+
+.filter__hint { margin: -4px 0 14px; color: var(--green-dark); font-weight: 800; }
+
+.empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 800;
+  background: var(--surface);
+  border: 2px dashed var(--line-dark);
+  border-radius: 16px;
+}
+
+@media (max-width: 480px) {
+  .levels { width: 100%; }
+  .level-filter { flex: 1; height: 46px; }
+}

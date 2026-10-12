@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { songs } from '../lib/song.js'
 import { chordLabel } from '../data/chords.js'
@@ -10,7 +11,39 @@ const songChords = (song) => {
   return [...names]
 }
 
+const catalogue = songs.map((song) => {
+  const chords = songChords(song)
+  return {
+    song,
+    chords,
+    chordSet: new Set(chords.map((c) => c.toLowerCase())),
+    text: `${song.title} ${song.artist}`.toLowerCase(),
+  }
+})
+
+const allChords = new Set(catalogue.flatMap((s) => [...s.chordSet]))
+
+// A song matches if its title or artist contains the query, or if the query is
+// a list of chords and the song uses nothing but those chords.
+function search(query, level) {
+  const q = query.trim().toLowerCase()
+  const tokens = q.split(/[\s,]+/).filter(Boolean)
+  const chordQuery = tokens.length > 0 && tokens.every((t) => allChords.has(t)) ? new Set(tokens) : null
+
+  const results = catalogue.filter((entry) => {
+    if (level && entry.song.level !== level) return false
+    if (!q) return true
+    if (entry.text.includes(q)) return true
+    return chordQuery && [...entry.chordSet].every((c) => chordQuery.has(c))
+  })
+  return { results, chordQuery }
+}
+
 export default function Home() {
+  const [query, setQuery] = useState('')
+  const [level, setLevel] = useState(null)
+  const { results, chordQuery } = useMemo(() => search(query, level), [query, level])
+
   return (
     <main className="home">
       <header className="home__head">
@@ -24,25 +57,69 @@ export default function Home() {
         </div>
         <p>Pick a song. Play the chord in the big box, and get ready for the next one.</p>
       </header>
-      <ul className="songs">
-        {songs.map((song) => (
-          <li key={song.id}>
-            <Link to={`/song/${song.id}`} className="song-card">
-              <span className="song-card__title">{song.title}</span>
-              <span className="song-card__artist">
-                {song.artist}{song.kind === 'drill' ? ' · warm-up drill' : ''}
-              </span>
-              <span className="song-card__meta">
-                <span className={`level level--${song.level}`}>{levels[song.level]}</span>
-                {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
-              </span>
-              <span className="song-card__chords">
-                {songChords(song).map((c) => <span key={c} className="mini-chord">{c}</span>)}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+
+      <div className="filter">
+        <label className="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <line x1="15.5" y1="15.5" x2="21" y2="21" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Song, band, or chords like G C D"
+            aria-label="Search songs"
+            autoComplete="off"
+            spellCheck="false"
+          />
+          {query && (
+            <button className="search__clear" onClick={() => setQuery('')} aria-label="Clear search">×</button>
+          )}
+        </label>
+        <div className="levels" role="group" aria-label="Filter by level">
+          {Object.entries(levels).map(([n, name]) => (
+            <button
+              key={n}
+              className={`level-filter level-filter--${n} ${level === Number(n) ? 'is-on' : ''}`}
+              onClick={() => setLevel(level === Number(n) ? null : Number(n))}
+              aria-pressed={level === Number(n)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {chordQuery && (
+        <p className="filter__hint">
+          Songs you can play with {[...chordQuery].map((c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))).join(', ')}
+        </p>
+      )}
+
+      {results.length === 0 ? (
+        <p className="empty">No songs match. Try fewer letters, or add a chord you know.</p>
+      ) : (
+        <ul className="songs">
+          {results.map(({ song, chords }) => (
+            <li key={song.id}>
+              <Link to={`/song/${song.id}`} className="song-card">
+                <span className="song-card__top">
+                  <span className="song-card__title">{song.title}</span>
+                  <span className={`level level--${song.level}`}>{levels[song.level]}</span>
+                </span>
+                <span className="song-card__artist">
+                  {song.artist}{song.kind === 'drill' ? ' · warm-up drill' : ''}
+                  {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
+                </span>
+                <span className="song-card__chords">
+                  {chords.map((c) => <span key={c} className="mini-chord">{c}</span>)}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </main>
   )
 }
