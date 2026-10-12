@@ -1,0 +1,27 @@
+{
+  "id": "enter-sandman",
+  "title": "Enter Sandman",
+  "artist": "Metallica",
+  "level": 3,
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 123,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "chug": "D D D D D D D D",
+    "hit": "D - - - D - D -"
+  },
+  "defaultPattern": "chug",
+  "sections": {
+    "chug": { "name": "Chug on E", "repeat": 4, "steps": ["E5"] },
+    "low": { "name": "Power chord moves", "repeat": 4, "steps": ["E5", "G5", "A5", "E5"] },
+    "slides": { "name": "Fret by fret", "repeat": 2, "steps": ["E5", "F#5", "G5", "F#5"] },
+    "a-string": { "name": "Over to the A string", "repeat": 2, "steps": ["A5|hit", "Bb5|hit", "B5|hit", "A5|hit"] }
+  },
+  "form": ["chug", "low", "slides", "a-string", "chug"],
+  "notes": "This is a warm-up, not the song itself. It drills the power chords and the palm-muted chugging you need for metal riffs. Rest the side of your picking hand on the strings by the bridge to get the chug. When it feels good, learn the real riff on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/metallica-enter-sandman-tab-s19"
+}
