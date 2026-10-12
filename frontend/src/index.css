@@ -1,18 +1,18 @@
 :root {
-  --bg: #ffffff;
-  --text: #3c3c3c;
-  --muted: #777777;
-  --line: #e5e5e5;
-  --line-dark: #cecece;
-  --soft: #f7f7f7;
-  --green: #58cc02;
-  --green-dark: #58a700;
-  --green-soft: #d7ffb8;
-  --blue: #1cb0f6;
-  --blue-dark: #1899d6;
-  --blue-soft: #ddf4ff;
+  /* Palette taken from the Strum banner: warm cream paper and one green */
+  --bg: #fcfaf6;
+  --surface: #fffcf0;
+  --soft: #f6f2e6;
+  --text: #3a3a3a;
+  --muted: #85837a;
+  --line: #e8e3d5;
+  --line-dark: #d5cebd;
+  --green: #6cbb15;
+  --green-dark: #579b0d;
+  --green-soft: #dcf5bd;
+  --blob: #97d150;
   --yellow: #ffc800;
-  --red: #ff4b4b;
+  --red: #e5484d;
   --font: 'Nunito', system-ui, sans-serif;
 }
 
@@ -21,7 +21,10 @@
 html, body { margin: 0; }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  /* Faint paper grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  min-height: 100vh;
   color: var(--text);
   font-family: var(--font);
   font-weight: 600;
@@ -80,7 +83,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   display: grid;
   gap: 4px;
   padding: 18px 20px;
-  background: var(--bg);
+  background: var(--surface);
   border-radius: 16px;
   text-decoration: none;
 }
@@ -110,7 +113,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .level--2 { background: #fff4cc; color: #cd9900; }
 .level--3 { background: #ffdfe0; color: #ea2b2b; }
 
-.badge { background: var(--blue-soft); color: var(--blue-dark); }
+.badge { background: var(--green-soft); color: var(--green-dark); }
 
 .mini-chord { text-transform: none; letter-spacing: 0; border: 2px solid var(--line); color: var(--text); }
 
@@ -166,10 +169,13 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .now {
   min-height: 420px;
-  background: var(--blue-soft);
-  border-color: var(--blue);
-  border-bottom-color: var(--blue-dark);
+  background: var(--surface);
+  border-color: var(--green);
+  border-bottom-color: var(--green-dark);
+  border-width: 3px 3px 6px;
 }
+
+.next { background: var(--surface); }
 
 .now.is-ended {
   background: var(--green-soft);
@@ -211,7 +217,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   color: var(--muted);
 }
 
-.now .stage__label { color: var(--blue-dark); }
+.now .stage__label { color: var(--green-dark); }
 .now.is-ended .stage__label { color: var(--green-dark); }
 
 .chord-name { font-weight: 900; line-height: 1; }
@@ -223,10 +229,10 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .diagram--now { width: clamp(180px, 28vw, 340px); }
 .diagram--next { width: clamp(80px, 11vw, 130px); }
 
-.diagram__fret, .diagram__string { stroke: #afafaf; stroke-width: 1.2; }
+.diagram__fret, .diagram__string { stroke: #b9b3a4; stroke-width: 1.2; }
 .diagram__nut { fill: var(--text); }
-.diagram__dot { fill: var(--blue); }
-.diagram--next .diagram__dot { fill: #afafaf; }
+.diagram__dot { fill: var(--green); }
+.diagram--next .diagram__dot { fill: #b9b3a4; }
 .diagram__finger { fill: #fff; font-size: 8px; font-weight: 900; text-anchor: middle; font-family: var(--font); }
 .diagram__open { fill: none; stroke: var(--text); stroke-width: 1.4; }
 .diagram__mute { fill: var(--muted); font-size: 10px; font-weight: 800; text-anchor: middle; font-family: var(--font); }
@@ -256,7 +262,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background: #fff;
+  background: var(--surface);
   border: 2px solid var(--line);
   border-bottom-width: 4px;
   font-size: 40px;
@@ -268,7 +274,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .strum--pick .strum__slot { font-size: 30px; }
 
 .strum__slot.is-rest { color: var(--line-dark); }
-.strum__slot.is-done { background: var(--green-soft); border-color: #a5ed6e; color: var(--green-dark); }
+.strum__slot.is-done { background: var(--green-soft); border-color: #b5e383; color: var(--green-dark); }
 .strum__slot.is-on {
   background: var(--green);
   border-color: var(--green-dark);
@@ -283,7 +289,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   place-items: center;
   font-size: 72px;
   font-weight: 900;
-  color: var(--blue);
+  color: var(--green);
 }
 
 .now__done {
@@ -309,7 +315,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .btn {
   cursor: pointer;
-  background: #fff;
+  background: var(--surface);
   color: var(--muted);
 }
 
@@ -324,7 +330,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   gap: 10px;
   cursor: pointer;
   border-radius: 12px;
-  background: linear-gradient(#ffffff, #f2f2f2);
+  background: linear-gradient(#fffdf6, #f2ede0);
   border: 2px solid var(--line-dark);
   border-bottom-width: 7px;
   color: var(--muted);
@@ -390,7 +396,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .speed span { min-width: 96px; }
 
-.speed input { width: 200px; accent-color: var(--blue); }
+.speed input { width: 200px; accent-color: var(--green); }
 
 .btn--toggle {
   padding: 8px 16px;
@@ -401,7 +407,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   letter-spacing: 0.05em;
 }
 
-.btn--toggle.is-on { background: var(--blue-soft); border-color: var(--blue); color: var(--blue-dark); }
+.btn--toggle.is-on { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
 
 .sections {
   display: flex;
@@ -413,13 +419,13 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .chip {
   padding: 8px 14px;
   border-radius: 14px;
-  background: #fff;
+  background: var(--surface);
   color: var(--muted);
   font-weight: 800;
   cursor: pointer;
 }
 
-.chip.is-current { background: var(--blue-soft); border-color: var(--blue); color: var(--blue-dark); }
+.chip.is-current { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
 
 .player__foot {
   max-width: 640px;
@@ -433,7 +439,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .hint { font-size: 14px; }
 
-.songsterr { color: var(--blue); font-weight: 800; text-decoration: none; }
+.songsterr { color: var(--green); font-weight: 800; text-decoration: none; }
 
 .missing { padding: 40px 16px; text-align: center; }
 
@@ -532,3 +538,32 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .key--arrow { width: 56px; }
   .controls { height: 58px; }
 }
+
+/* Decoration from the banner: green blobs in the corners, burst marks by the title */
+.blobs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.blob { position: absolute; fill: var(--blob); }
+.blob--tr { top: -2px; right: -2px; width: clamp(140px, 24vmin, 300px); }
+.blob--bl { bottom: -2px; left: -2px; width: clamp(160px, 28vmin, 340px); }
+
+#root > main { position: relative; z-index: 1; }
+
+.home__title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.burst { width: clamp(44px, 9vw, 64px); flex: none; margin-top: -0.3em; }
+.burst line { stroke: var(--green); stroke-width: 7; stroke-linecap: round; }
+
+.home__head p { max-width: 460px; color: #6d6c63; font-weight: 800; }
+
+/* The capo badge can sit over the top-right blob, so give it its own backing */
+.player__head .badge { background: var(--surface); border: 2px solid var(--green); }

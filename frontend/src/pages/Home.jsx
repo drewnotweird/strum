@@ -14,7 +14,14 @@ export default function Home() {
   return (
     <main className="home">
       <header className="home__head">
-        <h1>Strum</h1>
+        <div className="home__title">
+          <h1>Strum</h1>
+          <svg className="burst" viewBox="0 0 64 64" aria-hidden="true">
+            <line x1="22" y1="8" x2="28" y2="20" />
+            <line x1="6" y1="22" x2="20" y2="32" />
+            <line x1="4" y1="46" x2="20" y2="48" />
+          </svg>
+        </div>
         <p>Pick a song. Play the chord in the big box, and get ready for the next one.</p>
       </header>
       <ul className="songs">
