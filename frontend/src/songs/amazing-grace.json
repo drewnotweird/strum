@@ -1,0 +1,45 @@
+{
+  "id": "amazing-grace",
+  "title": "Amazing Grace",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 80,
+  "beatsPerBar": 3,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "G",
+        "G",
+        "C",
+        "G",
+        "G",
+        "G",
+        "D",
+        "D",
+        "G",
+        "G",
+        "C",
+        "G",
+        "G",
+        "D",
+        "G",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "verse",
+    "verse"
+  ],
+  "notes": "This one's a waltz: count 1, 2, 3. Only G, C and D."
+}

@@ -282,9 +282,11 @@ function SongPlayer({ song }) {
         {picking && <p className="hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
         {song.notes && <p>{song.notes}</p>}
         {!song.checked && <p className="hint">Not checked against the record yet. If something sounds off, trust your ears.</p>}
-        <a href={song.songsterr} target="_blank" rel="noreferrer" className="songsterr">
-          {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'} ↗
-        </a>
+        {song.songsterr && (
+          <a href={song.songsterr} target="_blank" rel="noreferrer" className="songsterr">
+            {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'} ↗
+          </a>
+        )}
       </footer>
     </main>
   )

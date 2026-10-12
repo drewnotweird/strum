@@ -1,0 +1,48 @@
+{
+  "id": "drunken-sailor",
+  "title": "Drunken Sailor",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 110,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D - D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "Am",
+        "G",
+        "Am",
+        "G|half",
+        "Am|half"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "Am",
+        "G",
+        "Am",
+        "G|half",
+        "Am|half"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus"
+  ],
+  "notes": "A sea shanty: stomp along. Am, G, Am, then a quick G to Am at the end of each line."
+}

@@ -1,0 +1,56 @@
+{
+  "id": "smells-like-teen-spirit",
+  "title": "Smells Like Teen Spirit",
+  "artist": "Nirvana",
+  "level": 3,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 117,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D D D D"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "riff": {
+      "name": "Power chord loop",
+      "repeat": 4,
+      "steps": [
+        "F5",
+        "Bb5",
+        "Ab5",
+        "Db5"
+      ]
+    },
+    "quiet": {
+      "name": "Quiet bit",
+      "repeat": 4,
+      "steps": [
+        "F5",
+        "Bb5",
+        "Ab5",
+        "Db5"
+      ]
+    },
+    "loud": {
+      "name": "Loud bit",
+      "repeat": 4,
+      "steps": [
+        "F5",
+        "Bb5",
+        "Ab5",
+        "Db5"
+      ]
+    }
+  },
+  "form": [
+    "riff",
+    "quiet",
+    "loud",
+    "riff"
+  ],
+  "notes": "Four power chords, two beats each, on repeat: F5, Bb5, Ab5, Db5. Keep the same shape and slide it around. The record has muted scratches between the chords: add those once the shapes are comfortable.",
+  "songsterr": "https://www.songsterr.com/a/wsa/nirvana-smells-like-teen-spirit-tab-s269"
+}

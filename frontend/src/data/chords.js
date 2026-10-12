@@ -12,6 +12,12 @@ export const chords = {
   // Easy four-string F. The full barre comes later.
   F:  { frets: [-1, -1, 3, 2, 1, 1], fingers: [0, 0, 3, 2, 1, 1], root: 4 },
   G:  { frets: [3, 2, 0, 0, 0, 3], fingers: [2, 1, 0, 0, 0, 3], root: 6 },
+  D7: { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], root: 4 },
+  G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], root: 6 },
+  // Easy four-string Fm, the little sister of the easy F
+  Fm: { frets: [-1, -1, 3, 1, 1, 1], fingers: [0, 0, 3, 1, 1, 1], root: 4 },
+  // A Horse With No Name's second chord: two fingers, everything else open
+  'D6/9': { frets: [2, 0, 0, 2, 0, 0], fingers: [1, 0, 0, 2, 0, 0], root: 6 },
 
   // Wonderwall shapes: ring and pinky stay put on the top two strings
   Em7:    { frets: [0, 2, 2, 0, 3, 3], fingers: [0, 1, 2, 0, 3, 4], root: 6 },
@@ -27,6 +33,9 @@ export const chords = {
   A5:    { frets: [-1, 0, 2, 2, -1, -1], fingers: [0, 0, 1, 2, 0, 0], root: 5 },
   Bb5:   { frets: [-1, 1, 3, 3, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
   B5:    { frets: [-1, 2, 4, 4, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
+  F5:    { frets: [1, 3, 3, -1, -1, -1], fingers: [1, 3, 4, 0, 0, 0], root: 6 },
+  Ab5:   { frets: [4, 6, 6, -1, -1, -1], fingers: [1, 3, 4, 0, 0, 0], root: 6 },
+  Db5:   { frets: [-1, 4, 6, 6, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
 }
 
 export const chordLabel = (name) => chords[name]?.label || name

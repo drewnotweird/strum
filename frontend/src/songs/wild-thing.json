@@ -1,0 +1,57 @@
+{
+  "id": "wild-thing",
+  "title": "Wild Thing",
+  "artist": "The Troggs",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 106,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "two": "D - D -"
+  },
+  "defaultPattern": "two",
+  "sections": {
+    "riff": {
+      "name": "Riff",
+      "repeat": 4,
+      "steps": [
+        "A",
+        "D",
+        "E",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "A",
+        "D",
+        "E",
+        "D"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "A",
+        "D",
+        "E",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "riff",
+    "chorus",
+    "verse",
+    "chorus",
+    "riff"
+  ],
+  "notes": "Two big strums on each chord: A, D, E, D. Hit them hard. The middle section has a quieter bit that isn't charted here.",
+  "songsterr": "https://www.songsterr.com/a/wsa/troggs-wild-thing-tab-s384968"
+}

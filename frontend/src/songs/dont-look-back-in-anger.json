@@ -1,0 +1,85 @@
+{
+  "id": "dont-look-back-in-anger",
+  "title": "Don't Look Back in Anger",
+  "artist": "Oasis",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 82,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "steps": [
+        "C|half",
+        "G|half",
+        "Am|half",
+        "E|half",
+        "F|half",
+        "G|half",
+        "C|half",
+        "Am|half",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "C|half",
+        "G|half",
+        "Am|half",
+        "E|half",
+        "F|half",
+        "G|half",
+        "C|half",
+        "Am|half",
+        "G"
+      ]
+    },
+    "pre": {
+      "name": "Pre-chorus",
+      "repeat": 2,
+      "steps": [
+        "F",
+        "Fm",
+        "C",
+        "C"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "C|half",
+        "G|half",
+        "Am|half",
+        "E|half",
+        "F|half",
+        "G|half",
+        "C|half",
+        "Am|half",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "pre",
+    "chorus",
+    "verse",
+    "pre",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "The verse and chorus use the same run of chords, most of them two beats long: C G, Am E, F G, C Am, G. The F and Fm are the easy four-string versions. The 'step outside' section isn't charted yet.",
+  "songsterr": "https://www.songsterr.com/a/wsa/oasis-dont-look-back-in-anger-tab-s5706611"
+}

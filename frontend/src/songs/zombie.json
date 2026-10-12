@@ -1,0 +1,58 @@
+{
+  "id": "zombie",
+  "title": "Zombie",
+  "artist": "The Cranberries",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 84,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "Em",
+        "C",
+        "G",
+        "D"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "Em",
+        "C",
+        "G",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "Em",
+        "C",
+        "G",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Em, C, G, D on repeat, one bar each. Play it gently in the verse and dig in for the chorus.",
+  "songsterr": "https://www.songsterr.com/a/wsa/cranberries-zombie-tab-s431"
+}

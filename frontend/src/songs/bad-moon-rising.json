@@ -1,0 +1,63 @@
+{
+  "id": "bad-moon-rising",
+  "title": "Bad Moon Rising",
+  "artist": "Creedence Clearwater Revival",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 90,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "D",
+        "A|half",
+        "G|half",
+        "D"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "D",
+        "A|half",
+        "G|half",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "G",
+        "G",
+        "D",
+        "D",
+        "A",
+        "G",
+        "D",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus"
+  ],
+  "notes": "In the verse, A and G share a bar: two beats each. Then back to D.",
+  "songsterr": "https://www.songsterr.com/a/wsa/creedence-clearwater-revival-bad-moon-rising-tab-s4232"
+}

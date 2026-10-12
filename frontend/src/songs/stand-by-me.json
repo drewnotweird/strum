@@ -1,0 +1,69 @@
+{
+  "id": "stand-by-me",
+  "title": "Stand By Me",
+  "artist": "Ben E. King",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 2,
+  "bpm": 118,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "steps": [
+        "G",
+        "G",
+        "Em",
+        "Em",
+        "C",
+        "D",
+        "G",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "G",
+        "Em",
+        "Em",
+        "C",
+        "D",
+        "G",
+        "G"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "G",
+        "Em",
+        "Em",
+        "C",
+        "D",
+        "G",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Played with G shapes and a capo on 2 so you're in the record's key without the hard F#m chord. The same progression all the way through.",
+  "songsterr": "https://www.songsterr.com/a/wsa/ben-e-king-stand-by-me-tab-s61064"
+}

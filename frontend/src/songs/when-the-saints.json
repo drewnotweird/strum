@@ -1,0 +1,45 @@
+{
+  "id": "when-the-saints",
+  "title": "When the Saints Go Marching In",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 100,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D - D - D -"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "G",
+        "G",
+        "G",
+        "G",
+        "G",
+        "G",
+        "D",
+        "D",
+        "G",
+        "G7",
+        "C",
+        "C",
+        "G",
+        "D",
+        "G",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "verse",
+    "verse"
+  ],
+  "notes": "Lots of G, a D, then G7 into C. G7 is just G with your first finger on the 1st fret of the top string."
+}
