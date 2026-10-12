@@ -1,6 +1,19 @@
 import { chords } from '../data/chords.js'
 
 const FRETS = 5
+const STRING_NAMES = ['low E', 'A', 'D', 'G', 'B', 'high E']
+const ordinal = (n) => `${n}${n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th'}`
+
+// e.g. "Am chord: low E not played, A open, D 2nd fret, …"
+function describe(name, shape) {
+  const parts = shape.frets.map((fret, s) => {
+    const string = STRING_NAMES[s]
+    if (fret < 0) return `${string} not played`
+    if (fret === 0) return `${string} open`
+    return `${string} ${ordinal(fret)} fret`
+  })
+  return `${shape.label || name} chord: ${parts.join(', ')}`
+}
 
 export default function ChordDiagram({ name, className = '' }) {
   const shape = chords[name]
@@ -19,7 +32,7 @@ export default function ChordDiagram({ name, className = '' }) {
   const y = (f) => top + f * fretH
 
   return (
-    <svg className={`diagram ${className}`} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={`${name} chord`}>
+    <svg className={`diagram ${className}`} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={describe(name, shape)}>
       {base === 1 ? (
         <rect x={x(0) - 1} y={top - 4} width={x(5) - x(0) + 2} height={4} className="diagram__nut" />
       ) : (

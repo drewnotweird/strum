@@ -1,12 +1,13 @@
 // Audio-clock driven player. Time is counted in strum slots; the Web Audio clock schedules
 // the metronome ahead of time and a rAF loop reports which slot is current.
 // Slots below `fromIndex` after a start() are the count-in.
-// voiceAt(i) says what the guitar should play on slot i (see guitar.js), or null.
+// voiceAt(i) says what the guitar should play on slot i (see guitar.js), or null;
+// notes lists the song's pitches so they can be rendered before they're needed.
 import { createGuitar } from './guitar.js'
 
 const LOOKAHEAD = 0.12
 
-export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, onSlot, onEnd }) {
+export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, notes = [], onSlot, onEnd }) {
   let ctx = null
   let guitar = null
   let guitarOn = true
@@ -86,7 +87,10 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
 
   function ensureAudio() {
     if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)()
-    if (!guitar) guitar = createGuitar(ctx)
+    if (!guitar) {
+      guitar = createGuitar(ctx)
+      guitar.prewarm(notes)
+    }
     ctx.resume()
   }
 

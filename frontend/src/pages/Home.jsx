@@ -75,7 +75,7 @@ export default function Home() {
 
       <div className="filter">
         <label className="search">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <circle cx="10.5" cy="10.5" r="6.5" />
             <line x1="15.5" y1="15.5" x2="21" y2="21" />
           </svg>
@@ -105,6 +105,11 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <h2 className="sr-only">Songs</h2>
+      <p className="sr-only" aria-live="polite">
+        {query || level ? `${results.length} ${results.length === 1 ? 'song' : 'songs'} found` : ''}
+      </p>
 
       {chordQuery && (
         <p className="filter__hint">

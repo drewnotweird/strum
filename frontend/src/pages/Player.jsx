@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
-import { voiceFor } from '../lib/guitar.js'
+import { songNotes, voiceFor } from '../lib/guitar.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
@@ -16,6 +16,17 @@ function tokenLabel(token, chord) {
 }
 
 const isPick = (token) => token === 'B' || /^\d$/.test(token)
+
+// What a screen reader says for a strum pattern
+function describePattern(pattern, chord) {
+  const words = pattern.map((t) => {
+    if (t === 'D') return 'down'
+    if (t === 'U') return 'up'
+    if (t === '-') return 'rest'
+    return `string ${tokenLabel(t, chord)}`
+  })
+  return `${pattern.some(isPick) ? 'Picking' : 'Strum'} pattern: ${words.join(', ')}`
+}
 
 export default function Player() {
   const { id } = useParams()
@@ -43,6 +54,7 @@ function SongPlayer({ song }) {
   const [speed, setSpeed] = useState(0.7)
   const [clickOn, setClickOn] = useState(true)
   const [guitarOn, setGuitarOn] = useState(true)
+  const [announcement, setAnnouncement] = useState('')
 
   const playerRef = useRef(null)
   const strumRef = useRef(null)
@@ -150,6 +162,7 @@ function SongPlayer({ song }) {
       slotsPerBeat: song.perBeat,
       slotsPerBar: song.perBeat * song.beatsPerBar,
       bpm: song.bpm,
+      notes: songNotes([...new Set(steps.map((st) => st.chord))], song.capo),
       voiceAt: (i) => {
         const { step, slot } = timeline[i]
         return voiceFor(steps[step].chord, steps[step].pattern[slot], song.capo)
@@ -185,8 +198,14 @@ function SongPlayer({ song }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeline, song])
 
+  const announce = (s) => {
+    const after = steps[s + 1]
+    setAnnouncement(`Now ${chordLabel(steps[s].chord)}${after ? `, next ${chordLabel(after.chord)}` : ', last chord'}`)
+  }
+
   const goTo = (step) => {
     const s = Math.max(0, Math.min(steps.length - 1, step))
+    if (!playerRef.current.isPlaying()) announce(s)
     setEnded(false)
     if (s === stepRef.current + 1 && !ended) prepareFly()
     stepRef.current = s
@@ -208,6 +227,7 @@ function SongPlayer({ song }) {
     slotRef.current = -1
     playerRef.current.start(stepStart[from])
     setPlaying(true)
+    setAnnouncement('Playing')
   }
 
   const stop = () => {
@@ -216,6 +236,7 @@ function SongPlayer({ song }) {
     setCountIn(0)
     setPlaying(false)
     paintSlot()
+    announce(stepRef.current)
   }
 
   const toggle = () => (playerRef.current.isPlaying() ? stop() : play())
@@ -248,7 +269,9 @@ function SongPlayer({ song }) {
     // Physical keys press the on-screen keys too
     const press = (code, down) => keyRefs[code]?.current?.classList.toggle('is-pressed', down)
     const onDown = (e) => {
-      if (!actions[e.code] || e.target.tagName === 'INPUT') return
+      if (!actions[e.code] || e.target.closest('input, select, textarea')) return
+      const onOtherControl = e.target.closest('button, a, [role="button"]') && !Object.values(keyRefs).some((r) => r.current === e.target)
+      if (e.code === 'Space' && onOtherControl) return
       e.preventDefault()
       press(e.code, true)
       if (!e.repeat) keys.current[actions[e.code]]()
@@ -263,6 +286,11 @@ function SongPlayer({ song }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    document.title = `${song.title} · Strum`
+    return () => { document.title = 'Strum' }
+  }, [song])
+
   const now = steps[stepIndex]
   const next = steps[stepIndex + 1]
   const picking = now.pattern.some(isPick)
@@ -270,6 +298,7 @@ function SongPlayer({ song }) {
 
   return (
     <main className="player">
+      <p className="sr-only" aria-live="polite">{announcement}</p>
       <header className="player__head">
         <Link
           to="/"
@@ -315,9 +344,11 @@ function SongPlayer({ song }) {
                 <div
                   ref={strumRef}
                   className={`strum ${picking ? 'strum--pick' : ''} ${countIn > 0 ? 'is-hidden' : ''}`}
+                  role="img"
+                  aria-label={describePattern(now.pattern, now.chord)}
                 >
                   {now.pattern.map((token, k) => (
-                    <span key={k} className={`strum__slot ${token === '-' ? 'is-rest' : ''}`}>
+                    <span key={k} className={`strum__slot ${token === '-' ? 'is-rest' : ''}`} aria-hidden="true">
                       {tokenLabel(token, now.chord)}
                     </span>
                   ))}
@@ -332,6 +363,14 @@ function SongPlayer({ song }) {
           className={`next ${next && !ended ? 'is-tappable' : ''}`}
           onClick={next && !ended ? () => goTo(stepIndex + 1) : undefined}
           role={next && !ended ? 'button' : undefined}
+          tabIndex={next && !ended ? 0 : undefined}
+          onKeyDown={next && !ended ? (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              e.stopPropagation()
+              goTo(stepIndex + 1)
+            }
+          } : undefined}
           aria-label={next && !ended ? `Move ${chordLabel(next.chord)} up to now` : undefined}
         >
           <span className="stage__label">Next{next && next.section !== now.section ? ` · ${next.section}` : ''}</span>
@@ -389,10 +428,10 @@ function SongPlayer({ song }) {
           />
         </label>
         <div className="toggles">
-          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar}>
+          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar} aria-pressed={guitarOn}>
             Guitar {guitarOn ? 'on' : 'off'}
           </button>
-          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick}>
+          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick} aria-pressed={clickOn}>
             Click {clickOn ? 'on' : 'off'}
           </button>
         </div>
@@ -403,6 +442,7 @@ function SongPlayer({ song }) {
           <button
             key={i}
             className={`chip ${i === currentSection ? 'is-current' : ''}`}
+            aria-current={i === currentSection ? 'step' : undefined}
             onClick={() => goTo(s.step)}
           >
             {s.name}

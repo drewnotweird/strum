@@ -12,7 +12,7 @@ function pluckBuffer(ctx, midi) {
 
   const sr = ctx.sampleRate
   const freq = 440 * 2 ** ((midi - 69) / 12)
-  const length = Math.floor(sr * 2.4)
+  const length = Math.floor(sr * 2)
   const buffer = ctx.createBuffer(1, length, sr)
   const y = buffer.getChannelData(0)
   // The averaging filter adds half a sample of delay, so take it off the period
@@ -39,6 +39,11 @@ function pluckBuffer(ctx, midi) {
   }
   buffers.set(key, buffer)
   return buffer
+}
+
+// Every pitch a song can play, for prewarming
+export function songNotes(chordNames, capo = 0) {
+  return chordNames.flatMap((name) => voiceFor(name, 'D', capo)?.notes.map((n) => n.midi) || [])
 }
 
 // What a strum slot should sound like: which notes, which way, how hard
@@ -95,5 +100,18 @@ export function createGuitar(ctx) {
     })
   }
 
-  return { play, damp }
+  // Render a song's notes ahead of time, one per slice, so a chord change never has to
+  // compute strings on the beat. Runs during the count-in.
+  function prewarm(midis) {
+    const queue = [...new Set(midis)].filter((m) => !buffers.has(`${ctx.sampleRate}:${m}`))
+    const next = () => {
+      const midi = queue.shift()
+      if (midi === undefined) return
+      pluckBuffer(ctx, midi)
+      setTimeout(next, 0)
+    }
+    next()
+  }
+
+  return { play, damp, prewarm }
 }
