@@ -4,7 +4,7 @@ import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
-import { go, titleTransitionName } from '../lib/transition.js'
+import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 
 function tokenLabel(token, chord) {
   if (token === 'D') return '↓'
@@ -270,7 +270,10 @@ function SongPlayer({ song }) {
         </Link>
         <div className="player__title">
           <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
-          <p>{song.artist}{song.kind === 'drill' ? ' · warm-up drill' : ''}</p>
+          <p>
+            <span style={artistTransitionName(song.id)}>{song.artist}</span>
+            {song.kind === 'drill' ? ' · warm-up drill' : ''}
+          </p>
         </div>
         {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
       </header>

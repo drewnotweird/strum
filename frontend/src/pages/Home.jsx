@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { songs } from '../lib/song.js'
 import { chordLabel } from '../data/chords.js'
-import { go, listReady, titleTransitionName } from '../lib/transition.js'
+import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
 
 const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
@@ -132,7 +132,10 @@ export default function Home() {
                   <span className={`level level--${song.level}`}>{levels[song.level]}</span>
                 </span>
                 <span className="song-card__artist">
-                  {song.artist}{song.kind === 'drill' ? ' · warm-up drill' : ''}
+                  <span>
+                    <span style={artistTransitionName(song.id)}>{song.artist}</span>
+                    {song.kind === 'drill' ? ' · warm-up drill' : ''}
+                  </span>
                   {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
                 </span>
                 <span className="song-card__chords">

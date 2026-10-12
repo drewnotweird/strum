@@ -50,3 +50,5 @@ export function listReady() {
 }
 
 export const titleTransitionName = (id) => ({ viewTransitionName: `title-${id}` })
+// inline-block: a named element must not break across lines, or the transition is dropped
+export const artistTransitionName = (id) => ({ viewTransitionName: `artist-${id}`, display: 'inline-block' })

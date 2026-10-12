@@ -684,10 +684,9 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .level-filter { flex: 1; height: 46px; }
 }
 
-/* Page transitions (View Transitions API): pages slide sideways, the song title
-   travels between its card and the player header, and the corner blobs stay put */
-.blobs { view-transition-name: blobs; }
-
+/* Page transitions (View Transitions API): pages slide sideways and the song title
+   travels between its card and the player header. The corner blobs are part of the
+   background, so they never pass over the cards; on song pages they retreat off-screen. */
 ::view-transition-group(*) {
   animation-duration: 0.38s;
   animation-timing-function: cubic-bezier(0.3, 1, 0.4, 1);
@@ -698,6 +697,10 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 :root[data-nav='back']::view-transition-old(root) { animation: 0.16s ease-in both page-out-right; }
 :root[data-nav='back']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-left; }
 
+.blob { transition: transform 0.6s cubic-bezier(0.3, 1, 0.4, 1); }
+.blobs.is-away .blob--tr { transform: translate(105%, -105%); }
+.blobs.is-away .blob--bl { transform: translate(-105%, 105%); }
+
 @keyframes page-out-left { to { opacity: 0; transform: translateX(-48px); } }
 @keyframes page-in-right { from { opacity: 0; transform: translateX(48px); } }
 @keyframes page-out-right { to { opacity: 0; transform: translateX(48px); } }
@@ -705,4 +708,5 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  .blob { transition: none; }
 }
