@@ -1,0 +1,55 @@
+{
+  "id": "riptide",
+  "title": "Riptide",
+  "artist": "Vance Joy",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 102,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "Am|half",
+        "G|half",
+        "C"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "Am|half",
+        "G|half",
+        "C"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "Am|half",
+        "G|half",
+        "C"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus"
+  ],
+  "notes": "Am and G for two beats each, then a full bar of C. Written on ukulele, and it works just as well on guitar. The 'I just wanna know' bridge isn't charted yet.",
+  "songsterr": "https://www.songsterr.com/a/wsa/vance-joy-riptide-tab-s390524"
+}

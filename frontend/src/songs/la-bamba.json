@@ -1,0 +1,44 @@
+{
+  "id": "la-bamba",
+  "title": "La Bamba",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 140,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 4,
+      "steps": [
+        "C|half",
+        "F|half",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 8,
+      "steps": [
+        "C|half",
+        "F|half",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "verse",
+    "verse"
+  ],
+  "notes": "A Mexican folk song. C and F for two beats each, then a bar of G, over and over. Keep it bouncy."
+}

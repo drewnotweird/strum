@@ -1,0 +1,55 @@
+{
+  "id": "twist-and-shout",
+  "title": "Twist and Shout",
+  "artist": "The Beatles",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 124,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 4,
+      "steps": [
+        "D|half",
+        "G|half",
+        "A"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 8,
+      "steps": [
+        "D|half",
+        "G|half",
+        "A"
+      ]
+    },
+    "build": {
+      "name": "Build-up",
+      "repeat": 4,
+      "steps": [
+        "A"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "verse",
+    "build",
+    "verse",
+    "build",
+    "verse"
+  ],
+  "notes": "D and G get two beats each, then a full bar of A. Round and round. The build-up is just A, getting louder.",
+  "songsterr": "https://www.songsterr.com/a/wsa/beatles-twist-and-shout-tab-s26412"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "happy-birthday",
+  "title": "Happy Birthday",
+  "artist": "Mildred & Patty Hill",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 100,
+  "beatsPerBar": 3,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "song": {
+      "name": "Song",
+      "steps": [
+        "G",
+        "D",
+        "D",
+        "G",
+        "G",
+        "C",
+        "G",
+        "D",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "song",
+    "song"
+  ],
+  "notes": "Count 1, 2, 3. Everyone sings 'Happy' before the first G. Out of copyright, and handy to know for parties."
+}

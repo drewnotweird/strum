@@ -1,0 +1,73 @@
+{
+  "id": "brown-eyed-girl",
+  "title": "Brown Eyed Girl",
+  "artist": "Van Morrison",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 150,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "D"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "D"
+      ]
+    },
+    "pre": {
+      "name": "Pre-chorus",
+      "steps": [
+        "C",
+        "D",
+        "G",
+        "Em",
+        "C",
+        "D",
+        "G",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "pre",
+    "chorus",
+    "verse",
+    "pre",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "G, C, G, D, one bar each, for most of the song. It's quick: start slow with the speed slider. The famous intro riff is single notes and isn't charted here.",
+  "songsterr": "https://www.songsterr.com/a/wsa/van-morrison-brown-eyed-girl-tab-s309"
+}

@@ -1,0 +1,63 @@
+{
+  "id": "the-wild-rover",
+  "title": "The Wild Rover",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 120,
+  "beatsPerBar": 3,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "G",
+        "G",
+        "C",
+        "C",
+        "G",
+        "G",
+        "D",
+        "D",
+        "G",
+        "G",
+        "C",
+        "C",
+        "G",
+        "D",
+        "G",
+        "G"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "D",
+        "D",
+        "G",
+        "G",
+        "C",
+        "C",
+        "G",
+        "D",
+        "G",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus"
+  ],
+  "notes": "An Irish drinking song in 3/4. Clap on the gaps in the chorus. Only G, C and D."
+}

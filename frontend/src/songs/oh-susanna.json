@@ -1,0 +1,52 @@
+{
+  "id": "oh-susanna",
+  "title": "Oh! Susanna",
+  "artist": "Stephen Foster",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 100,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D - D - D -"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "C",
+        "C",
+        "C",
+        "G7",
+        "C",
+        "C",
+        "G7",
+        "C"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "F",
+        "F",
+        "C",
+        "G7",
+        "C",
+        "C",
+        "G7",
+        "C"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus"
+  ],
+  "notes": "Written in 1848, so it's free for anyone to use. Mostly C and G7, with F to start the chorus."
+}

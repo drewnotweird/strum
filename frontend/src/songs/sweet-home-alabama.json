@@ -1,0 +1,56 @@
+{
+  "id": "sweet-home-alabama",
+  "title": "Sweet Home Alabama",
+  "artist": "Lynyrd Skynyrd",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 98,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 4,
+      "steps": [
+        "D|half",
+        "C|half",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 8,
+      "steps": [
+        "D|half",
+        "C|half",
+        "G"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "D|half",
+        "C|half",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "The whole song is D, C, G: two beats of D, two of C, a full bar of G. The record picks single notes over these chords; strumming them works fine to start.",
+  "songsterr": "https://www.songsterr.com/a/wsa/lynyrd-skynyrd-sweet-home-alabama-tab-s58984"
+}

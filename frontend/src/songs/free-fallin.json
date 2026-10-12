@@ -1,0 +1,58 @@
+{
+  "id": "free-fallin",
+  "title": "Free Fallin'",
+  "artist": "Tom Petty",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 3,
+  "bpm": 84,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "half": "D - D U"
+  },
+  "defaultPattern": "half",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "D|half",
+        "Dsus4|half",
+        "D|half",
+        "Asus4|half"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "D|half",
+        "Dsus4|half",
+        "D|half",
+        "Asus4|half"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "D|half",
+        "Dsus4|half",
+        "D|half",
+        "Asus4|half"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "One loop all the way through: D, Dsus4, D, Asus4. Your fingers barely move: Dsus4 just adds your pinky. Capo 3 matches the record.",
+  "songsterr": "https://www.songsterr.com/a/wsa/tom-petty-free-fallin-tab-s15887"
+}

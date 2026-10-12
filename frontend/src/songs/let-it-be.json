@@ -1,0 +1,68 @@
+{
+  "id": "let-it-be",
+  "title": "Let It Be",
+  "artist": "The Beatles",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 72,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "half": "D - D U"
+  },
+  "defaultPattern": "half",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F",
+        "C",
+        "G",
+        "F",
+        "C"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F",
+        "C",
+        "G",
+        "F",
+        "C"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "Am",
+        "G",
+        "F",
+        "C",
+        "C",
+        "G",
+        "F",
+        "C"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Every chord gets two beats. The verse goes C G Am F, then C G F C. The chorus starts on Am instead. The F is the easy four-string one.",
+  "songsterr": "https://www.songsterr.com/a/wsa/beatles-let-it-be-tab-s79"
+}
