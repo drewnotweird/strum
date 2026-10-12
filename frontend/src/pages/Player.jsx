@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
+import { voiceFor } from '../lib/guitar.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
@@ -41,6 +42,7 @@ function SongPlayer({ song }) {
   const [ended, setEnded] = useState(false)
   const [speed, setSpeed] = useState(0.7)
   const [clickOn, setClickOn] = useState(true)
+  const [guitarOn, setGuitarOn] = useState(true)
 
   const playerRef = useRef(null)
   const strumRef = useRef(null)
@@ -148,6 +150,10 @@ function SongPlayer({ song }) {
       slotsPerBeat: song.perBeat,
       slotsPerBar: song.perBeat * song.beatsPerBar,
       bpm: song.bpm,
+      voiceAt: (i) => {
+        const { step, slot } = timeline[i]
+        return voiceFor(steps[step].chord, steps[step].pattern[slot], song.capo)
+      },
       onSlot: (i, beatsLeft) => {
         if (beatsLeft > 0) {
           slotRef.current = -1
@@ -173,6 +179,7 @@ function SongPlayer({ song }) {
     })
     player.setSpeed(speed)
     player.setClick(clickOn)
+    player.setGuitar(guitarOn)
     playerRef.current = player
     return () => player.stop()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -216,6 +223,13 @@ function SongPlayer({ song }) {
   const changeSpeed = (s) => {
     setSpeed(s)
     playerRef.current.setSpeed(s)
+  }
+
+  const toggleGuitar = () => {
+    setGuitarOn((on) => {
+      playerRef.current.setGuitar(!on)
+      return !on
+    })
   }
 
   const toggleClick = () => {
@@ -289,7 +303,13 @@ function SongPlayer({ song }) {
           ) : (
             <>
               <span className="chord-name chord-name--now">{chordLabel(now.chord)}</span>
-              <ChordDiagram name={now.chord} className="diagram--now" />
+              <button
+                className="diagram-button"
+                onClick={() => playerRef.current.preview(voiceFor(now.chord, 'D', song.capo))}
+                aria-label={`Hear ${chordLabel(now.chord)}`}
+              >
+                <ChordDiagram name={now.chord} className="diagram--now" />
+              </button>
               <div className="strum-wrap">
                 {countIn > 0 && <div className="count">{countIn}</div>}
                 <div
@@ -368,9 +388,14 @@ function SongPlayer({ song }) {
             onChange={(e) => changeSpeed(Number(e.target.value))}
           />
         </label>
-        <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick}>
-          Click {clickOn ? 'on' : 'off'}
-        </button>
+        <div className="toggles">
+          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar}>
+            Guitar {guitarOn ? 'on' : 'off'}
+          </button>
+          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick}>
+            Click {clickOn ? 'on' : 'off'}
+          </button>
+        </div>
       </div>
 
       <nav className="sections" aria-label="Jump to section">

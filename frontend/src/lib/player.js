@@ -1,10 +1,15 @@
 // Audio-clock driven player. Time is counted in strum slots; the Web Audio clock schedules
 // the metronome ahead of time and a rAF loop reports which slot is current.
 // Slots below `fromIndex` after a start() are the count-in.
+// voiceAt(i) says what the guitar should play on slot i (see guitar.js), or null.
+import { createGuitar } from './guitar.js'
+
 const LOOKAHEAD = 0.12
 
-export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, onSlot, onEnd }) {
+export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, onSlot, onEnd }) {
   let ctx = null
+  let guitar = null
+  let guitarOn = true
   let playing = false
   let speed = 1
   let clickOn = true
@@ -43,6 +48,11 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, onSlot, o
       if (clickOn && mod(beatSlot, slotsPerBeat) === 0) {
         click(Math.max(timeOf(i), ctx.currentTime), mod(beatSlot, slotsPerBar) === 0)
       }
+      const voice = guitarOn && i >= firstIndex ? voiceAt(i) : null
+      if (voice) {
+        const time = Math.max(timeOf(i), ctx.currentTime)
+        guitar.play(time, voice).forEach((osc) => scheduled.push({ osc, time }))
+      }
       nextToSchedule++
     }
     scheduled = scheduled.filter((c) => c.time > ctx.currentTime - 0.2)
@@ -64,11 +74,20 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, onSlot, o
     raf = requestAnimationFrame(tick)
   }
 
+  // Stop anything not yet heard, and let the chord that's ringing die away quickly
   function cancelScheduled() {
-    scheduled.forEach(({ osc }) => {
-      try { osc.stop() } catch {}
+    const now = ctx.currentTime
+    scheduled.forEach(({ osc, time }) => {
+      if (time > now) try { osc.stop() } catch {}
     })
     scheduled = []
+    guitar?.damp(now)
+  }
+
+  function ensureAudio() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)()
+    if (!guitar) guitar = createGuitar(ctx)
+    ctx.resume()
   }
 
   function anchor(index) {
@@ -79,8 +98,7 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, onSlot, o
   }
 
   function start(fromIndex) {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)()
-    ctx.resume()
+    ensureAudio()
     stop()
     firstIndex = fromIndex
     countInStart = fromIndex - slotsPerBar
@@ -124,6 +142,16 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, onSlot, o
     seek,
     setSpeed,
     setClick: (on) => { clickOn = on },
+    setGuitar: (on) => {
+      guitarOn = on
+      if (!on && ctx) guitar.damp(ctx.currentTime)
+    },
+    // Play one strum straight away, e.g. when the chord diagram is tapped
+    preview: (voice) => {
+      if (!voice) return
+      ensureAudio()
+      guitar.play(ctx.currentTime + 0.02, voice)
+    },
     isPlaying: () => playing,
   }
 }

@@ -216,12 +216,12 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .stage__label { grid-area: label; }
 .chord-name { grid-area: name; }
-.diagram { grid-area: diagram; }
+.diagram, .diagram-button { grid-area: diagram; }
 .strum-wrap { grid-area: strum; }
 .now__done { grid-area: done; }
 
 .now .chord-name { justify-self: end; }
-.now .diagram { justify-self: start; }
+.now .diagram-button { justify-self: start; }
 
 .stage__label {
   justify-self: start;
@@ -476,7 +476,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .now.is-ended { grid-template-areas: "label label" "done done" "done done"; }
 
   .now .chord-name, .next .chord-name { justify-self: start; }
-  .now .diagram, .next .diagram { justify-self: center; }
+  .now .diagram-button { justify-self: stretch; }
+  .next .diagram { justify-self: center; }
 
   .chord-name--now { font-size: clamp(48px, 13vw, 120px); margin: 6px 0 12px; }
   .chord-name--next { margin: 6px 0 0; }
@@ -521,6 +522,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .next { grid-template-rows: auto auto minmax(0, 1fr); }
 
   /* Height-led sizing: aspect-ratio lets the width follow the height */
+  .diagram-button { height: 100%; min-height: 0; }
+
   .diagram--now, .diagram--next {
     height: 100%;
     width: auto;
@@ -710,3 +713,21 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   .blob { transition: none; }
 }
+
+/* Tapping the NOW diagram plays the chord */
+.diagram-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.diagram-button:active .diagram { transform: scale(0.97); }
+.diagram-button .diagram { transition: transform 0.08s; }
+
+.toggles { display: flex; gap: 8px; }
