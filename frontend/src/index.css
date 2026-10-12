@@ -157,9 +157,9 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   position: relative;
   border-radius: 20px;
   padding: 18px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   align-items: center;
+  justify-items: center;
   border: 2px solid var(--line);
   border-bottom-width: 4px;
 }
@@ -177,10 +177,33 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border-bottom-color: var(--green-dark);
 }
 
-.next { justify-content: flex-start; }
+/* Landscape: label on top, chord name beside its diagram, strums along the bottom */
+.now {
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "label label" "name diagram" "strum strum";
+  column-gap: 4%;
+}
+
+.next {
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas: "label" "name" "diagram";
+  align-content: start;
+}
+
+.now.is-ended { grid-template-areas: "label label" "done done" "done done"; }
+
+.stage__label { grid-area: label; }
+.chord-name { grid-area: name; }
+.diagram { grid-area: diagram; }
+.strum-wrap { grid-area: strum; }
+.now__done { grid-area: done; }
+
+.now .chord-name { justify-self: end; }
+.now .diagram { justify-self: start; }
 
 .stage__label {
-  align-self: flex-start;
+  justify-self: start;
   font-size: 15px;
   font-weight: 900;
   text-transform: uppercase;
@@ -190,15 +213,6 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .now .stage__label { color: var(--blue-dark); }
 .now.is-ended .stage__label { color: var(--green-dark); }
-
-.now__chord {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4%;
-  width: 100%;
-}
 
 .chord-name { font-weight: 900; line-height: 1; }
 .chord-name--now { font-size: clamp(64px, 11vw, 140px); color: var(--text); }
@@ -423,28 +437,45 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .missing { padding: 40px 16px; text-align: center; }
 
-/* Portrait: NOW on top and bigger, NEXT smaller below */
+/* Portrait: NOW on top and bigger, NEXT below. In each card the left half is
+   label, chord and strums, and the right half is the chord diagram. */
 @media (orientation: portrait) {
   .stage { grid-template-columns: 1fr; }
 
-  .now { min-height: 0; }
-  .now__chord { padding: 12px 0; }
-
-  .next {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0 16px;
+  .now, .next {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "label diagram" "name diagram" "strum diagram";
+    column-gap: 12px;
+    align-content: center;
+    min-height: 0;
   }
 
-  .next .stage__label { flex-basis: 100%; }
-  .chord-name--next { margin: 6px 0; }
-  .diagram--next { width: 72px; }
+  .now.is-ended { grid-template-areas: "label label" "done done" "done done"; }
+
+  .now .chord-name, .next .chord-name { justify-self: start; }
+  .now .diagram, .next .diagram { justify-self: center; }
+
+  .chord-name--now { font-size: clamp(48px, 13vw, 120px); margin: 6px 0 12px; }
+  .chord-name--next { margin: 6px 0 0; }
+
+  .diagram--now { width: min(100%, 260px); }
+  .diagram--next { width: min(60%, 120px); }
+
+  .strum-wrap { align-self: start; min-height: 0; }
+  .strum { flex-wrap: wrap; justify-content: flex-start; }
 }
 
-/* Narrow portrait (phones): tighten the strum row */
+/* Narrow portrait (phones): four strums per row so each stays big enough to read */
 @media (orientation: portrait) and (max-width: 640px) {
   .strum { gap: 5px; }
-  .strum__slot { height: 56px; font-size: 30px; border-radius: 12px; }
-  .strum--pick .strum__slot { font-size: 24px; }
+  .strum__slot {
+    flex: 0 0 calc(25% - 4px);
+    height: 44px;
+    font-size: 24px;
+    border-radius: 10px;
+    border-bottom-width: 3px;
+  }
+  .strum--pick .strum__slot { font-size: 20px; }
+  .count { font-size: 56px; }
 }

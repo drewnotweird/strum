@@ -187,10 +187,8 @@ function SongPlayer({ song }) {
             </div>
           ) : (
             <>
-              <div className="now__chord">
-                <span className="chord-name chord-name--now">{chordLabel(now.chord)}</span>
-                <ChordDiagram name={now.chord} className="diagram--now" />
-              </div>
+              <span className="chord-name chord-name--now">{chordLabel(now.chord)}</span>
+              <ChordDiagram name={now.chord} className="diagram--now" />
               <div className="strum-wrap">
                 {countIn > 0 && <div className="count">{countIn}</div>}
                 <div
