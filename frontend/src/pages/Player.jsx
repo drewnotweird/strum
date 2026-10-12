@@ -1,9 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
+import { go, titleTransitionName } from '../lib/transition.js'
 
 function tokenLabel(token, chord) {
   if (token === 'D') return '↓'
@@ -30,6 +31,7 @@ export default function Player() {
 }
 
 function SongPlayer({ song }) {
+  const navigate = useNavigate()
   const { steps, sectionStarts } = useMemo(() => buildSteps(song), [song])
   const { timeline, stepStart } = useMemo(() => buildTimeline(steps), [steps])
 
@@ -255,9 +257,19 @@ function SongPlayer({ song }) {
   return (
     <main className="player">
       <header className="player__head">
-        <Link to="/" className="back" aria-label="All songs">←</Link>
+        <Link
+          to="/"
+          className="back"
+          aria-label="All songs"
+          onClick={(e) => {
+            e.preventDefault()
+            go(navigate, '/', 'back')
+          }}
+        >
+          ←
+        </Link>
         <div className="player__title">
-          <h1>{song.title}</h1>
+          <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
           <p>{song.artist}{song.kind === 'drill' ? ' · warm-up drill' : ''}</p>
         </div>
         {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}

@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useLayoutEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { songs } from '../lib/song.js'
 import { chordLabel } from '../data/chords.js'
+import { go, listReady, titleTransitionName } from '../lib/transition.js'
 
 const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
@@ -39,9 +40,23 @@ function search(query, level) {
   return { results, chordQuery }
 }
 
+// Kept outside the component so the search survives a trip to a song and back
+const remembered = { query: '', level: null }
+
 export default function Home() {
-  const [query, setQuery] = useState('')
-  const [level, setLevel] = useState(null)
+  const navigate = useNavigate()
+  const navigationType = useNavigationType()
+  const [query, setQueryState] = useState(remembered.query)
+  const [level, setLevelState] = useState(remembered.level)
+  const setQuery = (q) => setQueryState((remembered.query = q))
+  const setLevel = (l) => setLevelState((remembered.level = l))
+
+  // Coming back from a song (our back arrow or the browser's): restore the scroll
+  // position and let a waiting page transition finish
+  useLayoutEffect(() => {
+    if (navigationType === 'POP') listReady()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const { results, chordQuery } = useMemo(() => search(query, level), [query, level])
 
   return (
@@ -103,9 +118,17 @@ export default function Home() {
         <ul className="songs">
           {results.map(({ song, chords }) => (
             <li key={song.id}>
-              <Link to={`/song/${song.id}`} className="song-card">
+              <Link
+                to={`/song/${song.id}`}
+                className="song-card"
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+                  e.preventDefault()
+                  go(navigate, `/song/${song.id}`, 'forward')
+                }}
+              >
                 <span className="song-card__top">
-                  <span className="song-card__title">{song.title}</span>
+                  <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
                   <span className={`level level--${song.level}`}>{levels[song.level]}</span>
                 </span>
                 <span className="song-card__artist">

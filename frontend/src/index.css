@@ -683,3 +683,26 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .levels { width: 100%; }
   .level-filter { flex: 1; height: 46px; }
 }
+
+/* Page transitions (View Transitions API): pages slide sideways, the song title
+   travels between its card and the player header, and the corner blobs stay put */
+.blobs { view-transition-name: blobs; }
+
+::view-transition-group(*) {
+  animation-duration: 0.38s;
+  animation-timing-function: cubic-bezier(0.3, 1, 0.4, 1);
+}
+
+:root[data-nav='forward']::view-transition-old(root) { animation: 0.16s ease-in both page-out-left; }
+:root[data-nav='forward']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-right; }
+:root[data-nav='back']::view-transition-old(root) { animation: 0.16s ease-in both page-out-right; }
+:root[data-nav='back']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-left; }
+
+@keyframes page-out-left { to { opacity: 0; transform: translateX(-48px); } }
+@keyframes page-in-right { from { opacity: 0; transform: translateX(48px); } }
+@keyframes page-out-right { to { opacity: 0; transform: translateX(48px); } }
+@keyframes page-in-left { from { opacity: 0; transform: translateX(-48px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
