@@ -47,8 +47,8 @@ jobs:
 
           def make_ftp(host, user, password):
               ftp = ftplib.FTP()
-              ftp.connect(host, 21, timeout=60)
-              ftp.login(user, password)
+              ftp.connect(host.strip(), 21, timeout=60)
+              ftp.login(user.strip(), password.strip())
               ftp.set_pasv(True)
               return ftp
 
@@ -126,8 +126,8 @@ jobs:
 
           def make_ftp(host, user, password):
               ftp = ftplib.FTP()
-              ftp.connect(host, 21, timeout=60)
-              ftp.login(user, password)
+              ftp.connect(host.strip(), 21, timeout=60)
+              ftp.login(user.strip(), password.strip())
               ftp.set_pasv(True)
               return ftp
 
