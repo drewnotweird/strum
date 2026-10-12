@@ -6,6 +6,8 @@ import { songNotes, voiceFor } from '../lib/guitar.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
+import { keepAwake } from '../lib/wakeLock.js'
+import { addPractice, setLefty, toggleLearned, useStore } from '../lib/store.js'
 
 function tokenLabel(token, chord) {
   if (token === 'D') return '↓'
@@ -42,7 +44,9 @@ export default function Player() {
   return <SongPlayer key={song.id} song={song} />
 }
 
-function SongPlayer({ song }) {
+// The play-along screen. Also used by the chord change trainer, which passes its own
+// generated song, an `extra` panel under the header, and starts with looping on.
+export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true }) {
   const navigate = useNavigate()
   const { steps, sectionStarts } = useMemo(() => buildSteps(song), [song])
   const { timeline, stepStart } = useMemo(() => buildTimeline(steps), [steps])
@@ -55,6 +59,10 @@ function SongPlayer({ song }) {
   const [clickOn, setClickOn] = useState(true)
   const [guitarOn, setGuitarOn] = useState(true)
   const [announcement, setAnnouncement] = useState('')
+  const [loopOn, setLoopOn] = useState(defaultLoop)
+  const [rampOn, setRampOn] = useState(false)
+  const lefty = useStore((st) => st.lefty)
+  const learned = useStore((st) => st.learned.includes(song.id))
 
   const playerRef = useRef(null)
   const strumRef = useRef(null)
@@ -189,6 +197,8 @@ function SongPlayer({ song }) {
         setPlaying(false)
         setEnded(true)
       },
+      // The speed trainer nudges the tempo up each time round the loop
+      onSpeed: (s) => setSpeed(s),
     })
     player.setSpeed(speed)
     player.setClick(clickOn)
@@ -269,8 +279,9 @@ function SongPlayer({ song }) {
     // Physical keys press the on-screen keys too
     const press = (code, down) => keyRefs[code]?.current?.classList.toggle('is-pressed', down)
     const onDown = (e) => {
-      if (!actions[e.code] || e.target.closest('input, select, textarea')) return
-      const onOtherControl = e.target.closest('button, a, [role="button"]') && !Object.values(keyRefs).some((r) => r.current === e.target)
+      const el = e.target instanceof Element ? e.target : document.body
+      if (!actions[e.code] || el.closest('input, select, textarea')) return
+      const onOtherControl = el.closest('button, a, [role="button"]') && !Object.values(keyRefs).some((r) => r.current === el)
       if (e.code === 'Space' && onOtherControl) return
       e.preventDefault()
       press(e.code, true)
@@ -295,6 +306,44 @@ function SongPlayer({ song }) {
   const next = steps[stepIndex + 1]
   const picking = now.pattern.some(isPick)
   const currentSection = sectionStarts.findLastIndex((s) => s.step <= stepIndex)
+
+  // Looping repeats whichever section you're in. Moving to another section loops that one.
+  useEffect(() => {
+    if (!loopOn) {
+      playerRef.current.setLoop(null)
+      return
+    }
+    const after = sectionStarts[currentSection + 1]
+    playerRef.current.setLoop({
+      start: stepStart[sectionStarts[currentSection].step],
+      end: after ? stepStart[after.step] : timeline.length,
+    })
+  }, [loopOn, currentSection, sectionStarts, stepStart, timeline])
+
+  useEffect(() => {
+    playerRef.current.setRampUp(loopOn && rampOn)
+  }, [loopOn, rampOn])
+
+  // While playing: keep the screen on, and count the time towards today's practice
+  useEffect(() => {
+    if (!playing) return
+    keepAwake(true)
+    const started = Date.now()
+    return () => {
+      keepAwake(false)
+      if (trackable) addPractice((Date.now() - started) / 1000)
+    }
+  }, [playing, trackable])
+
+  const learnedButton = trackable && (
+    <button
+      className={`btn btn--learned ${learned ? 'is-on' : ''}`}
+      onClick={() => toggleLearned(song.id)}
+      aria-pressed={learned}
+    >
+      {learned ? '✓ I can play this' : 'I can play this!'}
+    </button>
+  )
 
   return (
     <main className="player">
@@ -321,6 +370,8 @@ function SongPlayer({ song }) {
         {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
       </header>
 
+      {extra}
+
       <section className="stage">
         <div ref={nowRef} className={`now ${ended ? 'is-ended' : ''}`}>
           <span className="stage__label">{ended ? 'Finished' : `Now · ${now.section}`}</span>
@@ -328,6 +379,7 @@ function SongPlayer({ song }) {
             <div className="now__done">
               <p>Nice one.</p>
               <button className="btn btn--primary" onClick={play}>Play again</button>
+              {learnedButton}
             </div>
           ) : (
             <>
@@ -434,6 +486,21 @@ function SongPlayer({ song }) {
           <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick} aria-pressed={clickOn}>
             Click {clickOn ? 'on' : 'off'}
           </button>
+          <button className={`btn btn--toggle ${loopOn ? 'is-on' : ''}`} onClick={() => setLoopOn((on) => !on)} aria-pressed={loopOn}>
+            Loop section
+          </button>
+          <button
+            className={`btn btn--toggle ${loopOn && rampOn ? 'is-on' : ''}`}
+            onClick={() => setRampOn((on) => !on)}
+            aria-pressed={loopOn && rampOn}
+            disabled={!loopOn}
+            title="Each time round the loop, 5% faster, up to full speed"
+          >
+            Speed up each loop
+          </button>
+          <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
+            Left-handed
+          </button>
         </div>
       </div>
 
@@ -451,6 +518,7 @@ function SongPlayer({ song }) {
       </nav>
 
       <footer className="player__foot">
+        {learnedButton}
         {picking && <p className="hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
         {song.notes && <p>{song.notes}</p>}
         {!song.checked && <p className="hint">Not checked against the record yet. If something sounds off, trust your ears.</p>}

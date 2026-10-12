@@ -42,7 +42,7 @@ jobs:
 
           UPLOAD_IMAGES = os.environ.get('UPLOAD_IMAGES') == 'true'
           SKIP_EXTENSIONS = set() if UPLOAD_IMAGES else {'.jpg', '.jpeg', '.gif', '.webp', '.png'}
-          ALWAYS_UPLOAD = {'favicon.png', 'og-strum.jpg'}
+          ALWAYS_UPLOAD = {'favicon.png', 'icon-512.png', 'og-strum.jpg'}
           RECONNECT_EVERY = 20
 
           def make_ftp(host, user, password):
@@ -121,7 +121,7 @@ jobs:
 
           UPLOAD_IMAGES = os.environ.get('UPLOAD_IMAGES') == 'true'
           SKIP_EXTENSIONS = set() if UPLOAD_IMAGES else {'.jpg', '.jpeg', '.gif', '.webp', '.png'}
-          ALWAYS_UPLOAD = {'favicon.png', 'og-strum.jpg'}
+          ALWAYS_UPLOAD = {'favicon.png', 'icon-512.png', 'og-strum.jpg'}
           RECONNECT_EVERY = 20
 
           def make_ftp(host, user, password):

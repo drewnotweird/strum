@@ -1,5 +1,5 @@
 :root {
-  /* Palette taken from the Strum banner: warm cream paper and one green */
+  /* Palette from the Strum banner: warm cream paper and one blue */
   --bg: #fcfaf6;
   --surface: #fffcf0;
   --soft: #f6f2e6;
@@ -7,11 +7,17 @@
   --muted: #66635a;
   --line: #e8e3d5;
   --line-dark: #d5cebd;
-  --green: #6cbb15;
-  --green-dark: #3a7204;
-  --green-ink: #1d3a00;
-  --green-soft: #dcf5bd;
-  --blob: #97d150;
+  /* Brand: electric blue. Contrast checked: dark on cream 6.8:1, white on dark 7:1,
+     white on brand 3.4:1 (large text and UI only) */
+  --brand: #2f8cf0;
+  --brand-dark: #1458a8;
+  --brand-ink: #ffffff;
+  --brand-soft: #d6e9ff;
+  --blob: #7db6f5;
+  /* Level colours stay traffic-light: easy green, medium amber, tricky red */
+  --easy: #3a7204;
+  --easy-soft: #dcf5bd;
+  --easy-edge: #6cbb15;
   --yellow: #ffc800;
   --red: #c62f35;
   --font: 'Nunito', system-ui, sans-serif;
@@ -62,7 +68,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   font-weight: 900;
   line-height: 0.9;
   margin: 0 0 12px;
-  color: var(--green);
+  color: var(--brand);
   letter-spacing: -0.02em;
 }
 
@@ -125,11 +131,11 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   letter-spacing: 0.04em;
 }
 
-.level--1 { background: var(--green-soft); color: var(--green-dark); }
+.level--1 { background: var(--easy-soft); color: var(--easy); }
 .level--2 { background: #fff4cc; color: #8a6500; }
 .level--3 { background: #ffdfe0; color: #b81d1d; }
 
-.badge { background: var(--green-soft); color: var(--green-dark); }
+.badge { background: var(--brand-soft); color: var(--brand-dark); }
 
 .mini-chord { text-transform: none; letter-spacing: 0; border: 2px solid var(--line); color: var(--text); }
 
@@ -186,17 +192,17 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .now {
   min-height: 420px;
   background: var(--surface);
-  border-color: var(--green);
-  border-bottom-color: var(--green-dark);
+  border-color: var(--brand);
+  border-bottom-color: var(--brand-dark);
   border-width: 3px 3px 6px;
 }
 
 .next { background: var(--surface); }
 
 .now.is-ended {
-  background: var(--green-soft);
-  border-color: var(--green);
-  border-bottom-color: var(--green-dark);
+  background: var(--brand-soft);
+  border-color: var(--brand);
+  border-bottom-color: var(--brand-dark);
 }
 
 /* Landscape: label on top, chord name beside its diagram, strums along the bottom */
@@ -233,8 +239,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   color: var(--muted);
 }
 
-.now .stage__label { color: var(--green-dark); }
-.now.is-ended .stage__label { color: var(--green-dark); }
+.now .stage__label { color: var(--brand-dark); }
+.now.is-ended .stage__label { color: var(--brand-dark); }
 
 .chord-name { font-weight: 900; line-height: 1; }
 .chord-name--now { font-size: clamp(64px, 11vw, 140px); color: var(--text); }
@@ -247,7 +253,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .diagram__fret, .diagram__string { stroke: #948e80; stroke-width: 1.2; }
 .diagram__nut { fill: var(--text); }
-.diagram__dot { fill: var(--green-dark); }
+.diagram__dot { fill: var(--brand-dark); }
 .diagram--next .diagram__dot { fill: #8a8476; }
 .diagram__finger { fill: #fff; font-size: 8px; font-weight: 900; text-anchor: middle; font-family: var(--font); }
 .diagram__open { fill: none; stroke: var(--text); stroke-width: 1.4; }
@@ -290,11 +296,11 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .strum--pick .strum__slot { font-size: 30px; }
 
 .strum__slot.is-rest { color: #8f8a7c; }
-.strum__slot.is-done { background: var(--green-soft); border-color: #b5e383; color: var(--green-dark); }
+.strum__slot.is-done { background: var(--brand-soft); border-color: #9cc8f7; color: var(--brand-dark); }
 .strum__slot.is-on {
-  background: var(--green);
-  border-color: var(--green-dark);
-  color: var(--green-ink);
+  background: var(--brand);
+  border-color: var(--brand-dark);
+  color: var(--brand-ink);
   transform: scale(1.1);
 }
 
@@ -305,7 +311,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   place-items: center;
   font-size: 72px;
   font-weight: 900;
-  color: var(--green);
+  color: var(--brand);
 }
 
 .now__done {
@@ -316,7 +322,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   gap: 18px;
   font-size: 40px;
   font-weight: 900;
-  color: var(--green-dark);
+  color: var(--brand-dark);
 }
 
 .now__done p { margin: 0; }
@@ -372,7 +378,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--green-dark);
+  color: var(--brand-dark);
 }
 
 .key--space svg { width: 22px; height: 22px; fill: currentColor; }
@@ -380,8 +386,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .key--space.is-playing { color: var(--red); }
 
 .btn--primary {
-  background: var(--green);
-  border-color: var(--green-dark);
+  background: var(--brand);
+  border-color: var(--brand-dark);
   color: #fff;
 }
 
@@ -412,7 +418,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .speed span { min-width: 96px; }
 
-.speed input { width: 200px; accent-color: var(--green); }
+.speed input { width: 200px; accent-color: var(--brand); }
 
 .btn--toggle {
   padding: 8px 16px;
@@ -423,7 +429,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   letter-spacing: 0.05em;
 }
 
-.btn--toggle.is-on { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+.btn--toggle.is-on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
 
 .sections {
   display: flex;
@@ -441,7 +447,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   cursor: pointer;
 }
 
-.chip.is-current { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+.chip.is-current { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
 
 .player__foot {
   max-width: 640px;
@@ -455,7 +461,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .hint { font-size: 14px; }
 
-.songsterr { color: var(--green); font-weight: 800; text-decoration: none; }
+.songsterr { color: var(--brand); font-weight: 800; text-decoration: none; }
 
 .missing { padding: 40px 16px; text-align: center; }
 
@@ -558,7 +564,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .controls { height: 58px; }
 }
 
-/* Decoration from the banner: green blobs in the corners, burst marks by the title */
+/* Decoration from the banner: blobs in the corners, burst marks by the title */
 .blobs {
   position: fixed;
   inset: 0;
@@ -580,12 +586,12 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 }
 
 .burst { width: clamp(44px, 9vw, 64px); flex: none; margin-top: -0.3em; }
-.burst line { stroke: var(--green); stroke-width: 7; stroke-linecap: round; }
+.burst line { stroke: var(--brand); stroke-width: 7; stroke-linecap: round; }
 
 .home__head p { max-width: 460px; color: #6d6c63; font-weight: 800; }
 
 /* The capo badge can sit over the top-right blob, so give it its own backing */
-.player__head .badge { background: var(--surface); border: 2px solid var(--green); }
+.player__head .badge { background: var(--surface); border: 2px solid var(--brand); }
 
 /* Tapping NEXT moves it up into NOW */
 .next.is-tappable { cursor: pointer; transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s; }
@@ -613,7 +619,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border-radius: 16px;
 }
 
-.search:focus-within { border-color: var(--green); }
+.search:focus-within { border-color: var(--brand); }
 
 .search svg { width: 22px; height: 22px; flex: none; fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; }
 
@@ -667,11 +673,11 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .level-filter:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
 
-.level-filter--1.is-on { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+.level-filter--1.is-on { background: var(--easy-soft); border-color: var(--easy-edge); color: var(--easy); }
 .level-filter--2.is-on { background: #fff4cc; border-color: #f0c22e; color: #8a6500; }
 .level-filter--3.is-on { background: #ffdfe0; border-color: #f07b7b; color: #b81d1d; }
 
-.filter__hint { margin: -4px 0 14px; color: var(--green-dark); font-weight: 800; }
+.filter__hint { margin: -4px 0 14px; color: var(--brand-dark); font-weight: 800; }
 
 .empty {
   padding: 32px 16px;
@@ -733,9 +739,9 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .toggles { display: flex; gap: 8px; }
 
-/* Keyboard focus: a clear green ring on anything focusable */
+/* Keyboard focus: a clear blue ring on anything focusable */
 :focus-visible {
-  outline: 3px solid var(--green-dark);
+  outline: 3px solid var(--brand-dark);
   outline-offset: 3px;
 }
 
@@ -754,3 +760,261 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   white-space: nowrap;
   border: 0;
 }
+
+/* ---------- Practice record on the home page ---------- */
+.progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -8px 0 20px;
+}
+
+.streak, .learned-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.streak svg { width: 18px; height: 18px; fill: var(--line-dark); }
+.streak.is-going { color: #a34a00; border-color: #ffc98f; background: #fff1e0; }
+.streak.is-going svg { fill: #f07a1a; }
+.learned-count { color: var(--brand-dark); border-color: var(--brand-soft); }
+
+/* ---------- Tool links ---------- */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tool-card {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--surface);
+  text-decoration: none;
+  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
+}
+
+.tool-card:hover { border-color: var(--brand); }
+.tool-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
+
+.tool-card svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tool-card__name { font-weight: 900; font-size: 17px; }
+.tool-card__blurb { font-size: 13px; color: var(--muted); line-height: 1.3; }
+
+/* Phones: three compact tiles in a row, so the songs stay near the top */
+@media (max-width: 480px) {
+  .tools { gap: 8px; margin-bottom: 18px; }
+  .tool-card { justify-items: center; text-align: center; padding: 10px 6px; }
+  .tool-card__name { font-size: 14px; line-height: 1.15; }
+  .tool-card__blurb { display: none; }
+  .level-filter { padding: 0 6px; font-size: 13px; white-space: nowrap; }
+}
+
+/* ---------- Learned songs ---------- */
+.song-card__badges { display: flex; align-items: center; gap: 6px; flex: none; }
+
+.tick {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.level-filter--learned.is-on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
+
+.btn--learned {
+  padding: 12px 20px;
+  border-radius: 16px;
+  font-weight: 900;
+  font-size: 16px;
+  color: var(--brand-dark);
+  margin: 0 auto 14px;
+  display: block;
+}
+
+.btn--learned.is-on { background: var(--brand); border-color: var(--brand-dark); color: #fff; animation: learned-pop 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); }
+
+@keyframes learned-pop { 50% { transform: scale(1.08); } }
+
+.now__done .btn--learned { margin: 0; font-size: 15px; }
+
+.home__foot { margin-top: 28px; display: flex; justify-content: center; }
+
+.toggles { flex-wrap: wrap; justify-content: center; }
+.btn--toggle:disabled { opacity: 0.45; cursor: default; }
+
+/* ---------- Tool pages (tuner, chords) ---------- */
+.tool {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 16px 16px 48px;
+  display: grid;
+  gap: 18px;
+}
+
+.tool__section h2 { margin: 0 0 4px; font-size: 20px; font-weight: 900; }
+.tool__section .hint { margin: 0 0 12px; color: var(--muted); }
+.tool__error { margin: 0; padding: 12px 16px; border-radius: 14px; background: #ffdfe0; color: #b81d1d; font-weight: 800; }
+
+/* Tuner */
+.tuner {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 24px 18px;
+  background: var(--surface);
+  border: 3px solid var(--line);
+  border-bottom-width: 6px;
+  border-radius: 20px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.tuner.is-in-tune { border-color: var(--easy-edge); background: #f3fde9; }
+
+.tuner__note { display: grid; justify-items: center; font-size: clamp(72px, 22vw, 130px); font-weight: 900; line-height: 1; }
+.tuner__which { font-size: 16px; color: var(--muted); font-weight: 800; margin-top: 6px; }
+.tuner.is-in-tune .tuner__note { color: var(--easy); }
+
+.meter {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #ffe3c7, var(--soft) 40%, var(--soft) 60%, #ffe3c7);
+  border: 2px solid var(--line);
+  overflow: hidden;
+}
+
+.meter__zone { position: absolute; left: 45%; width: 10%; top: 0; bottom: 0; background: var(--easy-soft); }
+
+.meter__needle {
+  position: absolute;
+  left: calc(50% - 3px);
+  top: 6px;
+  bottom: 6px;
+  width: 6px;
+  border-radius: 3px;
+  background: var(--brand-dark);
+  transition: transform 0.12s ease-out;
+}
+
+.tuner.is-in-tune .meter__needle { background: var(--easy); }
+
+.meter__label { position: absolute; bottom: 4px; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.meter__label--flat { left: 8px; }
+.meter__label--sharp { right: 8px; }
+
+.tuner__advice { margin: 0; font-size: 20px; font-weight: 900; min-height: 1.3em; text-align: center; }
+.tuner.is-in-tune .tuner__advice { color: var(--easy); }
+.tuner__detail { margin: 0; color: var(--muted); font-size: 14px; }
+
+.tuner__actions { display: flex; justify-content: center; }
+.tuner__actions .key--space { width: min(320px, 80vw); color: var(--brand-dark); }
+
+.string-buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-width: 460px; }
+.string-button { font-size: 20px; font-weight: 900; height: 52px; padding: 0; color: var(--text); }
+.string-button sub { font-size: 11px; color: var(--muted); }
+
+/* Chord library */
+.chord-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.chord-card {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+}
+
+.chord-card__play {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.chord-card__play:active .diagram { transform: scale(0.96); }
+.chord-card__name { font-size: 22px; font-weight: 900; }
+.diagram--card { width: 100%; max-width: 120px; transition: transform 0.08s; }
+.chord-card__songs { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+.chord-card__songs a { color: var(--brand-dark); }
+
+/* Chord change trainer setup */
+.trainer-setup {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+  gap: 10px 12px;
+  padding: 14px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+}
+
+.picker { display: grid; gap: 4px; font-weight: 800; color: var(--muted); font-size: 13px; }
+
+.picker select {
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: #fff;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .trainer-setup { grid-template-columns: 1fr 1fr; }
+  .trainer-setup > .picker:last-child { grid-column: 1 / -1; }
+  .segmented button { flex: 1; }
+}
+
+.segmented { display: flex; height: 48px; border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; overflow: hidden; }
+.segmented button { border: 0; background: #fff; padding: 0 14px; font-weight: 900; color: var(--muted); cursor: pointer; }
+.segmented button + button { border-left: 2px solid var(--line); }
+.segmented button.is-on { background: var(--brand-soft); color: var(--brand-dark); }

@@ -10,7 +10,21 @@ Controls look like keyboard keys: ← previous chord, spacebar play/stop, → ne
 A one-bar count-in starts playback, with a metronome click you can turn off, a speed slider (40–100%, default 70%) and section chips to jump to a part.
 
 Layout: landscape = Now left, Next right. Portrait = Now on top and bigger, Next below and smaller.
-Style: Duolingo-like. White, chunky rounded buttons with a pressable bottom edge, Nunito, green and blue.
+Style: Duolingo-like. Warm cream paper, chunky rounded buttons with a pressable bottom edge, Nunito, electric blue
+(#2F8CF0, dark #1458A8). Difficulty badges stay traffic-light (easy green, medium amber, tricky red). Every text
+colour is checked against WCAG AA contrast.
+
+## Features
+- **Player:** count-in, click and synthesised guitar (Karplus-Strong strings, real chord voicings incl. capo),
+  speed slider, loop a section, speed trainer (+5% each time round the loop), tap a diagram to hear the chord.
+  Keeps the screen awake while playing.
+- **Tuner** (`/tuner`): microphone pitch detection (autocorrelation over guitar range, first strong peak to avoid
+  octave errors) plus reference notes for tuning by ear.
+- **Chord change trainer** (`/changes?a=C&b=G&beats=4`): a generated two-chord song in the normal player, looping.
+- **Chord library** (`/chords`): every shape, tap to hear, which songs use it.
+- **Progress, stored in the browser only** (`src/lib/store.js`, localStorage key `strum`): left-handed diagrams,
+  songs marked "I can play this", seconds practised per day. A day counts for the streak at 30 seconds of playing.
+- **Installable and offline:** `manifest.webmanifest` + `sw.js` (network-first pages, cache-first hashed assets).
 
 ## Content and copyright (important)
 There's no open database of popular song tabs, because the songs are copyrighted. So we write our own.
@@ -52,9 +66,13 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 - **2026-10-12:** First songs: Louie Louie, Wonderwall, House of the Rising Sun (own picking arrangement), Enter Sandman (as a power chord drill).
 - **2026-10-12:** Follow-along Now/Next design, keyboard-key controls, Duolingo-like styling.
 
+- **2026-10-12:** Synthesised guitar instead of samples: no downloads, any chord shape and capo works.
+- **2026-10-12:** Practice tools (loop, speed trainer, tuner, chord trainer, chord library), learned songs, streaks,
+  left-handed mode, offline install. No accounts: progress lives on the device.
+- **2026-10-12:** Brand colour changed from green to electric blue (logo, favicon and share image recoloured from
+  the original banner).
+
 ## Future ideas
-- Loop a section
-- Chord change trainer (switch between two chords against the click)
-- Strum sound or play-along audio
-- "Songs I can play" progress, Duolingo-style streaks
 - Full barre F once the easy F is comfortable
+- Palm-muted sound for the power chord drills
+- Sync progress between devices (would need accounts)

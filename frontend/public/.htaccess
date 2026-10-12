@@ -11,7 +11,11 @@ RewriteRule . /strum/index.html [L]
   <FilesMatch "\.(png|jpg)$">
     Header set Cache-Control "public, max-age=604800"
   </FilesMatch>
-  <FilesMatch "\.html$">
+  <FilesMatch "\.(html|webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # The service worker must always be re-checked, or updates would be stuck behind it
+  <FilesMatch "^sw\.js$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
 </IfModule>

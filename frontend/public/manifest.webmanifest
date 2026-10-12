@@ -1,0 +1,14 @@
+{
+  "name": "Strum",
+  "short_name": "Strum",
+  "description": "Play along with the chords: the chord to play now, the one coming next, and when to strum.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fcfaf6",
+  "theme_color": "#fcfaf6",
+  "icons": [
+    { "src": "favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

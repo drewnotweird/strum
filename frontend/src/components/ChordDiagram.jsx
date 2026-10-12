@@ -1,4 +1,5 @@
 import { chords } from '../data/chords.js'
+import { useStore } from '../lib/store.js'
 
 const FRETS = 5
 const STRING_NAMES = ['low E', 'A', 'D', 'G', 'B', 'high E']
@@ -16,6 +17,7 @@ function describe(name, shape) {
 }
 
 export default function ChordDiagram({ name, className = '' }) {
+  const lefty = useStore((s) => s.lefty)
   const shape = chords[name]
   if (!shape) return <div className={`diagram diagram--missing ${className}`}>?</div>
 
@@ -28,18 +30,19 @@ export default function ChordDiagram({ name, className = '' }) {
   const top = 22
   const gap = (w - left * 2) / 5
   const fretH = (h - top - 8) / FRETS
-  const x = (s) => left + s * gap
+  // Left-handed players see the neck mirrored: low E on the right
+  const x = (s) => left + (lefty ? 5 - s : s) * gap
   const y = (f) => top + f * fretH
 
   return (
     <svg className={`diagram ${className}`} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={describe(name, shape)}>
       {base === 1 ? (
-        <rect x={x(0) - 1} y={top - 4} width={x(5) - x(0) + 2} height={4} className="diagram__nut" />
+        <rect x={left - 1} y={top - 4} width={5 * gap + 2} height={4} className="diagram__nut" />
       ) : (
-        <text x={x(0) - 3} y={y(0.5) + 3} className="diagram__base" textAnchor="end">{base}</text>
+        <text x={left - 3} y={y(0.5) + 3} className="diagram__base" textAnchor="end">{base}</text>
       )}
       {Array.from({ length: FRETS + 1 }, (_, f) => (
-        <line key={`f${f}`} x1={x(0)} x2={x(5)} y1={y(f)} y2={y(f)} className="diagram__fret" />
+        <line key={`f${f}`} x1={left} x2={left + 5 * gap} y1={y(f)} y2={y(f)} className="diagram__fret" />
       ))}
       {Array.from({ length: 6 }, (_, s) => (
         <line key={`s${s}`} x1={x(s)} x2={x(s)} y1={y(0)} y2={y(FRETS)} className="diagram__string" />

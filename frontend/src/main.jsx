@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import Player from './pages/Player.jsx'
+import Tuner from './pages/Tuner.jsx'
+import Trainer from './pages/Trainer.jsx'
+import Chords from './pages/Chords.jsx'
 import './index.css'
 
 // Green corner blobs: on the song list only. Song pages slide them away off-screen.
@@ -26,6 +29,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/song/:id" element={<Player />} />
+      <Route path="/tuner" element={<Tuner />} />
+      <Route path="/changes" element={<Trainer />} />
+      <Route path="/chords" element={<Chords />} />
     </Routes>
   </BrowserRouter>
 )
+
+// Offline support and home-screen install (production only: a service worker caching the
+// dev server's files would get in the way while developing)
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL }).catch(() => {})
+  })
+}
