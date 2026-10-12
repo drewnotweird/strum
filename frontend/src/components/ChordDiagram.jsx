@@ -11,9 +11,9 @@ export default function ChordDiagram({ name, className = '' }) {
 
   const w = 100
   const h = 120
-  const left = 18
-  const top = 26
-  const gap = (w - left * 2 + 4) / 5
+  const left = 10
+  const top = 22
+  const gap = (w - left * 2) / 5
   const fretH = (h - top - 8) / FRETS
   const x = (s) => left + s * gap
   const y = (f) => top + f * fretH
@@ -23,7 +23,7 @@ export default function ChordDiagram({ name, className = '' }) {
       {base === 1 ? (
         <rect x={x(0) - 1} y={top - 4} width={x(5) - x(0) + 2} height={4} className="diagram__nut" />
       ) : (
-        <text x={x(5) + 6} y={y(0.5) + 3} className="diagram__base">{base}fr</text>
+        <text x={x(0) - 3} y={y(0.5) + 3} className="diagram__base" textAnchor="end">{base}</text>
       )}
       {Array.from({ length: FRETS + 1 }, (_, f) => (
         <line key={`f${f}`} x1={x(0)} x2={x(5)} y1={y(f)} y2={y(f)} className="diagram__fret" />

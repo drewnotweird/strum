@@ -220,7 +220,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .chord-name.is-end { color: var(--line-dark); }
 
 .diagram { display: block; overflow: visible; }
-.diagram--now { width: clamp(130px, 20vw, 220px); }
+.diagram--now { width: clamp(180px, 28vw, 340px); }
 .diagram--next { width: clamp(80px, 11vw, 130px); }
 
 .diagram__fret, .diagram__string { stroke: #afafaf; stroke-width: 1.2; }
@@ -444,6 +444,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
   .now, .next {
     grid-template-columns: 1fr 1fr;
+    padding: 14px 10px 14px 16px;
     grid-template-rows: auto auto 1fr;
     grid-template-areas: "label diagram" "name diagram" "strum diagram";
     column-gap: 12px;
@@ -459,8 +460,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .chord-name--now { font-size: clamp(48px, 13vw, 120px); margin: 6px 0 12px; }
   .chord-name--next { margin: 6px 0 0; }
 
-  .diagram--now { width: min(100%, 260px); }
-  .diagram--next { width: min(60%, 120px); }
+  .diagram--now { width: 100%; max-height: 52vh; }
+  .diagram--next { width: 70%; max-height: 22vh; }
 
   .strum-wrap { align-self: start; min-height: 0; }
   .strum { flex-wrap: wrap; justify-content: flex-start; }
