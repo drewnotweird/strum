@@ -14,10 +14,16 @@
   --brand-ink: #ffffff;
   --brand-soft: #d6e9ff;
   --blob: #7db6f5;
-  /* Level colours stay traffic-light: easy green, medium amber, tricky red */
+  /* Difficulty is a traffic light, separate from the brand colour: never theme these */
   --easy: #3a7204;
   --easy-soft: #dcf5bd;
   --easy-edge: #6cbb15;
+  --medium: #8a6500;
+  --medium-soft: #fff4cc;
+  --medium-edge: #f0c22e;
+  --tricky: #b81d1d;
+  --tricky-soft: #ffdfe0;
+  --tricky-edge: #f07b7b;
   --yellow: #ffc800;
   --red: #c62f35;
   --font: 'Nunito', system-ui, sans-serif;
@@ -132,8 +138,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 }
 
 .level--1 { background: var(--easy-soft); color: var(--easy); }
-.level--2 { background: #fff4cc; color: #8a6500; }
-.level--3 { background: #ffdfe0; color: #b81d1d; }
+.level--2 { background: var(--medium-soft); color: var(--medium); }
+.level--3 { background: var(--tricky-soft); color: var(--tricky); }
 
 .badge { background: var(--brand-soft); color: var(--brand-dark); }
 
@@ -674,8 +680,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .level-filter:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
 
 .level-filter--1.is-on { background: var(--easy-soft); border-color: var(--easy-edge); color: var(--easy); }
-.level-filter--2.is-on { background: #fff4cc; border-color: #f0c22e; color: #8a6500; }
-.level-filter--3.is-on { background: #ffdfe0; border-color: #f07b7b; color: #b81d1d; }
+.level-filter--2.is-on { background: var(--medium-soft); border-color: var(--medium-edge); color: var(--medium); }
+.level-filter--3.is-on { background: var(--tricky-soft); border-color: var(--tricky-edge); color: var(--tricky); }
 
 .filter__hint { margin: -4px 0 14px; color: var(--brand-dark); font-weight: 800; }
 
