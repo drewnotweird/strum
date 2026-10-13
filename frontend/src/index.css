@@ -818,14 +818,17 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .tool-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
 
 .tool-card svg {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   fill: none;
   stroke: var(--brand);
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+.tool-card svg .fill { fill: var(--brand); stroke: none; }
+.tool-card svg .thin { stroke-width: 1.3; }
 
 .tool-card__name { font-weight: 900; font-size: 17px; }
 .tool-card__blurb { font-size: 13px; color: var(--muted); line-height: 1.3; }

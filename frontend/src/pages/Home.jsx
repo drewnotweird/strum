@@ -45,10 +45,50 @@ function search(query, level, learnedOnly, learned) {
 // Kept outside the component so the search survives a trip to a song and back
 const remembered = { query: '', level: null, learnedOnly: false }
 
+// Icons drawn on a 24×24 grid, matching the pages they open
 const TOOLS = [
-  { to: '/tuner', name: 'Tuner', blurb: 'Get every string in tune', icon: 'M12 3v10M7 8l5 5 5-5M5 19h14' },
-  { to: '/changes', name: 'Chord changes', blurb: 'Practise switching between two chords', icon: 'M4 8h13l-3-3M20 16H7l3 3' },
-  { to: '/chords', name: 'Chords', blurb: 'Every shape, tap to hear it', icon: 'M6 4v16M10 4v16M14 4v16M18 4v16M4 8h16M4 12h16' },
+  {
+    to: '/tuner',
+    name: 'Tuner',
+    blurb: 'Get every string in tune',
+    // A tuning meter: the arc, its centre mark, and the needle
+    icon: (
+      <>
+        <path d="M3.5 17a8.5 8.5 0 0 1 17 0" />
+        <path d="M12 6.5v2" />
+        <path d="M12 17l3.5-6" />
+        <circle className="fill" cx="12" cy="17" r="1.8" />
+      </>
+    ),
+  },
+  {
+    to: '/changes',
+    name: 'Chord changes',
+    blurb: 'Practise switching between two chords',
+    // Round and round between two chords
+    icon: (
+      <>
+        <path d="M4 11V9.5A3.5 3.5 0 0 1 7.5 6H19" />
+        <path d="M16 3l3 3-3 3" />
+        <path d="M20 13v1.5a3.5 3.5 0 0 1-3.5 3.5H5" />
+        <path d="M8 21l-3-3 3-3" />
+      </>
+    ),
+  },
+  {
+    to: '/chords',
+    name: 'Chords',
+    blurb: 'Every shape, tap to hear it',
+    // A little chord diagram: a thick nut, thin strings and frets, two finger dots
+    icon: (
+      <>
+        <path d="M4.5 4.5h15" strokeWidth="3" />
+        <path className="thin" d="M4.5 4.5v15M9.5 4.5v15M14.5 4.5v15M19.5 4.5v15M4.5 10h15M4.5 15h15" />
+        <circle className="fill" cx="9.5" cy="12.5" r="2" />
+        <circle className="fill" cx="14.5" cy="7.3" r="2" />
+      </>
+    ),
+  },
 ]
 
 export default function Home() {
@@ -115,7 +155,7 @@ export default function Home() {
               go(navigate, tool.to, 'forward')
             }}
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={tool.icon} /></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{tool.icon}</svg>
             <span className="tool-card__name">{tool.name}</span>
             <span className="tool-card__blurb">{tool.blurb}</span>
           </Link>
