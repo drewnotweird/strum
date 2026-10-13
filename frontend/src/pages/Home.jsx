@@ -1,49 +1,15 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { songs } from '../lib/song.js'
+import { makeCatalogue, search } from '../lib/search.js'
 import { chordLabel } from '../data/chords.js'
 import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
-import { practisedToday, setLefty, streakOf, useStore } from '../lib/store.js'
+import { cycleGoal, practisedToday, secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
+import { BADGES } from '../lib/badges.js'
 
 const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
-const songChords = (song) => {
-  const names = new Set()
-  Object.values(song.sections).forEach((s) => s.steps.forEach((raw) => names.add(chordLabel(raw.split('|')[0]))))
-  return [...names]
-}
-
-const catalogue = songs.map((song) => {
-  const chords = songChords(song)
-  return {
-    song,
-    chords,
-    chordSet: new Set(chords.map((c) => c.toLowerCase())),
-    text: `${song.title} ${song.artist}`.toLowerCase(),
-  }
-})
-
-const allChords = new Set(catalogue.flatMap((s) => [...s.chordSet]))
-
-// If every word in the search is a chord name, it's a chord search:
-// - one chord ("C"): songs that use it
-// - several ("G C D"): songs you can play with nothing but those
-// Otherwise it matches song titles and artists.
-function search(query, level, learnedOnly, learned) {
-  const q = query.trim().toLowerCase()
-  const tokens = q.split(/[\s,]+/).filter(Boolean)
-  const chordQuery = tokens.length > 0 && tokens.every((t) => allChords.has(t)) ? new Set(tokens) : null
-
-  const results = catalogue.filter((entry) => {
-    if (level && entry.song.level !== level) return false
-    if (learnedOnly && !learned.includes(entry.song.id)) return false
-    if (!q) return true
-    if (!chordQuery) return entry.text.includes(q)
-    if (chordQuery.size === 1) return entry.chordSet.has(tokens[0])
-    return [...entry.chordSet].every((c) => chordQuery.has(c))
-  })
-  return { results, chordQuery }
-}
+const index = makeCatalogue(songs)
 
 const capitalise = (c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))
 
@@ -115,7 +81,12 @@ export default function Home() {
   const learned = useStore((st) => st.learned)
   const days = useStore((st) => st.days)
   const lefty = useStore((st) => st.lefty)
+  const easy = useStore((st) => st.easyChords)
+  const goalMinutes = useStore((st) => st.goalMinutes)
+  const earned = useStore((st) => st.badges)
   const streak = streakOf(days)
+  const minutesToday = Math.floor(secondsToday(days) / 60)
+  const goalShare = Math.min(1, secondsToday(days) / (goalMinutes * 60))
 
   // Coming back from a song (our back arrow or the browser's): restore the scroll
   // position and let a waiting page transition finish
@@ -126,7 +97,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const { results, chordQuery } = useMemo(
-    () => search(query, level, learnedOnly, learned),
+    () => search(index, { query, level, learnedOnly, learned }),
     [query, level, learnedOnly, learned]
   )
 
@@ -143,6 +114,23 @@ export default function Home() {
         </div>
         <p>Pick a song. Play the chord in the big box, and get ready for the next one.</p>
         <div className="progress">
+          <button
+            className={`goal ${goalShare >= 1 ? 'is-done' : ''}`}
+            onClick={cycleGoal}
+            aria-label={`Today: ${minutesToday} of ${goalMinutes} minutes. Tap to change the daily goal.`}
+            title="Tap to change your daily goal"
+          >
+            <svg viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+              <circle className="goal__track" cx="18" cy="18" r="15" />
+              <circle
+                className="goal__fill"
+                cx="18" cy="18" r="15"
+                strokeDasharray={`${goalShare * 94.25} 94.25`}
+                transform="rotate(-90 18 18)"
+              />
+            </svg>
+            <span>{goalShare >= 1 ? 'Goal done today!' : `${minutesToday} / ${goalMinutes} min today`}</span>
+          </button>
           <span className={`streak ${streak > 0 ? 'is-going' : ''}`}>
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z" />
@@ -156,6 +144,22 @@ export default function Home() {
           )}
         </div>
       </header>
+
+      <section className="badges" aria-label="Badges">
+        <h2 className="sr-only">Badges</h2>
+        <ul>
+          {BADGES.map((b) => {
+            const got = earned.includes(b.id)
+            return (
+              <li key={b.id} className={`badge-medal ${got ? 'is-earned' : ''}`} title={`${b.name}: ${b.how}`}>
+                <span className="badge-medal__icon" aria-hidden="true">{b.icon}</span>
+                <span className="badge-medal__name">{got ? b.name : b.how}</span>
+                <span className="sr-only">{got ? ' (earned)' : ' (not yet)'}</span>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
 
       <nav className="tools" aria-label="Practice tools">
         {TOOLS.map((tool) => (
@@ -274,9 +278,25 @@ export default function Home() {
       )}
 
       <footer className="home__foot">
-        <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
-          Left-handed chord diagrams
-        </button>
+        <a
+          className="btn btn--request"
+          href={`mailto:drewnotweird@gmail.com?subject=${encodeURIComponent('Strum: song request')}&body=${encodeURIComponent('Song:\nBand:\n')}`}
+        >
+          Request a song
+        </a>
+        <div className="toggles">
+          <button
+            className={`btn btn--toggle ${easy ? 'is-on' : ''}`}
+            onClick={() => setEasyChords(!easy)}
+            aria-pressed={easy}
+            title="Swap hard chords for easier ones: F becomes Fmaj7, Bm becomes Bm7"
+          >
+            Easy chords
+          </button>
+          <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
+            Left-handed chord diagrams
+          </button>
+        </div>
       </footer>
     </main>
   )

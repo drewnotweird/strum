@@ -8,14 +8,16 @@
 // `time` and slots last this long". A loop wrap or speed change adds a segment that starts
 // in the future, so sound (scheduled ahead) and visuals (drawn now) each use the right one.
 import { createGuitar } from './guitar.js'
+import { drumHits, playDrums } from './drums.js'
 
 const LOOKAHEAD = 0.12
 
-export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, notes = [], onSlot, onEnd, onSpeed }) {
+export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, notes = [], onSlot, onEnd, onSpeed, onStopAt }) {
   let ctx = null
   let guitar = null
   let guitarOn = true
-  let clickOn = true
+  let beat = 'click' // 'click' | 'drums' | 'off'
+  let stopAt = null // play up to here, then stop (hear-a-section)
   let playing = false
   let speed = 1
   let segments = []
@@ -71,12 +73,20 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
   function schedule() {
     const horizon = ctx.currentTime + LOOKAHEAD
     for (;;) {
-      if (loop && nextToSchedule === loop.end && loop.end > loop.start) wrap()
-      if (nextToSchedule >= length || timeOf(nextToSchedule) >= horizon) break
+      if (loop && stopAt === null && nextToSchedule === loop.end && loop.end > loop.start) wrap()
+      if (nextToSchedule >= (stopAt ?? length) || timeOf(nextToSchedule) >= horizon) break
       const i = nextToSchedule
       const time = Math.max(timeOf(i), ctx.currentTime)
-      const beatSlot = i < firstIndex ? i - countInStart : i
-      if (clickOn && mod(beatSlot, slotsPerBeat) === 0) click(time, mod(beatSlot, slotsPerBar) === 0)
+      const countIn = i < firstIndex
+      const beatSlot = countIn ? i - countInStart : i
+      const onBeat = mod(beatSlot, slotsPerBeat) === 0
+      // The count-in is always clicks (like drumsticks), unless the beat is off altogether
+      if (beat === 'click' || (countIn && beat !== 'off')) {
+        if (onBeat) click(time, mod(beatSlot, slotsPerBar) === 0)
+      } else if (beat === 'drums') {
+        const hits = drumHits(mod(i, slotsPerBar), slotsPerBeat, slotsPerBar / slotsPerBeat)
+        playDrums(ctx, ctx.destination, time, hits).forEach((osc) => scheduled.push({ osc, time }))
+      }
       const voice = guitarOn && i >= firstIndex ? voiceAt(i) : null
       if (voice) guitar.play(time, voice).forEach((osc) => scheduled.push({ osc, time }))
       nextToSchedule++
@@ -90,6 +100,11 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
 
   function tick() {
     const i = Math.floor(positionAt(ctx.currentTime))
+    if (stopAt !== null && i >= stopAt) {
+      stop()
+      onStopAt?.()
+      return
+    }
     if (i >= length) {
       stop()
       onEnd()
@@ -129,11 +144,13 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
     lastReported = null
   }
 
-  function start(fromIndex) {
+  // countIn: one bar of clicks first. until: stop when this slot is reached.
+  function start(fromIndex, { countIn = true, until = null } = {}) {
     ensureAudio()
     stop()
+    stopAt = until
     firstIndex = fromIndex
-    countInStart = fromIndex - slotsPerBar
+    countInStart = countIn ? fromIndex - slotsPerBar : fromIndex
     anchor(countInStart)
     playing = true
     schedule()
@@ -175,7 +192,7 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
     setSpeed,
     setLoop: (range) => { loop = range },
     setRampUp: (on) => { rampUp = on },
-    setClick: (on) => { clickOn = on },
+    setBeat: (b) => { beat = b },
     setGuitar: (on) => {
       guitarOn = on
       if (!on && ctx) guitar.damp(ctx.currentTime)

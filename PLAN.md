@@ -25,6 +25,13 @@ colour is checked against WCAG AA contrast.
   SuperFlux-style spectral flux (compare with the loudest neighbouring band 3 frames earlier, on compressed
   loudness), robust background, and a raised bar just after each strum so the ringing chord can't retrigger.
   Guitar and click are off while listening so it only hears the player. Sensitivity: noisy / normal / quiet.
+- **Chord sheet** (`/song/:id/sheet`): the whole song bar by bar, shapes and strum patterns; prints.
+- **Easy chords:** swaps hard shapes for easier ones everywhere (`EASY` in `data/chords.js`: F→Fmaj7, Bm→Bm7).
+- **Beat:** click, synthesised drums (`lib/drums.js`: rock beat in 4/4, boom-chick-chick in 3/4, 6/8 lilt) or none.
+- **Hear this section:** plays the current section once with the guitar, then stops.
+- **Daily goal** (5/10/15/20 min, tap to change), **badges** (`lib/badges.js`, kept once earned, toast on earning).
+- **Feedback:** "Something wrong with this chart?" and "Request a song" open an email to Andrew.
+- **Tests:** `npm test` (vitest) checks every song file plus search, streaks, badges and drums. The deploy runs them first.
 - **Tuner** (`/tuner`): microphone pitch detection (autocorrelation over guitar range, first strong peak to avoid
   octave errors) plus reference notes for tuning by ear.
 - **Chord change trainer** (`/changes?a=C&b=G&beats=4`): a generated two-chord song in the normal player, looping.

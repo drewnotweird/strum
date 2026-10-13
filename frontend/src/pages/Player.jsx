@@ -8,7 +8,7 @@ import ChordDiagram from '../components/ChordDiagram.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
-import { addPractice, setLefty, toggleLearned, useStore } from '../lib/store.js'
+import { addPlayedChord, addPractice, setBeat, setEasyChords, setLefty, toggleLearned, useStore } from '../lib/store.js'
 
 function tokenLabel(token, chord) {
   if (token === 'D') return '↓'
@@ -17,6 +17,10 @@ function tokenLabel(token, chord) {
   if (token === 'B') return String(chords[chord]?.root ?? 'B')
   return token
 }
+
+// Feedback goes by email: the same address as on the drewnotweird.co.uk contact page
+const mailto = (subject, body) =>
+  `mailto:drewnotweird@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
 const isPick = (token) => token === 'B' || /^\d$/.test(token)
 
@@ -49,7 +53,9 @@ export default function Player() {
 // generated song, an `extra` panel under the header, and starts with looping on.
 export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true }) {
   const navigate = useNavigate()
-  const { steps, sectionStarts } = useMemo(() => buildSteps(song), [song])
+  const easy = useStore((st) => st.easyChords)
+  const beat = useStore((st) => st.beat)
+  const { steps, sectionStarts } = useMemo(() => buildSteps(song, { easy }), [song, easy])
   const { timeline, stepStart } = useMemo(() => buildTimeline(steps), [steps])
   // Where each chord's last strum falls: that's when the next chord moves up into NOW,
   // giving a moment's warning to change shape
@@ -70,7 +76,11 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const [playing, setPlaying] = useState(false)
   const [ended, setEnded] = useState(false)
   const [speed, setSpeed] = useState(0.7)
-  const [clickOn, setClickOn] = useState(true)
+  // "Hear this section": plays the section once with the guitar, then stops
+  const [previewing, setPreviewing] = useState(false)
+  const previewRef = useRef(null)
+  const guitarOnRef = useRef(true)
+  const currentSectionRef = useRef(0)
   const [guitarOn, setGuitarOn] = useState(true)
   const [announcement, setAnnouncement] = useState('')
   const [loopOn, setLoopOn] = useState(defaultLoop)
@@ -209,6 +219,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           return
         }
         slotRef.current = slot
+        if (!previewRef.current && steps[step].pattern[slot] !== '-') addPlayedChord(chordLabel(steps[step].chord))
         if (step !== stepRef.current) {
           // A jump: the first slot after a seek or a restart
           stepRef.current = step
@@ -234,9 +245,21 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       },
       // The speed trainer nudges the tempo up each time round the loop
       onSpeed: (s) => setSpeed(s),
+      // A section preview finished: back to the start of that section, guitar as it was
+      onStopAt: () => {
+        const from = previewRef.current
+        previewRef.current = null
+        setPreviewing(false)
+        setPlaying(false)
+        player.setGuitar(guitarOnRef.current)
+        stepRef.current = from
+        slotRef.current = -1
+        setStepIndex(from)
+        paintSlot()
+      },
     })
     player.setSpeed(speed)
-    player.setClick(clickOn)
+    player.setBeat(beat)
     player.setGuitar(guitarOn)
     playerRef.current = player
     return () => player.stop()
@@ -277,6 +300,11 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
   const stop = () => {
     playerRef.current.stop()
+    if (previewRef.current !== null) {
+      previewRef.current = null
+      setPreviewing(false)
+      playerRef.current.setGuitar(guitarOnRef.current)
+    }
     slotRef.current = -1
     setCountIn(0)
     setPlaying(false)
@@ -294,6 +322,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     if (k >= pattern.length) return
     slotRef.current = k
     paintSlot()
+    addPlayedChord(chordLabel(steps[step].chord))
     const dot = heardRef.current
     if (dot) {
       dot.classList.remove('is-heard')
@@ -367,11 +396,24 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     })
   }
 
-  const toggleClick = () => {
-    setClickOn((on) => {
-      playerRef.current.setClick(!on)
-      return !on
-    })
+  useEffect(() => { playerRef.current.setBeat(beat) }, [beat])
+  useEffect(() => { guitarOnRef.current = guitarOn }, [guitarOn])
+
+  // Play just the current section through once, guitar on, so you know how it should sound
+  const hearSection = () => {
+    if (listening) stopListening()
+    const section = sectionStarts[currentSectionRef.current]
+    const after = sectionStarts[currentSectionRef.current + 1]
+    previewRef.current = section.step
+    setEnded(false)
+    stepRef.current = section.step
+    slotRef.current = -1
+    setStepIndex(section.step)
+    playerRef.current.setGuitar(true)
+    playerRef.current.start(stepStart[section.step], { countIn: false, until: after ? stepStart[after.step] : timeline.length })
+    setPlaying(true)
+    setPreviewing(true)
+    setAnnouncement(`Playing the ${section.name}`)
   }
 
   // Latest handlers for the keyboard listener without re-binding it every render
@@ -410,6 +452,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const next = steps[stepIndex + 1]
   const picking = now.pattern.some(isPick)
   const currentSection = sectionStarts.findLastIndex((s) => s.step <= stepIndex)
+  currentSectionRef.current = currentSection
 
   // Looping repeats whichever section you're in. Moving to another section loops that one.
   useEffect(() => {
@@ -432,17 +475,25 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     playerRef.current.setRampUp(loopOn && rampOn)
   }, [loopOn, rampOn])
 
-  // While playing or listening: keep the screen on, and count the time towards today's practice
-  const active = playing || listening
+  // While playing or listening: keep the screen on, and count the time towards today's
+  // practice every few seconds (hearing a preview doesn't count)
+  const active = (playing && !previewing) || listening
   useEffect(() => {
     if (!active) return
     keepAwake(true)
-    const started = Date.now()
-    return () => {
-      keepAwake(false)
-      if (trackable) addPractice((Date.now() - started) / 1000)
+    let last = Date.now()
+    const bank = () => {
+      const now = Date.now()
+      addPractice((now - last) / 1000)
+      last = now
     }
-  }, [active, trackable])
+    const timer = setInterval(bank, 10000)
+    return () => {
+      clearInterval(timer)
+      keepAwake(false)
+      bank()
+    }
+  }, [active])
 
   const learnedButton = trackable && (
     <button
@@ -566,18 +617,18 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         </button>
         <button
           ref={keyRefs.Space}
-          className={`key key--space ${active ? 'is-playing' : ''}`}
+          className={`key key--space ${playing || listening ? 'is-playing' : ''}`}
           onClick={toggle}
-          aria-label={listenMode ? (listening ? 'Stop listening' : 'Start listening') : (playing ? 'Stop' : 'Play')}
+          aria-label={listening ? 'Stop listening' : playing ? 'Stop' : listenMode ? 'Start listening' : 'Play'}
         >
-          {active ? (
+          {playing || listening ? (
             <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z" /></svg>
           ) : listenMode ? (
             <svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zm-6 9h2a4 4 0 0 0 8 0h2a6 6 0 0 1-5 5.9V21h-2v-3.1A6 6 0 0 1 6 12z" /></svg>
           ) : (
             <svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z" /></svg>
           )}
-          <span>{active ? 'Stop' : listenMode ? 'Listen' : 'Play'}</span>
+          <span>{playing || listening ? 'Stop' : listenMode ? 'Listen' : 'Play'}</span>
         </button>
         <button
           ref={keyRefs.ArrowRight}
@@ -622,9 +673,13 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar} aria-pressed={guitarOn} disabled={listenMode}>
             Guitar {guitarOn ? 'on' : 'off'}
           </button>
-          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick} aria-pressed={clickOn} disabled={listenMode}>
-            Click {clickOn ? 'on' : 'off'}
-          </button>
+          <div className={`segmented segmented--small ${listenMode ? 'is-disabled' : ''}`} role="group" aria-label="Beat">
+            {[['click', 'Click'], ['drums', 'Drums'], ['off', 'No beat']].map(([value, label]) => (
+              <button key={value} className={beat === value ? 'is-on' : ''} aria-pressed={beat === value} onClick={() => setBeat(value)} disabled={listenMode}>
+                {label}
+              </button>
+            ))}
+          </div>
           <button className={`btn btn--toggle ${loopOn ? 'is-on' : ''}`} onClick={() => setLoopOn((on) => !on)} aria-pressed={loopOn}>
             Loop section
           </button>
@@ -637,10 +692,21 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           >
             Speed up each loop
           </button>
+          <button
+            className={`btn btn--toggle ${easy ? 'is-on' : ''}`}
+            onClick={() => setEasyChords(!easy)}
+            aria-pressed={easy}
+            title="Swap hard chords for easier ones: F becomes Fmaj7, Bm becomes Bm7"
+          >
+            Easy chords
+          </button>
           <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
             Left-handed
           </button>
         </div>
+        <button className="btn btn--hear" onClick={previewing ? stop : hearSection} disabled={listenMode && listening}>
+          {previewing ? '■ Stop' : `▶ Hear the ${sectionStarts[currentSection].name.toLowerCase()}`}
+        </button>
       </div>
 
       <nav className="sections" aria-label="Jump to section">
@@ -658,6 +724,19 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
       <footer className="player__foot">
         {learnedButton}
+        {trackable && (
+          <Link
+            to={`/song/${song.id}/sheet`}
+            className="btn btn--sheet"
+            onClick={(e) => {
+              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+              e.preventDefault()
+              go(navigate, `/song/${song.id}/sheet`, 'forward')
+            }}
+          >
+            See the whole song
+          </Link>
+        )}
         {picking && <p className="hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
         {song.notes && <p>{song.notes}</p>}
         {!song.checked && <p className="hint">Not checked against the record yet. If something sounds off, trust your ears.</p>}
@@ -665,6 +744,13 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           <a href={song.songsterr} target="_blank" rel="noreferrer" className="songsterr">
             {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'} ↗
           </a>
+        )}
+        {trackable && (
+          <p className="report">
+            <a href={mailto(`Strum: ${song.title} chart`, `Song: ${song.title} (${song.artist})\nWhich part is wrong (e.g. the chorus)?\n\nWhat should it be?\n`)}>
+              Something wrong with this chart? Tell Andrew
+            </a>
+          </p>
         )}
       </footer>
     </main>

@@ -1,9 +1,19 @@
 import { useSyncExternalStore } from 'react'
 
 // Everything Strum remembers about the player, kept in this browser only (no login):
-// left-handed mode, songs marked as learned, and seconds practised per day.
+// preferences, songs marked as learned, seconds practised per day, chords played and
+// badges earned.
 const KEY = 'strum'
-const DEFAULTS = { lefty: false, learned: [], days: {} }
+const DEFAULTS = {
+  lefty: false,
+  easyChords: false,
+  beat: 'click', // 'click' | 'drums' | 'off'
+  goalMinutes: 10,
+  learned: [],
+  days: {},
+  playedChords: [],
+  badges: [],
+}
 
 function load() {
   try {
@@ -31,7 +41,21 @@ const subscribe = (fn) => {
 
 export const useStore = (pick) => pick(useSyncExternalStore(subscribe, () => state))
 
+export const getState = () => state
+export const subscribeStore = subscribe
+
 export const setLefty = (lefty) => set({ lefty })
+export const setEasyChords = (easyChords) => set({ easyChords })
+export const setBeat = (beat) => set({ beat })
+
+const GOALS = [5, 10, 15, 20]
+export const cycleGoal = () => set({ goalMinutes: GOALS[(GOALS.indexOf(state.goalMinutes) + 1) % GOALS.length] })
+
+export function addPlayedChord(name) {
+  if (!state.playedChords.includes(name)) set({ playedChords: [...state.playedChords, name] })
+}
+
+export const addBadges = (ids) => set({ badges: [...state.badges, ...ids] })
 
 export const toggleLearned = (id) =>
   set({ learned: state.learned.includes(id) ? state.learned.filter((x) => x !== id) : [...state.learned, id] })
@@ -63,3 +87,6 @@ export function streakOf(days) {
 }
 
 export const practisedToday = (days) => (days[dayKey()] || 0) >= PRACTICE_DAY
+
+export const secondsToday = (days) => days[dayKey()] || 0
+export const totalSeconds = (days) => Object.values(days).reduce((a, b) => a + b, 0)

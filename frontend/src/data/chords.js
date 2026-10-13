@@ -15,6 +15,9 @@ export const chords = {
   G:  { frets: [3, 2, 0, 0, 0, 3], fingers: [2, 1, 0, 0, 0, 3], root: 6 },
   D7: { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], root: 4 },
   G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], root: 6 },
+  // Easy-chords mode swaps (see EASY below)
+  Fmaj7: { frets: [-1, -1, 3, 2, 1, 0], fingers: [0, 0, 3, 2, 1, 0], root: 4 },
+  Bm7: { frets: [-1, 2, 0, 2, 0, 2], fingers: [0, 1, 0, 2, 0, 3], root: 5 },
   // Easy four-string Bm: no barre needed
   Bm: { frets: [-1, -1, 4, 4, 3, 2], fingers: [0, 0, 3, 4, 2, 1], root: 4 },
   // Easy four-string Fm, the little sister of the easy F
@@ -44,3 +47,12 @@ export const chords = {
 }
 
 export const chordLabel = (name) => chords[name]?.label || name
+
+// Easy-chords mode: shapes that are hard for small hands, and what to play instead.
+// The swaps sound close enough to sit in the same song.
+export const EASY = {
+  F: 'Fmaj7', // no barre: lift the first finger off the B string
+  Bm: 'Bm7', // two strings open, no stretch
+}
+
+export const playable = (name, easy) => (easy && EASY[name]) || name

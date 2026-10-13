@@ -6,6 +6,8 @@ import Player from './pages/Player.jsx'
 import Tuner from './pages/Tuner.jsx'
 import Trainer from './pages/Trainer.jsx'
 import Chords from './pages/Chords.jsx'
+import Sheet from './pages/Sheet.jsx'
+import Toaster from './components/Toaster.jsx'
 import './index.css'
 
 // Green corner blobs: on the song list only. Song pages slide them away off-screen.
@@ -29,10 +31,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/song/:id" element={<Player />} />
+      <Route path="/song/:id/sheet" element={<Sheet />} />
       <Route path="/tuner" element={<Tuner />} />
       <Route path="/changes" element={<Trainer />} />
       <Route path="/chords" element={<Chords />} />
     </Routes>
+    <Toaster />
   </BrowserRouter>
 )
 
