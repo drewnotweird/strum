@@ -4,8 +4,8 @@ import { songs } from '../lib/song.js'
 import { makeCatalogue, search } from '../lib/search.js'
 import { chordLabel } from '../data/chords.js'
 import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
-import { cycleGoal, practisedToday, secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
-import { BADGES } from '../lib/badges.js'
+import { secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
+import GoalRing from '../components/GoalRing.jsx'
 
 const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
@@ -113,53 +113,39 @@ export default function Home() {
           </svg>
         </div>
         <p>Pick a song. Play the chord in the big box, and get ready for the next one.</p>
-        <div className="progress">
-          <button
-            className={`goal ${goalShare >= 1 ? 'is-done' : ''}`}
-            onClick={cycleGoal}
-            aria-label={`Today: ${minutesToday} of ${goalMinutes} minutes. Tap to change the daily goal.`}
-            title="Tap to change your daily goal"
-          >
-            <svg viewBox="0 0 36 36" aria-hidden="true" focusable="false">
-              <circle className="goal__track" cx="18" cy="18" r="15" />
-              <circle
-                className="goal__fill"
-                cx="18" cy="18" r="15"
-                strokeDasharray={`${goalShare * 94.25} 94.25`}
-                transform="rotate(-90 18 18)"
-              />
-            </svg>
-            <span>{goalShare >= 1 ? 'Goal done today!' : `${minutesToday} / ${goalMinutes} min today`}</span>
-          </button>
-          <span className={`streak ${streak > 0 ? 'is-going' : ''}`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-6 1-9.5z" />
-            </svg>
-            {streak > 0
-              ? `${streak}-day streak${practisedToday(days) ? '' : ': play today to keep it'}`
-              : 'Play a song to start a streak'}
-          </span>
-          {learned.length > 0 && (
-            <span className="learned-count">✓ {learned.length} {learned.length === 1 ? 'song' : 'songs'} learned</span>
-          )}
-        </div>
       </header>
 
-      <section className="badges" aria-label="Badges">
-        <h2 className="sr-only">Badges</h2>
-        <ul>
-          {BADGES.map((b) => {
-            const got = earned.includes(b.id)
-            return (
-              <li key={b.id} className={`badge-medal ${got ? 'is-earned' : ''}`} title={`${b.name}: ${b.how}`}>
-                <span className="badge-medal__icon" aria-hidden="true">{b.icon}</span>
-                <span className="badge-medal__name">{got ? b.name : b.how}</span>
-                <span className="sr-only">{got ? ' (earned)' : ' (not yet)'}</span>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+      <Link
+        to="/progress"
+        className="progress-card"
+        onClick={(e) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+          e.preventDefault()
+          go(navigate, '/progress', 'forward')
+        }}
+        aria-label={`Progress: ${minutesToday} of ${goalMinutes} minutes today, ${streak}-day streak, ${learned.length} songs learned, ${earned.length} badges. Open your progress page.`}
+      >
+        <span className="progress-card__goal">
+          <GoalRing share={goalShare} size={52} />
+          <span>
+            <strong>{goalShare >= 1 ? 'Goal done!' : `${minutesToday} / ${goalMinutes} min`}</strong>
+            <span>today</span>
+          </span>
+        </span>
+        <span className={`progress-card__stat ${streak > 0 ? 'is-hot' : ''}`}>
+          <strong>🔥 {streak}</strong>
+          <span>{streak === 1 ? 'day streak' : 'day streak'}</span>
+        </span>
+        <span className="progress-card__stat">
+          <strong>✓ {learned.length}</strong>
+          <span>learned</span>
+        </span>
+        <span className="progress-card__stat">
+          <strong>🏅 {earned.length}</strong>
+          <span>badges</span>
+        </span>
+        <span className="progress-card__more" aria-hidden="true">→</span>
+      </Link>
 
       <nav className="tools" aria-label="Practice tools">
         {TOOLS.map((tool) => (

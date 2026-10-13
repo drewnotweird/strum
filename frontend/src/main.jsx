@@ -7,6 +7,7 @@ import Tuner from './pages/Tuner.jsx'
 import Trainer from './pages/Trainer.jsx'
 import Chords from './pages/Chords.jsx'
 import Sheet from './pages/Sheet.jsx'
+import Progress from './pages/Progress.jsx'
 import Toaster from './components/Toaster.jsx'
 import './index.css'
 
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/tuner" element={<Tuner />} />
       <Route path="/changes" element={<Trainer />} />
       <Route path="/chords" element={<Chords />} />
+      <Route path="/progress" element={<Progress />} />
     </Routes>
     <Toaster />
   </BrowserRouter>

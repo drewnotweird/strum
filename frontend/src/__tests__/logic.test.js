@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { songs } from '../lib/song.js'
 import { makeCatalogue, search } from '../lib/search.js'
-import { streakOf } from '../lib/store.js'
+import { bestStreak, lastDays, streakOf } from '../lib/store.js'
 import { BADGES, newlyEarned } from '../lib/badges.js'
 import { drumHits } from '../lib/drums.js'
 
@@ -47,6 +47,21 @@ describe('streaks', () => {
 
   it("aren't lost before today's practice has happened", () => {
     expect(streakOf({ [daysAgo(1)]: 60, [daysAgo(2)]: 60 })).toBe(2)
+  })
+})
+
+describe('progress page numbers', () => {
+  it('find the best streak ever, even if it has ended', () => {
+    const days = { [daysAgo(10)]: 60, [daysAgo(9)]: 60, [daysAgo(8)]: 60, [daysAgo(7)]: 60, [daysAgo(1)]: 60 }
+    expect(bestStreak(days)).toBe(4)
+    expect(streakOf(days)).toBe(1)
+  })
+
+  it('list the last 7 days in minutes, oldest first, ending today', () => {
+    const week = lastDays({ [daysAgo(0)]: 125, [daysAgo(6)]: 60 })
+    expect(week).toHaveLength(7)
+    expect(week[6].minutes).toBe(2)
+    expect(week[0].minutes).toBe(1)
   })
 })
 

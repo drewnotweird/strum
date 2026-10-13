@@ -48,6 +48,8 @@ export const setLefty = (lefty) => set({ lefty })
 export const setEasyChords = (easyChords) => set({ easyChords })
 export const setBeat = (beat) => set({ beat })
 
+export const setGoalMinutes = (goalMinutes) => set({ goalMinutes })
+
 const GOALS = [5, 10, 15, 20]
 export const cycleGoal = () => set({ goalMinutes: GOALS[(GOALS.indexOf(state.goalMinutes) + 1) % GOALS.length] })
 
@@ -89,4 +91,28 @@ export function streakOf(days) {
 export const practisedToday = (days) => (days[dayKey()] || 0) >= PRACTICE_DAY
 
 export const secondsToday = (days) => days[dayKey()] || 0
+
+// Longest run of practice days ever (for the progress page)
+export function bestStreak(days) {
+  const practisedDays = Object.keys(days).filter((k) => days[k] >= PRACTICE_DAY).sort()
+  let best = 0
+  let run = 0
+  let prev = null
+  for (const key of practisedDays) {
+    const d = new Date(`${key}T12:00:00`)
+    run = prev && (d - prev) / 86400000 === 1 ? run + 1 : 1
+    best = Math.max(best, run)
+    prev = d
+  }
+  return best
+}
+
+// Minutes practised on each of the last `count` days, oldest first
+export function lastDays(days, count = 7) {
+  return Array.from({ length: count }, (_, i) => {
+    const d = new Date()
+    d.setDate(d.getDate() - (count - 1 - i))
+    return { date: d, minutes: Math.round((days[dayKey(d)] || 0) / 60) }
+  })
+}
 export const totalSeconds = (days) => Object.values(days).reduce((a, b) => a + b, 0)

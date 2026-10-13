@@ -768,32 +768,6 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   border: 0;
 }
 
-/* ---------- Practice record on the home page ---------- */
-.progress {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: -8px 0 20px;
-}
-
-.streak, .learned-count {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: var(--surface);
-  border: 2px solid var(--line);
-  color: var(--muted);
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.streak svg { width: 18px; height: 18px; fill: var(--line-dark); }
-.streak.is-going { color: #a34a00; border-color: #ffc98f; background: #fff1e0; }
-.streak.is-going svg { fill: #f07a1a; }
-.learned-count { color: var(--brand-dark); border-color: var(--brand-soft); }
-
 /* ---------- Tool links ---------- */
 .tools {
   display: grid;
@@ -1124,39 +1098,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .report { margin-top: 14px; font-size: 14px; }
 .report a { color: var(--muted); }
 
-/* ---------- Daily goal ---------- */
-.goal {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 12px 4px 6px;
-  border-radius: 12px;
-  border: 2px solid var(--line);
-  background: var(--surface);
-  color: var(--brand-dark);
-  font: inherit;
-  font-weight: 800;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.goal svg { width: 26px; height: 26px; }
-.goal__track { fill: none; stroke: var(--line); stroke-width: 5; }
-.goal__fill { fill: none; stroke: var(--brand); stroke-width: 5; stroke-linecap: round; transition: stroke-dasharray 0.4s; }
-.goal.is-done { border-color: var(--easy-edge); color: var(--easy); background: var(--easy-soft); }
-.goal.is-done .goal__fill { stroke: var(--easy-edge); }
-
 /* ---------- Badges ---------- */
-.badges ul {
-  list-style: none;
-  margin: 0 0 20px;
-  padding: 2px 2px 8px;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
 .badge-medal {
   flex: none;
   width: 92px;
@@ -1198,6 +1140,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   gap: 8px;
   z-index: 100;
   pointer-events: none;
+  width: min(360px, calc(100vw - 32px));
 }
 
 .toast {
@@ -1248,4 +1191,95 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .blobs, .back, .sheet__print, .sheet__easy, .toasts { display: none !important; }
   .sheet__bar, .sheet__shapes li, .sheet__pattern span { border-color: #999; background: #fff; }
   .tool { padding: 0; }
+}
+
+/* ---------- Goal ring ---------- */
+.goal-ring__track { fill: none; stroke: var(--line); stroke-width: 5; }
+.goal-ring__fill { fill: none; stroke: var(--brand); stroke-width: 5; stroke-linecap: round; transition: stroke-dasharray 0.4s; }
+.goal-ring.is-done .goal-ring__fill { stroke: var(--easy-edge); }
+
+/* ---------- Progress card on the home page ---------- */
+.progress-card {
+  display: flex;
+  align-items: center;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--surface);
+  text-decoration: none;
+  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
+}
+
+.progress-card:hover { border-color: var(--brand); }
+.progress-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 16px; }
+
+.progress-card__goal { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.progress-card strong { display: block; font-weight: 900; font-size: 17px; line-height: 1.1; }
+.progress-card span span, .progress-card__stat > span { font-size: 12px; color: var(--muted); font-weight: 800; }
+.progress-card__stat { text-align: center; min-width: 54px; }
+.progress-card__stat.is-hot strong { color: #c45a00; }
+.progress-card__more { font-size: 22px; font-weight: 900; color: var(--brand); }
+
+@media (max-width: 480px) {
+  .progress-card { gap: 8px 10px; padding: 10px 12px; }
+  .progress-card__goal { flex-basis: 100%; }
+  .progress-card__more { margin-left: auto; }
+}
+
+/* ---------- Progress page ---------- */
+.stat-card {
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--surface);
+}
+
+.stat-card h2 { margin: 0 0 6px; font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.stat-count { color: var(--brand-dark); margin-left: 6px; }
+.stat-big { margin: 0; font-size: 40px; font-weight: 900; line-height: 1.05; }
+.stat-big span { font-size: 18px; color: var(--muted); }
+.stat-note { margin: 6px 0 0; color: var(--muted); font-size: 14px; font-weight: 700; }
+.stat-card.is-hot .stat-big { color: #c45a00; }
+
+.stat-card--today { display: flex; align-items: center; gap: 18px; }
+.stat-card--today .segmented { margin-top: 10px; }
+
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.week {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  height: 150px;
+}
+
+.week li { display: grid; grid-template-rows: 1fr auto auto; justify-items: center; align-items: end; }
+.week__bar { width: 70%; max-width: 34px; border-radius: 8px 8px 4px 4px; background: var(--brand-soft); border: 2px solid #9cc8f7; }
+.week li.is-goal .week__bar { background: var(--brand); border-color: var(--brand-dark); }
+.week__minutes { font-weight: 900; font-size: 13px; margin-top: 4px; }
+.week__day { font-size: 11px; font-weight: 800; color: var(--muted); }
+
+.learned-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; }
+.learned-list a { display: block; padding: 8px 12px; border-radius: 12px; background: #fff; border: 2px solid var(--line); text-decoration: none; font-weight: 900; color: var(--brand-dark); }
+.learned-list a span { color: var(--muted); font-weight: 700; margin-left: 6px; }
+
+.chord-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; }
+
+.badge-grid { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.badge-grid .badge-medal { width: auto; }
+.badge-grid strong { font-size: 14px; font-weight: 900; color: var(--muted); }
+.badge-grid .is-earned strong { color: var(--text); }
+
+@media (max-width: 480px) {
+  .stat-card--today { gap: 14px; }
+  .stat-card--today svg { width: 76px; height: 76px; }
+  .stat-big { font-size: 32px; }
 }
