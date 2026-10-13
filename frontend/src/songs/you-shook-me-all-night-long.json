@@ -1,0 +1,71 @@
+{
+  "id": "you-shook-me-all-night-long",
+  "title": "You Shook Me All Night Long",
+  "artist": "AC/DC",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 127,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D - D - D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "C|half",
+        "D|half"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "G",
+        "C",
+        "D"
+      ]
+    },
+    "pre": {
+      "name": "Pre-chorus",
+      "steps": [
+        "C",
+        "G",
+        "C",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "pre",
+    "chorus",
+    "intro",
+    "verse",
+    "pre",
+    "chorus",
+    "chorus",
+    "intro"
+  ],
+  "notes": "Big, loud down-strums on G, C and D, with a quick up-strum at the end of each bar. Let the chords ring. This chart is a first draft: the chords are right for the song, but check the order of the sections against the record. The intro riff and Angus Young's solo are on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/ac-dc-you-shook-me-all-night-long-tab-s63275"
+}

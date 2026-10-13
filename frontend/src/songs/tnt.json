@@ -1,0 +1,54 @@
+{
+  "id": "tnt",
+  "title": "T.N.T.",
+  "artist": "AC/DC",
+  "level": 2,
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 126,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "chug": "D D D D D D D D",
+    "oi": "D - - - D - - -",
+    "move": "D D D D"
+  },
+  "defaultPattern": "chug",
+  "sections": {
+    "chug": {
+      "name": "Chug on A",
+      "repeat": 4,
+      "steps": [
+        "A5"
+      ]
+    },
+    "oi": {
+      "name": "Oi! Oi! Oi!",
+      "repeat": 4,
+      "steps": [
+        "A5|oi"
+      ]
+    },
+    "moves": {
+      "name": "Power chord moves",
+      "repeat": 4,
+      "steps": [
+        "A5|move",
+        "G5|move",
+        "D5|move",
+        "A5|move"
+      ]
+    }
+  },
+  "form": [
+    "chug",
+    "oi",
+    "moves",
+    "chug",
+    "oi"
+  ],
+  "notes": "A warm-up for AC/DC's T.N.T., not the riff itself. Chug the A5 palm-muted, then let big single strums ring for the “Oi! Oi! Oi!” bit (shout it in the gaps). Then move between A5, G5 and D5. When it's solid, learn the real riff on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/ac-dc-tnt-tab-s2862462"
+}
