@@ -37,6 +37,8 @@ export const chords = {
   F5:    { frets: [1, 3, 3, -1, -1, -1], fingers: [1, 3, 4, 0, 0, 0], root: 6 },
   Ab5:   { frets: [4, 6, 6, -1, -1, -1], fingers: [1, 3, 4, 0, 0, 0], root: 6 },
   Db5:   { frets: [-1, 4, 6, 6, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
+  C5:    { frets: [-1, 3, 5, 5, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
+  D5:    { frets: [-1, -1, 0, 2, 3, -1], fingers: [0, 0, 0, 1, 2, 0], root: 4 },
 }
 
 export const chordLabel = (name) => chords[name]?.label || name
