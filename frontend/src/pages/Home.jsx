@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { songs } from '../lib/song.js'
 import { chordLabel } from '../data/chords.js'
@@ -25,8 +25,10 @@ const catalogue = songs.map((song) => {
 
 const allChords = new Set(catalogue.flatMap((s) => [...s.chordSet]))
 
-// A song matches if its title or artist contains the query, or if the query is
-// a list of chords and the song uses nothing but those chords.
+// If every word in the search is a chord name, it's a chord search:
+// - one chord ("C"): songs that use it
+// - several ("G C D"): songs you can play with nothing but those
+// Otherwise it matches song titles and artists.
 function search(query, level, learnedOnly, learned) {
   const q = query.trim().toLowerCase()
   const tokens = q.split(/[\s,]+/).filter(Boolean)
@@ -36,11 +38,14 @@ function search(query, level, learnedOnly, learned) {
     if (level && entry.song.level !== level) return false
     if (learnedOnly && !learned.includes(entry.song.id)) return false
     if (!q) return true
-    if (entry.text.includes(q)) return true
-    return chordQuery && [...entry.chordSet].every((c) => chordQuery.has(c))
+    if (!chordQuery) return entry.text.includes(q)
+    if (chordQuery.size === 1) return entry.chordSet.has(tokens[0])
+    return [...entry.chordSet].every((c) => chordQuery.has(c))
   })
   return { results, chordQuery }
 }
+
+const capitalise = (c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))
 
 // Kept outside the component so the search survives a trip to a song and back
 const remembered = { query: '', level: null, learnedOnly: false }
@@ -94,6 +99,13 @@ const TOOLS = [
 export default function Home() {
   const navigate = useNavigate()
   const navigationType = useNavigationType()
+  // Arriving from the chord library with ?q=C: start with just that search showing
+  // (read once per visit, before the search state below is set up)
+  const incoming = useRef(undefined)
+  if (incoming.current === undefined) {
+    incoming.current = new URLSearchParams(window.location.search).get('q')
+    if (incoming.current !== null) Object.assign(remembered, { query: incoming.current, level: null, learnedOnly: false })
+  }
   const [query, setQueryState] = useState(remembered.query)
   const [level, setLevelState] = useState(remembered.level)
   const setQuery = (q) => setQueryState((remembered.query = q))
@@ -109,6 +121,8 @@ export default function Home() {
   // position and let a waiting page transition finish
   useLayoutEffect(() => {
     if (navigationType === 'POP') listReady()
+    // The search lives in the box now, so tidy ?q= out of the address
+    if (incoming.current !== null) navigate('/', { replace: true })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const { results, chordQuery } = useMemo(
@@ -209,7 +223,9 @@ export default function Home() {
 
       {chordQuery && (
         <p className="filter__hint">
-          Songs you can play with {[...chordQuery].map((c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))).join(', ')}
+          {chordQuery.size === 1
+            ? `Songs with ${capitalise([...chordQuery][0])}`
+            : `Songs you can play with ${[...chordQuery].map(capitalise).join(', ')}`}
         </p>
       )}
 
@@ -247,7 +263,9 @@ export default function Home() {
                   {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
                 </span>
                 <span className="song-card__chords">
-                  {chords.map((c) => <span key={c} className="mini-chord">{c}</span>)}
+                  {chords.map((c) => (
+                    <span key={c} className={`mini-chord ${chordQuery?.has(c.toLowerCase()) ? 'is-match' : ''}`}>{c}</span>
+                  ))}
                 </span>
               </Link>
             </li>

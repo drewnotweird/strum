@@ -22,7 +22,8 @@ export function go(navigate, to, direction) {
       })
     }
     flushSync(() => {
-      if (direction === 'forward') listScroll = window.scrollY
+      // Only the song list's scroll position is worth coming back to
+      if (direction === 'forward' && window.location.pathname === import.meta.env.BASE_URL) listScroll = window.scrollY
       navigate(to)
     })
     window.scrollTo(0, direction === 'back' ? listScroll : 0)

@@ -964,30 +964,56 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 }
 
 .chord-card {
-  display: grid;
-  gap: 6px;
-  padding: 10px;
+  position: relative;
   background: var(--surface);
   border: 2px solid var(--line);
   border-bottom-width: 4px;
   border-radius: 16px;
+  transition: border-color 0.1s;
 }
 
-.chord-card__play {
+.chord-card:hover { border-color: var(--brand); }
+
+.chord-card__link {
   display: grid;
   justify-items: center;
   gap: 4px;
+  padding: 10px 10px 12px;
+  text-decoration: none;
+  border-radius: 14px;
+}
+
+.chord-card__link:active .diagram { transform: scale(0.96); }
+.chord-card__name { font-size: 22px; font-weight: 900; justify-self: start; min-height: 38px; line-height: 38px; padding-right: 40px; }
+/* The player's grid-area rule for diagrams doesn't apply here: stack name, diagram, count */
+.chord-card__link .diagram { grid-area: auto; }
+.diagram--card { width: 100%; max-width: 120px; transition: transform 0.08s; }
+.chord-card__count { font-size: 13px; font-weight: 800; color: var(--brand-dark); }
+.chord-card__link.is-unused .chord-card__count { color: var(--muted); }
+
+/* Hear the chord: a small speaker button in the corner */
+.chord-card__hear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
   padding: 0;
-  border: 0;
-  background: none;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  border-bottom-width: 3px;
+  background: #fff;
   cursor: pointer;
 }
 
-.chord-card__play:active .diagram { transform: scale(0.96); }
-.chord-card__name { font-size: 22px; font-weight: 900; }
-.diagram--card { width: 100%; max-width: 120px; transition: transform 0.08s; }
-.chord-card__songs { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
-.chord-card__songs a { color: var(--brand-dark); }
+.chord-card__hear:active { transform: translateY(1px); border-bottom-width: 2px; }
+.chord-card__hear svg { width: 20px; height: 20px; fill: var(--brand); }
+.chord-card__hear .wave { fill: none; stroke: var(--brand); stroke-width: 2; stroke-linecap: round; }
+
+/* Searched-for chords stand out on the song cards */
+.mini-chord.is-match { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
 
 /* Chord change trainer setup */
 .trainer-setup {
