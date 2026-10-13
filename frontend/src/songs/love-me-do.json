@@ -1,0 +1,69 @@
+{
+  "id": "love-me-do",
+  "title": "Love Me Do",
+  "artist": "The Beatles",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 148,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "C"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "G",
+        "C",
+        "G",
+        "C",
+        "G",
+        "C",
+        "C",
+        "G",
+        "C"
+      ]
+    },
+    "bridge": {
+      "name": "Bridge",
+      "steps": [
+        "D",
+        "C",
+        "G",
+        "G",
+        "D",
+        "C",
+        "G",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "verse",
+    "bridge",
+    "verse",
+    "intro",
+    "verse",
+    "bridge",
+    "verse",
+    "intro"
+  ],
+  "notes": "Mostly G and C, swapping every bar, with D in the middle bit (\"Someone to love\"). The harmonica tune in the intro isn't charted: strum G and C under it.",
+  "songsterr": "https://www.songsterr.com/a/wsa/beatles-love-me-do-tab-s59466"
+}

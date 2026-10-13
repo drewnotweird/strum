@@ -1,0 +1,61 @@
+{
+  "id": "beat-it",
+  "title": "Beat It",
+  "artist": "Michael Jackson",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 138,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "chug": "D D D D D D D D"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "Em|chug",
+        "D|chug",
+        "Em|chug",
+        "D|chug"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "Em",
+        "D",
+        "Em",
+        "D"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "Em",
+        "D",
+        "C",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "intro",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Em and D for the verses, then Em, D, C, D for the \"Beat it, beat it\" chorus. The record is tuned half a step down, so in normal tuning this sounds a little higher. The famous riff and Eddie Van Halen's solo are on Songsterr. This chart is a simplified first draft: the song's structure may need adjusting against the record.",
+  "songsterr": "https://www.songsterr.com/a/wsa/michael-jackson-beat-it-tab-s10259"
+}
