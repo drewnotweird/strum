@@ -1,0 +1,56 @@
+{
+  "id": "everlong",
+  "title": "Everlong",
+  "artist": "Foo Fighters",
+  "level": 3,
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 158,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "drive": "D U D U D U D U",
+    "hits": "D - D - D - D U"
+  },
+  "defaultPattern": "drive",
+  "sections": {
+    "steady": {
+      "name": "Steady strum on D",
+      "repeat": 4,
+      "steps": [
+        "D5"
+      ]
+    },
+    "moves": {
+      "name": "D, B, G",
+      "repeat": 4,
+      "steps": [
+        "D5",
+        "D5",
+        "B5",
+        "G5"
+      ]
+    },
+    "loud": {
+      "name": "Big chorus hits",
+      "repeat": 2,
+      "steps": [
+        "D5|hits",
+        "B5|hits",
+        "G5|hits",
+        "G5|hits"
+      ]
+    }
+  },
+  "form": [
+    "steady",
+    "moves",
+    "loud",
+    "moves",
+    "loud"
+  ],
+  "notes": "A warm-up for Everlong, not the song itself. The record is in drop D tuning with open strings ringing, so this keeps normal tuning and drills what makes it work: a fast, never-stopping down-up strum, moving between D, B and G. Keep your strumming hand going even through the chord changes. Start slow, and learn the real thing on Songsterr when it feels solid.",
+  "songsterr": "https://www.songsterr.com/a/wsa/foo-fighters-everlong-tab-s86505"
+}
