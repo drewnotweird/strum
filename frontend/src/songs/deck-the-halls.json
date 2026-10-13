@@ -1,0 +1,55 @@
+{
+  "id": "deck-the-halls",
+  "title": "Deck the Halls",
+  "artist": "Traditional",
+  "level": 1,
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 110,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D - D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "G",
+        "G|half",
+        "D|half",
+        "G",
+        "D|half",
+        "G|half",
+        "G",
+        "G|half",
+        "D|half",
+        "G",
+        "D|half",
+        "G|half",
+        "D",
+        "D|half",
+        "A|half",
+        "D",
+        "A|half",
+        "D|half",
+        "G",
+        "C|half",
+        "G|half",
+        "C|half",
+        "G|half",
+        "D|half",
+        "G|half"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "verse",
+    "verse"
+  ],
+  "notes": "A traditional Welsh carol, free for anyone to play. Each line is \"Deck the halls\" then \"fa la la la la, la la la la\". The third line moves to D and A, then the last line brings it home with C and G. Some chords only get two beats, so watch for the quick changes."
+}
