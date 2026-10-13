@@ -1,0 +1,53 @@
+{
+  "id": "crazy-little-thing-called-love",
+  "title": "Crazy Little Thing Called Love",
+  "artist": "Queen",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 154,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U D - D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "D",
+        "D",
+        "G",
+        "C|half",
+        "G|half",
+        "D",
+        "D",
+        "Bb5|half",
+        "C|half",
+        "D",
+        "D"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "repeat": 3,
+      "steps": [
+        "Bb5|half",
+        "C|half",
+        "D"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "verse",
+    "verse",
+    "verse",
+    "end"
+  ],
+  "notes": "A bouncy rock'n'roll strum. D for \"this thing called love\", G and C for \"I must get round to it\", then B♭5 and C into D for \"crazy little thing called love\". B♭5 is a power chord standing in for the full barre B♭. The middle section (\"There goes my baby…\") isn't charted yet: it's on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/queen-crazy-little-thing-called-love-tab-s23541"
+}
