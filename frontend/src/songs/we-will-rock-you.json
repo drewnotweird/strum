@@ -1,0 +1,43 @@
+{
+  "id": "we-will-rock-you",
+  "title": "We Will Rock You",
+  "artist": "Queen",
+  "level": 1,
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 81,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "stomp": "D D U - D D U -"
+  },
+  "defaultPattern": "stomp",
+  "sections": {
+    "beat": {
+      "name": "Stomp, stomp, clap",
+      "repeat": 4,
+      "steps": [
+        "E5"
+      ]
+    },
+    "chorus": {
+      "name": "“We will, we will…”",
+      "repeat": 4,
+      "steps": [
+        "E5"
+      ]
+    }
+  },
+  "form": [
+    "beat",
+    "chorus",
+    "beat",
+    "chorus",
+    "beat",
+    "chorus"
+  ],
+  "notes": "The guitar hardly plays in this song: it's all stomp, stomp, clap. So play the beat on guitar instead. Two down-strums on the low E5 for the stomps, then a sharp up-strum for the clap, then a rest. Try it in Listen mode, and get everyone else stomping along. Brian May's solo at the end is on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/queen-we-will-rock-you-tab-s16331"
+}
