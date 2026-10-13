@@ -2,6 +2,9 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /strum/index.html [L]
 
+# Lets browsers recognise the app manifest (for Add to Home Screen)
+AddType application/manifest+json .webmanifest
+
 # Built files have a content hash in their name, so they never change: cache for a year.
 # The page itself is always re-checked so new deploys show up straight away.
 <IfModule mod_headers.c>
