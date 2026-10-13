@@ -1,0 +1,21 @@
+{
+  "id": "super-trouper",
+  "title": "Super Trouper",
+  "artist": "ABBA",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 118,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": { "main": "D - D U - U D U" },
+  "defaultPattern": "main",
+  "sections": {
+    "chorus": { "name": "Chorus", "repeat": 2, "steps": ["D", "A", "Bm", "G", "D", "Em", "A", "A"] },
+    "verse": { "name": "Verse", "repeat": 2, "steps": ["D", "D", "G", "D", "D", "Em", "A", "A"] }
+  },
+  "form": ["chorus", "verse", "chorus", "verse", "chorus", "chorus"],
+  "notes": "In D, with an easy four-string Bm, so no barre chords. This chart is a first draft written from memory: the chorus is the most reliable part, and the verse may need fixing once you've played along with the record.",
+  "songsterr": "https://www.songsterr.com/a/wsa/abba-super-trouper-tab-s658260"
+}

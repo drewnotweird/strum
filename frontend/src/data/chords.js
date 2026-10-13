@@ -15,6 +15,8 @@ export const chords = {
   G:  { frets: [3, 2, 0, 0, 0, 3], fingers: [2, 1, 0, 0, 0, 3], root: 6 },
   D7: { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], root: 4 },
   G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], root: 6 },
+  // Easy four-string Bm: no barre needed
+  Bm: { frets: [-1, -1, 4, 4, 3, 2], fingers: [0, 0, 3, 4, 2, 1], root: 4 },
   // Easy four-string Fm, the little sister of the easy F
   Fm: { frets: [-1, -1, 3, 1, 1, 1], fingers: [0, 0, 3, 1, 1, 1], root: 4 },
   // A Horse With No Name's second chord: two fingers, everything else open
