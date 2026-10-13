@@ -18,6 +18,13 @@ colour is checked against WCAG AA contrast.
 - **Player:** count-in, click and synthesised guitar (Karplus-Strong strings, real chord voicings incl. capo),
   speed slider, loop a section, speed trainer (+5% each time round the loop), tap a diagram to hear the chord.
   Keeps the screen awake while playing.
+- **Chord change timing:** the next chord moves up into NOW on the *last strum* of the current chord, not
+  the first strum of the next, so there's a moment's warning to change shape.
+- **Listen mode** ("Listen to me"): the microphone moves things on one strum at a time instead of the clock.
+  It only detects *that* a strum happened, not whether the chord was right. Detector in `src/lib/listen.js`:
+  SuperFlux-style spectral flux (compare with the loudest neighbouring band 3 frames earlier, on compressed
+  loudness), robust background, and a raised bar just after each strum so the ringing chord can't retrigger.
+  Guitar and click are off while listening so it only hears the player. Sensitivity: noisy / normal / quiet.
 - **Tuner** (`/tuner`): microphone pitch detection (autocorrelation over guitar range, first strong peak to avoid
   octave errors) plus reference notes for tuning by ear.
 - **Chord change trainer** (`/changes?a=C&b=G&beats=4`): a generated two-chord song in the normal player, looping.
@@ -71,6 +78,9 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
   left-handed mode, offline install. No accounts: progress lives on the device.
 - **2026-10-12:** Brand colour changed from green to electric blue (logo, favicon and share image recoloured from
   the original banner).
+
+- **2026-10-13:** Chord moves NOW on its last strum. Listen mode added (tuned on synthesised strums:
+  fast/slow strumming, chugging, picking, noisy and quiet rooms; not yet tried with a real guitar and mic).
 
 ## Future ideas
 - Full barre F once the easy F is comfortable

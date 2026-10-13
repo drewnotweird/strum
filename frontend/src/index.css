@@ -1053,3 +1053,45 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 .segmented button { border: 0; background: #fff; padding: 0 14px; font-weight: 900; color: var(--muted); cursor: pointer; }
 .segmented button + button { border-left: 2px solid var(--line); }
 .segmented button.is-on { background: var(--brand-soft); color: var(--brand-dark); }
+
+/* ---------- Listen mode ---------- */
+.listen-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+/* Flashes each time a strum is heard */
+.listen-badge__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--brand);
+  opacity: 0.45;
+}
+
+.listen-badge__dot.is-heard { animation: heard 0.35s ease-out; }
+
+@keyframes heard {
+  0% { opacity: 1; transform: scale(1.8); }
+  100% { opacity: 0.45; transform: scale(1); }
+}
+
+.btn--listen.is-on { background: var(--brand); border-color: var(--brand-dark); color: #fff; }
+
+.segmented--small { height: auto; }
+.segmented--small button { padding: 8px 10px; font-size: 13px; }
+
+.speed.is-disabled { opacity: 0.45; }
+
+@media (prefers-reduced-motion: reduce) {
+  .listen-badge__dot.is-heard { animation: none; opacity: 1; }
+}

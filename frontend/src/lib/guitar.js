@@ -65,7 +65,9 @@ export function voiceFor(chordName, token, capo = 0) {
   return note ? { notes: [note], gap: 0, velocity: 0.9, choke: false } : null
 }
 
-export function createGuitar(ctx) {
+// `compress: false` gives the raw strings, like a real guitar heard in a room (used to
+// test the strum listener without the compressor's volume swells)
+export function createGuitar(ctx, destination = ctx.destination, { compress = true } = {}) {
   const compressor = ctx.createDynamicsCompressor()
   compressor.threshold.value = -14
   compressor.ratio.value = 4
@@ -74,7 +76,9 @@ export function createGuitar(ctx) {
   tone.frequency.value = 4200
   const master = ctx.createGain()
   master.gain.value = 1
-  tone.connect(compressor).connect(master).connect(ctx.destination)
+  if (compress) tone.connect(compressor).connect(master)
+  else tone.connect(master)
+  master.connect(destination)
 
   let ringing = []
 

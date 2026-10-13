@@ -7,6 +7,7 @@ import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
+import { listenToMicrophone } from '../lib/listen.js'
 import { addPractice, setLefty, toggleLearned, useStore } from '../lib/store.js'
 
 function tokenLabel(token, chord) {
@@ -50,6 +51,19 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const navigate = useNavigate()
   const { steps, sectionStarts } = useMemo(() => buildSteps(song), [song])
   const { timeline, stepStart } = useMemo(() => buildTimeline(steps), [steps])
+  // Where each chord's last strum falls: that's when the next chord moves up into NOW,
+  // giving a moment's warning to change shape
+  const lastStrum = useMemo(
+    () => steps.map((st) => st.pattern.reduce((last, token, k) => (token === '-' ? last : k), 0)),
+    [steps]
+  )
+  // The chord that follows step s, wrapping round when a section is looping
+  const loopRef = useRef(null)
+  const followingStep = (s) => {
+    const loop = loopRef.current
+    if (loop && s === loop.last) return loop.first
+    return s + 1 < steps.length ? s + 1 : null
+  }
 
   const [stepIndex, setStepIndex] = useState(0)
   const [countIn, setCountIn] = useState(0)
@@ -61,6 +75,13 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const [announcement, setAnnouncement] = useState('')
   const [loopOn, setLoopOn] = useState(defaultLoop)
   const [rampOn, setRampOn] = useState(false)
+  // Listen mode: the microphone moves things on, one strum at a time, instead of the clock
+  const [listenMode, setListenMode] = useState(false)
+  const [listening, setListening] = useState(false)
+  const [sensitivity, setSensitivity] = useState('medium')
+  const [micError, setMicError] = useState('')
+  const listenerRef = useRef(null)
+  const heardRef = useRef(null)
   const lefty = useStore((st) => st.lefty)
   const learned = useStore((st) => st.learned.includes(song.id))
 
@@ -183,13 +204,27 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         }
         setCountIn(0)
         const { step, slot } = timeline[i]
+        if (step !== stepRef.current && followingStep(step) === stepRef.current) {
+          // Rests at the end of a chord that has already moved on: nothing to show
+          return
+        }
         slotRef.current = slot
         if (step !== stepRef.current) {
-          if (step === stepRef.current + 1) prepareFly()
+          // A jump: the first slot after a seek or a restart
           stepRef.current = step
           setStepIndex(step)
         } else {
           paintSlot()
+        }
+        // On the last strum of NOW, bring the next chord up
+        if (slot === lastStrum[step]) {
+          const next = followingStep(step)
+          if (next !== null) {
+            prepareFly()
+            stepRef.current = next
+            slotRef.current = -1
+            setStepIndex(next)
+          }
         }
       },
       onEnd: () => {
@@ -249,7 +284,76 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     announce(stepRef.current)
   }
 
-  const toggle = () => (playerRef.current.isPlaying() ? stop() : play())
+  // A strum was heard: light the next strum in NOW (rests are skipped), and on its last
+  // strum bring the next chord up, exactly as when playing along to the clock
+  const onHeard = () => {
+    const step = stepRef.current
+    const pattern = steps[step].pattern
+    let k = slotRef.current + 1
+    while (k < pattern.length && pattern[k] === '-') k++
+    if (k >= pattern.length) return
+    slotRef.current = k
+    paintSlot()
+    const dot = heardRef.current
+    if (dot) {
+      dot.classList.remove('is-heard')
+      void dot.offsetWidth // restart the flash
+      dot.classList.add('is-heard')
+    }
+    if (k === lastStrum[step]) {
+      const next = followingStep(step)
+      if (next === null) {
+        stopListening()
+        setEnded(true)
+        return
+      }
+      prepareFly()
+      stepRef.current = next
+      slotRef.current = -1
+      setStepIndex(next)
+    }
+  }
+  const onHeardRef = useRef(onHeard)
+  onHeardRef.current = onHeard
+
+  const startListening = async () => {
+    if (playerRef.current.isPlaying()) stop()
+    setMicError('')
+    if (ended) {
+      setEnded(false)
+      stepRef.current = 0
+      setStepIndex(0)
+    }
+    slotRef.current = -1
+    paintSlot()
+    try {
+      listenerRef.current = await listenToMicrophone({ onStrum: () => onHeardRef.current(), sensitivity })
+      setListening(true)
+      setAnnouncement('Listening. Start strumming.')
+    } catch {
+      setMicError('Strum needs the microphone to hear you play. Allow it in your browser settings, then try again.')
+    }
+  }
+
+  function stopListening() {
+    listenerRef.current?.stop()
+    listenerRef.current = null
+    setListening(false)
+  }
+
+  useEffect(() => () => listenerRef.current?.stop(), [])
+  useEffect(() => { listenerRef.current?.setSensitivity(sensitivity) }, [sensitivity])
+
+  const toggle = () => {
+    if (listenMode) return listening ? stopListening() : startListening()
+    return playerRef.current.isPlaying() ? stop() : play()
+  }
+
+  const toggleListenMode = () => {
+    if (listenMode) stopListening()
+    else if (playerRef.current.isPlaying()) stop()
+    setListenMode(!listenMode)
+  }
 
   const changeSpeed = (s) => {
     setSpeed(s)
@@ -310,30 +414,35 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   // Looping repeats whichever section you're in. Moving to another section loops that one.
   useEffect(() => {
     if (!loopOn) {
+      loopRef.current = null
       playerRef.current.setLoop(null)
       return
     }
     const after = sectionStarts[currentSection + 1]
+    const first = sectionStarts[currentSection].step
+    const end = after ? after.step : steps.length
+    loopRef.current = { first, last: end - 1 }
     playerRef.current.setLoop({
-      start: stepStart[sectionStarts[currentSection].step],
+      start: stepStart[first],
       end: after ? stepStart[after.step] : timeline.length,
     })
-  }, [loopOn, currentSection, sectionStarts, stepStart, timeline])
+  }, [loopOn, currentSection, sectionStarts, stepStart, timeline, steps])
 
   useEffect(() => {
     playerRef.current.setRampUp(loopOn && rampOn)
   }, [loopOn, rampOn])
 
-  // While playing: keep the screen on, and count the time towards today's practice
+  // While playing or listening: keep the screen on, and count the time towards today's practice
+  const active = playing || listening
   useEffect(() => {
-    if (!playing) return
+    if (!active) return
     keepAwake(true)
     const started = Date.now()
     return () => {
       keepAwake(false)
       if (trackable) addPractice((Date.now() - started) / 1000)
     }
-  }, [playing, trackable])
+  }, [active, trackable])
 
   const learnedButton = trackable && (
     <button
@@ -374,7 +483,15 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
       <section className="stage">
         <div ref={nowRef} className={`now ${ended ? 'is-ended' : ''}`}>
-          <span className="stage__label">{ended ? 'Finished' : `Now · ${now.section}`}</span>
+          <span className="stage__label">
+            {ended ? 'Finished' : `Now · ${now.section}`}
+            {listening && (
+              <span className="listen-badge">
+                <span ref={heardRef} className="listen-badge__dot" aria-hidden="true" />
+                Listening
+              </span>
+            )}
+          </span>
           {ended ? (
             <div className="now__done">
               <p>Nice one.</p>
@@ -449,16 +566,18 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         </button>
         <button
           ref={keyRefs.Space}
-          className={`key key--space ${playing ? 'is-playing' : ''}`}
+          className={`key key--space ${active ? 'is-playing' : ''}`}
           onClick={toggle}
-          aria-label={playing ? 'Stop' : 'Play'}
+          aria-label={listenMode ? (listening ? 'Stop listening' : 'Start listening') : (playing ? 'Stop' : 'Play')}
         >
-          {playing ? (
+          {active ? (
             <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z" /></svg>
+          ) : listenMode ? (
+            <svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zm-6 9h2a4 4 0 0 0 8 0h2a6 6 0 0 1-5 5.9V21h-2v-3.1A6 6 0 0 1 6 12z" /></svg>
           ) : (
             <svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z" /></svg>
           )}
-          <span>{playing ? 'Stop' : 'Play'}</span>
+          <span>{active ? 'Stop' : listenMode ? 'Listen' : 'Play'}</span>
         </button>
         <button
           ref={keyRefs.ArrowRight}
@@ -471,19 +590,39 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         </button>
       </div>
 
+      {micError && <p className="tool__error" role="alert">{micError}</p>}
+
       <div className="settings">
-        <label className="speed">
+        <label className={`speed ${listenMode ? 'is-disabled' : ''}`}>
           <span>Speed {Math.round(speed * 100)}%</span>
           <input
             type="range" min="0.4" max="1" step="0.05" value={speed}
             onChange={(e) => changeSpeed(Number(e.target.value))}
+            disabled={listenMode}
           />
         </label>
         <div className="toggles">
-          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar} aria-pressed={guitarOn}>
+          <button
+            className={`btn btn--toggle btn--listen ${listenMode ? 'is-on' : ''}`}
+            onClick={toggleListenMode}
+            aria-pressed={listenMode}
+            title="Move on when it hears you strum, instead of following the click"
+          >
+            Listen to me
+          </button>
+          {listenMode && (
+            <div className="segmented segmented--small" role="group" aria-label="Microphone sensitivity">
+              {['low', 'medium', 'high'].map((lvl) => (
+                <button key={lvl} className={sensitivity === lvl ? 'is-on' : ''} aria-pressed={sensitivity === lvl} onClick={() => setSensitivity(lvl)}>
+                  {lvl === 'low' ? 'Noisy room' : lvl === 'medium' ? 'Normal' : 'Quiet playing'}
+                </button>
+              ))}
+            </div>
+          )}
+          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar} aria-pressed={guitarOn} disabled={listenMode}>
             Guitar {guitarOn ? 'on' : 'off'}
           </button>
-          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick} aria-pressed={clickOn}>
+          <button className={`btn btn--toggle ${clickOn ? 'is-on' : ''}`} onClick={toggleClick} aria-pressed={clickOn} disabled={listenMode}>
             Click {clickOn ? 'on' : 'off'}
           </button>
           <button className={`btn btn--toggle ${loopOn ? 'is-on' : ''}`} onClick={() => setLoopOn((on) => !on)} aria-pressed={loopOn}>
