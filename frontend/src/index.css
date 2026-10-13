@@ -700,7 +700,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   .level-filter { flex: 1; height: 46px; }
 }
 
-/* Page transitions (View Transitions API): pages slide sideways and the song title
+/* Page transitions (View Transitions API): pages slide up and down and the song title
    travels between its card and the player header. The corner blobs are part of the
    background, so they never pass over the cards; on song pages they retreat off-screen. */
 ::view-transition-group(*) {
@@ -708,19 +708,20 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   animation-timing-function: cubic-bezier(0.3, 1, 0.4, 1);
 }
 
-:root[data-nav='forward']::view-transition-old(root) { animation: 0.16s ease-in both page-out-left; }
-:root[data-nav='forward']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-right; }
-:root[data-nav='back']::view-transition-old(root) { animation: 0.16s ease-in both page-out-right; }
-:root[data-nav='back']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-left; }
+:root[data-nav='forward']::view-transition-old(root) { animation: 0.16s ease-in both page-out-up; }
+:root[data-nav='forward']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-from-below; }
+:root[data-nav='back']::view-transition-old(root) { animation: 0.16s ease-in both page-out-down; }
+:root[data-nav='back']::view-transition-new(root) { animation: 0.38s cubic-bezier(0.3, 1, 0.4, 1) 0.1s both page-in-from-above; }
 
 .blob { transition: transform 0.6s cubic-bezier(0.3, 1, 0.4, 1); }
 .blobs.is-away .blob--tr { transform: translate(105%, -105%); }
 .blobs.is-away .blob--bl { transform: translate(-105%, 105%); }
 
-@keyframes page-out-left { to { opacity: 0; transform: translateX(-48px); } }
-@keyframes page-in-right { from { opacity: 0; transform: translateX(48px); } }
-@keyframes page-out-right { to { opacity: 0; transform: translateX(48px); } }
-@keyframes page-in-left { from { opacity: 0; transform: translateX(-48px); } }
+/* Opening a page: the old one lifts away and the new one rises in from below. Back: the reverse. */
+@keyframes page-out-up { to { opacity: 0; transform: translateY(-40px); } }
+@keyframes page-in-from-below { from { opacity: 0; transform: translateY(56px); } }
+@keyframes page-out-down { to { opacity: 0; transform: translateY(40px); } }
+@keyframes page-in-from-above { from { opacity: 0; transform: translateY(-56px); } }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
