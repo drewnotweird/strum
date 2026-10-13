@@ -1,10 +1,11 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { songNotes, voiceFor } from '../lib/guitar.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
+import SettingsPanel from '../components/SettingsPanel.jsx'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
@@ -389,12 +390,17 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     playerRef.current.setSpeed(s)
   }
 
-  const toggleGuitar = () => {
-    setGuitarOn((on) => {
-      playerRef.current.setGuitar(!on)
-      return !on
-    })
+  const setGuitar = (on) => {
+    setGuitarOn(on)
+    playerRef.current.setGuitar(on)
   }
+
+  // Settings panel. While it's open the keyboard works the panel, not the song.
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const settingsOpenRef = useRef(false)
+  settingsOpenRef.current = settingsOpen
+  const settingsButtonRef = useRef(null)
+  const closeSettings = useCallback(() => setSettingsOpen(false), [])
 
   useEffect(() => { playerRef.current.setBeat(beat) }, [beat])
   useEffect(() => { guitarOnRef.current = guitarOn }, [guitarOn])
@@ -426,7 +432,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     const press = (code, down) => keyRefs[code]?.current?.classList.toggle('is-pressed', down)
     const onDown = (e) => {
       const el = e.target instanceof Element ? e.target : document.body
-      if (!actions[e.code] || el.closest('input, select, textarea')) return
+      if (!actions[e.code] || settingsOpenRef.current || el.closest('input, select, textarea')) return
       const onOtherControl = el.closest('button, a, [role="button"]') && !Object.values(keyRefs).some((r) => r.current === el)
       if (e.code === 'Space' && onOtherControl) return
       e.preventDefault()
@@ -494,6 +500,25 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       bank()
     }
   }, [active])
+
+  // The song map is one sideways-scrolling strip; keep the current section in view
+  const sectionsRef = useRef(null)
+  useEffect(() => {
+    const chip = sectionsRef.current?.children[currentSection]
+    if (!chip) return
+    const strip = sectionsRef.current
+    const left = chip.offsetLeft - strip.clientWidth / 2 + chip.clientWidth / 2
+    strip.scrollTo({ left, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+  }, [currentSection])
+
+  const settingsSummary = [
+    listenMode ? 'Listening to you' : `${Math.round(speed * 100)}% speed`,
+    !listenMode && ({ click: 'Click', drums: 'Drums', off: 'No beat' })[beat],
+    !listenMode && !guitarOn && 'Guitar off',
+    loopOn && rampOn && !listenMode && 'Speeding up',
+    easy && 'Easy chords',
+    lefty && 'Left-handed',
+  ].filter(Boolean).join(' · ')
 
   const learnedButton = trackable && (
     <button
@@ -643,73 +668,41 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
       {micError && <p className="tool__error" role="alert">{micError}</p>}
 
-      <div className="settings">
-        <label className={`speed ${listenMode ? 'is-disabled' : ''}`}>
-          <span>Speed {Math.round(speed * 100)}%</span>
-          <input
-            type="range" min="0.4" max="1" step="0.05" value={speed}
-            onChange={(e) => changeSpeed(Number(e.target.value))}
-            disabled={listenMode}
-          />
-        </label>
-        <div className="toggles">
-          <button
-            className={`btn btn--toggle btn--listen ${listenMode ? 'is-on' : ''}`}
-            onClick={toggleListenMode}
-            aria-pressed={listenMode}
-            title="Move on when it hears you strum, instead of following the click"
-          >
-            Listen to me
-          </button>
-          {listenMode && (
-            <div className="segmented segmented--small" role="group" aria-label="Microphone sensitivity">
-              {['low', 'medium', 'high'].map((lvl) => (
-                <button key={lvl} className={sensitivity === lvl ? 'is-on' : ''} aria-pressed={sensitivity === lvl} onClick={() => setSensitivity(lvl)}>
-                  {lvl === 'low' ? 'Noisy room' : lvl === 'medium' ? 'Normal' : 'Quiet playing'}
-                </button>
-              ))}
-            </div>
-          )}
-          <button className={`btn btn--toggle ${guitarOn ? 'is-on' : ''}`} onClick={toggleGuitar} aria-pressed={guitarOn} disabled={listenMode}>
-            Guitar {guitarOn ? 'on' : 'off'}
-          </button>
-          <div className={`segmented segmented--small ${listenMode ? 'is-disabled' : ''}`} role="group" aria-label="Beat">
-            {[['click', 'Click'], ['drums', 'Drums'], ['off', 'No beat']].map(([value, label]) => (
-              <button key={value} className={beat === value ? 'is-on' : ''} aria-pressed={beat === value} onClick={() => setBeat(value)} disabled={listenMode}>
-                {label}
-              </button>
-            ))}
-          </div>
-          <button className={`btn btn--toggle ${loopOn ? 'is-on' : ''}`} onClick={() => setLoopOn((on) => !on)} aria-pressed={loopOn}>
-            Loop section
-          </button>
-          <button
-            className={`btn btn--toggle ${loopOn && rampOn ? 'is-on' : ''}`}
-            onClick={() => setRampOn((on) => !on)}
-            aria-pressed={loopOn && rampOn}
-            disabled={!loopOn}
-            title="Each time round the loop, 5% faster, up to full speed"
-          >
-            Speed up each loop
-          </button>
-          <button
-            className={`btn btn--toggle ${easy ? 'is-on' : ''}`}
-            onClick={() => setEasyChords(!easy)}
-            aria-pressed={easy}
-            title="Swap hard chords for easier ones: F becomes Fmaj7, Bm becomes Bm7"
-          >
-            Easy chords
-          </button>
-          <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
-            Left-handed
-          </button>
-        </div>
-        <button className="btn btn--hear" onClick={previewing ? stop : hearSection} disabled={listenMode && listening}>
-          {previewing ? '■ Stop' : `▶ Hear the ${sectionStarts[currentSection].name.toLowerCase()}`}
+      {/* What you reach for mid-practice; everything else is in Settings */}
+      <div className="quickbar">
+        <button className="quick" onClick={previewing ? stop : hearSection} disabled={listening}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            {previewing ? <path d="M6 6h12v12H6z" /> : <path d="M3 9v6h4l5 4V5L7 9zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z" />}
+          </svg>
+          <span>{previewing ? 'Stop' : `Hear the ${sectionStarts[currentSection].name.toLowerCase()}`}</span>
+        </button>
+        <button className={`quick ${loopOn ? 'is-on' : ''}`} onClick={() => setLoopOn((on) => !on)} aria-pressed={loopOn}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2z" /></svg>
+          <span>{loopOn ? `Looping ${sectionStarts[currentSection].name.toLowerCase()}` : 'Loop'}</span>
+        </button>
+        <button ref={settingsButtonRef} className="quick" onClick={() => setSettingsOpen(true)} aria-haspopup="dialog" aria-expanded={settingsOpen}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1L15 3.3h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)" /></svg>
+          <span>Settings</span>
         </button>
       </div>
+      <button className="status-line" onClick={() => setSettingsOpen(true)} aria-label={`Current settings: ${settingsSummary}. Open settings.`}>
+        {settingsSummary}
+      </button>
 
-      <nav className="sections" aria-label="Jump to section">
+      <SettingsPanel
+        open={settingsOpen}
+        onClose={closeSettings}
+        s={{
+          speed, setSpeed: changeSpeed,
+          loopOn, rampOn, setRampOn,
+          listenMode, toggleListenMode, sensitivity, setSensitivity,
+          guitarOn, setGuitarOn: setGuitar,
+          beat, setBeat,
+          easy, setEasyChords, lefty, setLefty,
+        }}
+      />
+
+      <nav ref={sectionsRef} className="sections" aria-label="Song map: jump to a section">
         {sectionStarts.map((s, i) => (
           <button
             key={i}
