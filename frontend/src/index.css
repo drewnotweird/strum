@@ -1650,3 +1650,23 @@ body.has-panel { overflow: hidden; }
   .song-card, .song-cover, .progress-card__more { transition: none; }
   .player .player__head, .player .quickbar, .player .status-line, .player .sections, .player .player__foot { transition: none; }
 }
+
+/* ---------- Song card: pick and difficulty on the left, title gets the full width ---------- */
+.song-card { align-items: start; }
+.song-card__side { display: grid; justify-items: center; gap: 6px; width: 64px; }
+.song-card__pick { position: relative; display: block; }
+.song-card__side .level { font-size: 11px; padding: 3px 7px; letter-spacing: 0.03em; }
+
+/* Learned: a tick badge on the corner of the pick */
+.song-card__pick .tick {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  border: 2px solid var(--surface);
+  box-sizing: content-box;
+}
+
+.song-card__body .song-card__title { line-height: 1.15; }

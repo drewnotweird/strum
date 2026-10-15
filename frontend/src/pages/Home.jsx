@@ -239,15 +239,15 @@ export default function Home() {
                   go(navigate, `/song/${song.id}`, 'forward')
                 }}
               >
-                <SongCover song={song} size={58} />
-                <span className="song-card__body">
-                  <span className="song-card__top">
-                    <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
-                    <span className="song-card__badges">
-                      {learned.includes(song.id) && <span className="tick" aria-label="Learned">✓</span>}
-                      <span className={`level level--${song.level}`}>{levels[song.level]}</span>
-                    </span>
+                <span className="song-card__side">
+                  <span className="song-card__pick">
+                    <SongCover song={song} size={58} />
+                    {learned.includes(song.id) && <span className="tick" aria-label="Learned">✓</span>}
                   </span>
+                  <span className={`level level--${song.level}`}>{levels[song.level]}</span>
+                </span>
+                <span className="song-card__body">
+                  <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
                   <span className="song-card__artist">
                     <span>
                       <span style={artistTransitionName(song.id)}>{song.artist}</span>
