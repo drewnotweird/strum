@@ -1935,13 +1935,13 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 .fav.is-on svg { fill: currentColor; animation: heart-pop 0.35s cubic-bezier(0.3, 1.8, 0.5, 1); }
 @keyframes heart-pop { 50% { transform: scale(1.35); } }
 
-/* On song cards the heart sits at the end of the chords row, just left of the pick */
 .song-card-wrap { position: relative; }
-.song-card__fav { position: absolute; right: 96px; bottom: 14px; width: 34px; height: 34px; border-radius: 10px; }
-.song-card__fav svg { width: 18px; height: 18px; }
-.song-card-wrap .song-card__chords { padding-right: 44px; min-height: 34px; align-items: center; }
 
 .player__fav { width: 40px; height: 40px; }
+
+/* Song page: the heart sits under the back arrow */
+.player__nav { display: grid; gap: 8px; justify-items: center; align-self: start; flex: none; }
+.player__nav .back, .player__nav .player__fav { width: 44px; height: 44px; }
 
 /* ---------- Songs library ---------- */
 .songs-page .search { margin-bottom: 10px; }

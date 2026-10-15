@@ -572,17 +572,20 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     <main className={`player ${(playing && !previewing) || listening ? 'is-playing' : ''}`}>
       <p className="sr-only" aria-live="polite">{announcement}</p>
       <header className="player__head">
-        <Link
-          to="/"
-          className="back"
-          aria-label="All songs"
-          onClick={(e) => {
-            e.preventDefault()
-            go(navigate, '/', 'back')
-          }}
-        >
-          ←
-        </Link>
+        <div className="player__nav">
+          <Link
+            to="/"
+            className="back"
+            aria-label="All songs"
+            onClick={(e) => {
+              e.preventDefault()
+              go(navigate, '/', 'back')
+            }}
+          >
+            ←
+          </Link>
+          {trackable && <FavouriteButton song={song} className="player__fav" />}
+        </div>
         <div className="player__title">
           <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
           <p>
@@ -591,7 +594,6 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
             {song.capo > 0 && <span className="badge player__capo">Capo {song.capo}</span>}
           </p>
         </div>
-        {trackable && <FavouriteButton song={song} className="player__fav" />}
         <span className="player__pick">
           <SongCover song={song} size={44} />
           {LEVELS[song.level] && <span className={`level level--${song.level}`}>{LEVELS[song.level]}</span>}

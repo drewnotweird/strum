@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import SongCover from './SongCover.jsx'
-import FavouriteButton from './FavouriteButton.jsx'
 import { artistTransitionName, goLink, titleTransitionName } from '../lib/transition.js'
 
 export const LEVELS = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
-// A song in a list: details on the left, its pick and difficulty on the right, and a heart.
+// A song in a list: details on the left, its pick and difficulty on the right.
 // `highlight` is a set of lower-case chord names to pick out (from a chord search).
 export default function SongCard({ song, chords, learned = false, highlight = null }) {
   const navigate = useNavigate()
@@ -35,7 +34,6 @@ export default function SongCard({ song, chords, learned = false, highlight = nu
           </span>
         </span>
       </Link>
-      <FavouriteButton song={song} className="song-card__fav" />
     </div>
   )
 }
