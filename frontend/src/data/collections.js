@@ -4,7 +4,7 @@ export const TAGS = {
   classic: 'Classics',
   '80s': '80s',
   '90s': '90s and now',
-  rock: 'Rock and metal',
+  rock: 'Rock & metal',
   singalong: 'Sing-alongs',
   christmas: 'Christmas',
 }
