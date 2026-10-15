@@ -58,6 +58,7 @@ export function go(navigate, to, direction, shared) {
     }
     flushSync(() => navigate(to))
     window.scrollTo(0, direction === 'forward' ? 0 : scrolls.get(here()) || 0)
+    focusPage()
   }
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -112,8 +113,18 @@ export function go(navigate, to, direction, shared) {
 // Called by a page once it has rendered after a back navigation (ours or the browser's)
 export function pageReady() {
   window.scrollTo(0, scrolls.get(here()) || 0)
+  focusPage()
   pending?.()
   pending = null
+}
+
+// A new page takes focus at its heading, so keyboard and screen reader users start there
+// (and hear where they are) rather than on the link they just used, now gone
+function focusPage() {
+  const heading = document.querySelector('main h1')
+  if (!heading) return
+  heading.tabIndex = -1
+  heading.focus({ preventScroll: true })
 }
 
 // Props for a <Link> that navigates with a transition (and still opens in a new tab

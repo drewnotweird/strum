@@ -57,7 +57,10 @@ export default function Player() {
 
 // The play-along screen. Also used by the chord change trainer, which passes its own
 // generated song, an `extra` panel under the header, and starts with looping on.
-export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true }) {
+// `back`: where the back arrow goes. Songs return home; tools (the chord trainer) return to
+// Practice and sit like the other tool pages.
+const HOME = { to: '/', label: 'All songs' }
+export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true, back = HOME }) {
   const navigate = useNavigate()
   const easy = useStore((st) => st.easyChords)
   const beat = useStore((st) => st.beat)
@@ -482,7 +485,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   }, [])
 
   useEffect(() => {
-    document.title = `${song.title} · Strum`
+    document.title = `${song.pageTitle || song.title} · Strum`
     return () => { document.title = 'Strum' }
   }, [song])
 
@@ -569,17 +572,17 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   )
 
   return (
-    <main className={`player ${(playing && !previewing) || listening ? 'is-playing' : ''}`}>
+    <main className={`player ${back !== HOME ? 'player--tool' : ''} ${(playing && !previewing) || listening ? 'is-playing' : ''}`}>
       <p className="sr-only" aria-live="polite">{announcement}</p>
       <header className="player__head">
         <div className="player__nav">
           <Link
-            to="/"
+            to={back.to}
             className="back"
-            aria-label="All songs"
+            aria-label={back.label}
             onClick={(e) => {
               e.preventDefault()
-              go(navigate, '/', 'back', song.id)
+              go(navigate, back.to, 'back', back === HOME ? song.id : undefined)
             }}
           >
             ←
@@ -587,7 +590,14 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           {trackable && <FavouriteButton song={song} className="player__fav" />}
         </div>
         <div className="player__title">
-          <h1 {...travels('title', song.id)}>{song.title}</h1>
+          <h1 {...travels('title', song.id)}>
+            {song.spokenTitle ? (
+              <>
+                <span aria-hidden="true">{song.title}</span>
+                <span className="sr-only">{song.spokenTitle}</span>
+              </>
+            ) : song.title}
+          </h1>
           <p>
             <span {...travels('artist', song.id)}>{song.artist}</span>
             {song.kind === 'drill' ? ' · warm-up drill' : ''}

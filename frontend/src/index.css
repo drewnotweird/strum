@@ -40,7 +40,7 @@
   --placeholder: #77736a;
   --easy-wash: #f3fde9;
   --warm: #ffe3c7;
-  --hot: #c45a00;
+  --hot: #b35200;
   --shadow: 0 1px 2px rgba(60, 50, 30, 0.05), 0 10px 28px -14px rgba(20, 40, 80, 0.18);
   --font: 'Nunito', system-ui, sans-serif;
   color-scheme: light;
@@ -221,6 +221,14 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   align-items: center;
   gap: 14px;
 }
+
+/* Tool pages: the back arrow and title sit at the same height on every one, however
+   long the subtitle, and as far down the page as the tab pages' headings */
+.tool .player__head, .player--tool .player__head { align-items: flex-start; }
+.player.player--tool { padding-top: 40px; }
+
+/* A heading focused on arrival (see focusPage) is a landmark, not a control: no ring */
+h1[tabindex='-1']:focus { outline: none; }
 
 .back {
   display: grid;
@@ -1015,7 +1023,23 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 }
 
 .chord-card__link:active .diagram { transform: scale(0.96); }
-.chord-card__name { font-size: 22px; font-weight: 900; justify-self: start; min-height: 38px; line-height: 38px; padding-right: 40px; }
+/* Clear of the hear button, and a long name like "G (Wonderwall)" wraps inside the card */
+.chord-card__name {
+  font-size: 22px;
+  font-weight: 900;
+  justify-self: start;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 38px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: center;
+  column-gap: 4px;
+  line-height: 1.1;
+  padding-right: 40px;
+}
+.chord-card__version { font-size: 13px; font-weight: 800; color: var(--muted); }
 /* The player's grid-area rule for diagrams doesn't apply here: stack name, diagram, count */
 .chord-card__link .diagram { grid-area: auto; }
 .diagram--card { width: 100%; max-width: 120px; transition: transform 0.08s; }

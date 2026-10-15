@@ -10,6 +10,9 @@ function trainerSong(a, b, beats) {
   return {
     id: `changes-${a}-${b}-${beats}`,
     title: `${chordLabel(a)} ↔ ${chordLabel(b)}`,
+    // What a screen reader and the browser tab say instead of the arrow
+    spokenTitle: `${chordLabel(a)} to ${chordLabel(b)}`,
+    pageTitle: 'Chord changes',
     artist: 'Chord change trainer',
     checked: true,
     capo: 0,
@@ -54,11 +57,12 @@ export default function Trainer() {
       <ChordSelect label="Change from" value={a} onChange={(v) => update({ a: v })} />
       <ChordSelect label="to" value={b} onChange={(v) => update({ b: v })} />
       <div className="picker">
-        <span>Each chord</span>
-        <div className="segmented" role="group" aria-label="Beats on each chord">
+        <span id="beats-label">Each chord</span>
+        <div className="segmented" role="group" aria-labelledby="beats-label">
           {[4, 2].map((n) => (
             <button
               key={n}
+              type="button"
               className={beats === n ? 'is-on' : ''}
               aria-pressed={beats === n}
               onClick={() => update({ beats: String(n) })}
@@ -71,5 +75,14 @@ export default function Trainer() {
     </div>
   )
 
-  return <SongPlayer key={song.id} song={song} extra={extra} defaultLoop trackable={false} />
+  return (
+    <SongPlayer
+      key={song.id}
+      song={song}
+      extra={extra}
+      defaultLoop
+      trackable={false}
+      back={{ to: '/practice', label: 'Back to Practice' }}
+    />
+  )
 }

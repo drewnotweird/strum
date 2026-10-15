@@ -15,6 +15,17 @@ songs.forEach((song) => {
   names.forEach((c) => { songCount[c] = (songCount[c] || 0) + 1 })
 })
 
+// "G (Wonderwall)": the chord big, which version it is small underneath
+function ChordName({ title }) {
+  const [, chord, version] = title.match(/^(.*?) \((.*)\)$/) || [null, title]
+  return (
+    <span className="chord-card__name">
+      {chord}
+      {version && <span className="chord-card__version"> ({version})</span>}
+    </span>
+  )
+}
+
 export default function Chords() {
   const navigate = useNavigate()
 
@@ -44,7 +55,7 @@ export default function Chords() {
               const count = songCount[chordLabel(name)] || 0
               const body = (
                 <>
-                  <span className="chord-card__name">{chordTitle(name)}</span>
+                  <ChordName title={chordTitle(name)} />
                   <ChordDiagram name={name} className="diagram--card" />
                   <span className="chord-card__count">
                     {count ? `In ${count} ${count === 1 ? 'song' : 'songs'} →` : 'Not in any songs yet'}
