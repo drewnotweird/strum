@@ -6,6 +6,8 @@ import { songNotes, voiceFor } from '../lib/guitar.js'
 import { chords, chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import SettingsPanel from '../components/SettingsPanel.jsx'
+import SongCover from '../components/SongCover.jsx'
+import { confetti } from '../lib/confetti.js'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
@@ -121,6 +123,25 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     }
   }
 
+  // The chord timer under the strums fills up towards the chord's last strum, which is
+  // when the next chord arrives. Driven directly on the DOM, like the strum lights.
+  const timerRef = useRef(null)
+  const slotMsRef = useRef(0)
+  const paintTimer = () => {
+    const bar = timerRef.current
+    if (!bar) return
+    const slot = slotRef.current
+    if (slot < 0) {
+      bar.style.transition = 'none'
+      bar.style.transform = 'scaleX(0)'
+      return
+    }
+    const last = lastStrum[stepRef.current] ?? 0
+    const share = Math.min(1, (slot + 1) / (last + 1))
+    bar.style.transition = `transform ${Math.round(slotMsRef.current)}ms linear`
+    bar.style.transform = `scaleX(${share})`
+  }
+
   const paintSlot = () => {
     const row = strumRef.current
     if (!row) return
@@ -128,6 +149,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       el.classList.toggle('is-on', k === slotRef.current)
       el.classList.toggle('is-done', k < slotRef.current)
     })
+    paintTimer()
   }
 
   useLayoutEffect(paintSlot, [stepIndex, countIn])
@@ -243,6 +265,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         slotRef.current = -1
         setPlaying(false)
         setEnded(true)
+        const r = nowRef.current?.getBoundingClientRect()
+        confetti(r ? { x: r.left + r.width / 2, y: r.top + r.height / 3 } : undefined)
       },
       // The speed trainer nudges the tempo up each time round the loop
       onSpeed: (s) => setSpeed(s),
@@ -384,6 +408,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     else if (playerRef.current.isPlaying()) stop()
     setListenMode(!listenMode)
   }
+
+  slotMsRef.current = listening ? 160 : 60000 / (song.bpm * speed) / song.perBeat
 
   const changeSpeed = (s) => {
     setSpeed(s)
@@ -531,7 +557,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   )
 
   return (
-    <main className="player">
+    <main className={`player ${(playing && !previewing) || listening ? 'is-playing' : ''}`}>
       <p className="sr-only" aria-live="polite">{announcement}</p>
       <header className="player__head">
         <Link
@@ -545,6 +571,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         >
           ←
         </Link>
+        <SongCover song={song} size={44} />
         <div className="player__title">
           <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
           <p>
@@ -585,7 +612,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                 <ChordDiagram name={now.chord} className="diagram--now" />
               </button>
               <div className="strum-wrap">
-                {countIn > 0 && <div className="count">{countIn}</div>}
+                {countIn > 0 && <div key={countIn} className="count">{countIn}</div>}
                 <div
                   ref={strumRef}
                   className={`strum ${picking ? 'strum--pick' : ''} ${countIn > 0 ? 'is-hidden' : ''}`}
@@ -598,6 +625,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                     </span>
                   ))}
                 </div>
+                <div className="chord-timer" aria-hidden="true"><span ref={timerRef} /></div>
               </div>
             </>
           )}

@@ -6,6 +6,7 @@ import { chordLabel } from '../data/chords.js'
 import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
 import { secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
 import GoalRing from '../components/GoalRing.jsx'
+import SongCover from '../components/SongCover.jsx'
 
 const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
@@ -238,24 +239,27 @@ export default function Home() {
                   go(navigate, `/song/${song.id}`, 'forward')
                 }}
               >
-                <span className="song-card__top">
-                  <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
-                  <span className="song-card__badges">
-                    {learned.includes(song.id) && <span className="tick" aria-label="Learned">✓</span>}
-                    <span className={`level level--${song.level}`}>{levels[song.level]}</span>
+                <SongCover song={song} size={58} />
+                <span className="song-card__body">
+                  <span className="song-card__top">
+                    <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
+                    <span className="song-card__badges">
+                      {learned.includes(song.id) && <span className="tick" aria-label="Learned">✓</span>}
+                      <span className={`level level--${song.level}`}>{levels[song.level]}</span>
+                    </span>
                   </span>
-                </span>
-                <span className="song-card__artist">
-                  <span>
-                    <span style={artistTransitionName(song.id)}>{song.artist}</span>
-                    {song.kind === 'drill' ? ' · warm-up drill' : ''}
+                  <span className="song-card__artist">
+                    <span>
+                      <span style={artistTransitionName(song.id)}>{song.artist}</span>
+                      {song.kind === 'drill' ? ' · warm-up drill' : ''}
+                    </span>
+                    {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
                   </span>
-                  {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
-                </span>
-                <span className="song-card__chords">
-                  {chords.map((c) => (
-                    <span key={c} className={`mini-chord ${chordQuery?.has(c.toLowerCase()) ? 'is-match' : ''}`}>{c}</span>
-                  ))}
+                  <span className="song-card__chords">
+                    {chords.map((c) => (
+                      <span key={c} className={`mini-chord ${chordQuery?.has(c.toLowerCase()) ? 'is-match' : ''}`}>{c}</span>
+                    ))}
+                  </span>
                 </span>
               </Link>
             </li>

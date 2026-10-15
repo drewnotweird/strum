@@ -13,6 +13,10 @@ Layout: landscape = Now left, Next right. Portrait = Now on top and bigger, Next
 Style: Duolingo-like. Warm cream paper, chunky rounded buttons with a pressable bottom edge, Nunito, electric blue
 (#2F8CF0, dark #1458A8). Difficulty badges stay traffic-light (easy green, medium amber, tricky red). Every text
 colour is checked against WCAG AA contrast.
+Dark mode follows the device setting (its own contrast-checked palette in `index.css`). Each song has a
+generated guitar-pick cover (`SongCover`, colours from the song id) that travels between list and song page.
+While a song plays, "focus mode" fades everything but the stage; a chord timer fills towards each change;
+strum hits ripple, the count-in pops, and finishing a song or earning a badge throws confetti.
 
 ## Features
 - **Player:** count-in, click and synthesised guitar (Karplus-Strong strings, real chord voicings incl. capo),
