@@ -65,7 +65,6 @@ export default function SettingsPanel({ open, onClose, s }) {
   }, [open, onClose])
 
   if (!open) return null
-  const pct = Math.round(s.speed * 100)
 
   return (
     <div className="panel-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
@@ -78,23 +77,6 @@ export default function SettingsPanel({ open, onClose, s }) {
         <div className="panel__body">
           <section className="panel__group">
             <h3>Tempo</h3>
-            <div className={`setting setting--speed ${s.listenMode ? 'is-disabled' : ''}`}>
-              <span className="setting__text">
-                <span className="setting__label">Speed <strong>{pct}%</strong></span>
-                <span className="setting__note">{s.listenMode ? 'Listen mode follows you, not the clock' : 'Slow it down while you learn'}</span>
-              </span>
-              <div className="speed-control">
-                <button type="button" className="step" onClick={() => s.setSpeed(Math.max(0.4, Math.round((s.speed - 0.05) * 100) / 100))} disabled={s.listenMode || s.speed <= 0.4} aria-label="Slower">−</button>
-                <input
-                  type="range" min="0.4" max="1" step="0.05" value={s.speed}
-                  onChange={(e) => s.setSpeed(Number(e.target.value))}
-                  disabled={s.listenMode}
-                  aria-label="Speed"
-                  aria-valuetext={`${pct}%`}
-                />
-                <button type="button" className="step" onClick={() => s.setSpeed(Math.min(1, Math.round((s.speed + 0.05) * 100) / 100))} disabled={s.listenMode || s.speed >= 1} aria-label="Faster">+</button>
-              </div>
-            </div>
             <Switch
               label="Speed up each loop"
               note={s.loopOn ? '5% faster every time round, up to full speed' : 'Turn on Loop to use this'}

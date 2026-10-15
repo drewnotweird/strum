@@ -492,6 +492,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const now = steps[stepIndex]
   const next = steps[stepIndex + 1]
   const picking = now.pattern.some(isPick)
+  // For the tips: does any part of the song use picking?
+  const songPicks = Object.values(song.patterns).some((p) => p.split(/\s+/).some(isPick))
   const currentSection = sectionStarts.findLastIndex((s) => s.step <= stepIndex)
   currentSectionRef.current = currentSection
 
@@ -551,15 +553,6 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     const left = chip.offsetLeft - strip.clientWidth / 2 + chip.clientWidth / 2
     strip.scrollTo({ left, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
   }, [currentSection])
-
-  const settingsSummary = [
-    listenMode ? 'Listening to you' : `${Math.round(speed * 100)}% speed`,
-    !listenMode && ({ click: 'Click', drums: 'Drums', off: 'No beat' })[beat],
-    !listenMode && !guitarOn && 'Guitar off',
-    loopOn && rampOn && !listenMode && 'Speeding up',
-    easy && 'Easy chords',
-    lefty && 'Left-handed',
-  ].filter(Boolean).join(' · ')
 
   const learnedButton = trackable && (
     <button
@@ -686,6 +679,19 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         </div>
       </section>
 
+      <nav ref={sectionsRef} className="sections" aria-label="Song map: jump to a section">
+        {sectionStarts.map((s, i) => (
+          <button
+            key={i}
+            className={`chip ${i === currentSection ? 'is-current' : ''}`}
+            aria-current={i === currentSection ? 'step' : undefined}
+            onClick={() => goTo(s.step)}
+          >
+            {s.name}
+          </button>
+        ))}
+      </nav>
+
       <div className="controls">
         <button
           ref={keyRefs.ArrowLeft}
@@ -722,6 +728,26 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         </button>
       </div>
 
+      <div className={`speed-row ${listenMode ? 'is-disabled' : ''}`}>
+        <span className="speed-row__label" id="speed-label">
+          Speed <strong>{listenMode ? '—' : `${Math.round(speed * 100)}%`}</strong>
+        </span>
+        <div className="speed-control">
+          <button type="button" className="step" onClick={() => changeSpeed(Math.max(0.4, Math.round((speed - 0.05) * 100) / 100))} disabled={listenMode || speed <= 0.4} aria-label="Slower">−</button>
+          <input
+            type="range" min="0.4" max="1" step="0.05" value={speed}
+            onChange={(e) => changeSpeed(Number(e.target.value))}
+            disabled={listenMode}
+            aria-labelledby="speed-label"
+            aria-valuetext={`${Math.round(speed * 100)}%`}
+          />
+          <button type="button" className="step" onClick={() => changeSpeed(Math.min(1, Math.round((speed + 0.05) * 100) / 100))} disabled={listenMode || speed >= 1} aria-label="Faster">+</button>
+        </div>
+        {(listenMode || (loopOn && rampOn)) && (
+          <span className="speed-row__note">{listenMode ? 'Listen mode follows you, not the clock' : 'Speeding up 5% each loop'}</span>
+        )}
+      </div>
+
       {micError && <p className="tool__error" role="alert">{micError}</p>}
 
       {/* What you reach for mid-practice; everything else is in Settings */}
@@ -741,9 +767,6 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           <span>Settings</span>
         </button>
       </div>
-      <button className="status-line" onClick={() => setSettingsOpen(true)} aria-label={`Current settings: ${settingsSummary}. Open settings.`}>
-        {settingsSummary}
-      </button>
 
       <SettingsPanel
         open={settingsOpen}
@@ -758,50 +781,66 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         }}
       />
 
-      <nav ref={sectionsRef} className="sections" aria-label="Song map: jump to a section">
-        {sectionStarts.map((s, i) => (
-          <button
-            key={i}
-            className={`chip ${i === currentSection ? 'is-current' : ''}`}
-            aria-current={i === currentSection ? 'step' : undefined}
-            onClick={() => goTo(s.step)}
-          >
-            {s.name}
-          </button>
-        ))}
-      </nav>
 
-      <footer className="player__foot">
-        {learnedButton}
-        {trackable && (
+      {trackable && (
+        <div className="song-actions">
+          <button
+            type="button"
+            className={`action-card action-card--learned ${learned ? 'is-on' : ''}`}
+            onClick={() => toggleLearned(song.id)}
+            aria-pressed={learned}
+          >
+            <span className="action-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+            </span>
+            <span className="action-card__text">
+              <strong>{learned ? 'Learned!' : 'I can play this'}</strong>
+              <span>{learned ? 'Nice work. Tap to undo' : 'Mark it learned'}</span>
+            </span>
+          </button>
           <Link
             to={`/song/${song.id}/sheet`}
-            className="btn btn--sheet"
+            className="action-card"
             onClick={(e) => {
               if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
               e.preventDefault()
               go(navigate, `/song/${song.id}/sheet`, 'forward')
             }}
           >
-            See the whole song
+            <span className="action-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 12h6M10 16h6" /></svg>
+            </span>
+            <span className="action-card__text">
+              <strong>Whole song</strong>
+              <span>Every chord on one page</span>
+            </span>
           </Link>
-        )}
-        {picking && <p className="hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
-        {song.notes && <p>{song.notes}</p>}
-        {!song.checked && <p className="hint">Not checked against the record yet. If something sounds off, trust your ears.</p>}
-        {song.songsterr && (
-          <a href={song.songsterr} target="_blank" rel="noreferrer" className="songsterr">
-            {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'} ↗
-          </a>
-        )}
-        {trackable && (
-          <p className="report">
-            <a href={mailto(`Strum: ${song.title} chart`, `Song: ${song.title} (${song.artist})\nWhich part is wrong (e.g. the chorus)?\n\nWhat should it be?\n`)}>
-              Something wrong with this chart? Tell Andrew
+        </div>
+      )}
+
+      {(song.notes || songPicks || song.songsterr || !song.checked) && (
+        <section className="tips" aria-labelledby="tips-title">
+          <h2 id="tips-title">Tips</h2>
+          {song.notes && <p>{song.notes}</p>}
+          {songPicks && <p className="tips__hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
+          {song.songsterr && (
+            <a href={song.songsterr} target="_blank" rel="noreferrer" className="tips__link">
+              {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'}
+              <span aria-hidden="true"> ↗</span>
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
-          </p>
-        )}
-      </footer>
+          )}
+          {!song.checked && <p className="tips__small">Not checked against the record yet. If something sounds off, trust your ears.</p>}
+        </section>
+      )}
+
+      {trackable && (
+        <p className="report">
+          <a href={mailto(`Strum: ${song.title} chart`, `Song: ${song.title} (${song.artist})\nWhich part is wrong (e.g. the chorus)?\n\nWhat should it be?\n`)}>
+            Something wrong with this chart? Tell Andrew
+          </a>
+        </p>
+      )}
     </main>
   )
 }
