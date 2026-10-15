@@ -128,7 +128,7 @@ export default function Home() {
               <li key={song.id}>
                 <Link {...goLink(navigate, `/song/${song.id}`)} className="fav-tile">
                   <SongCover song={song} size={64} fly={false} />
-                  <span>{song.title}</span>
+                  <span className="fav-tile__name" title={song.title}>{song.title}</span>
                 </Link>
               </li>
             ))}

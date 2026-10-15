@@ -2023,3 +2023,6 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 :root[data-nav='tab']::view-transition-old(root) { animation: 0.12s ease-in both fade-out; }
 :root[data-nav='tab']::view-transition-new(root) { animation: 0.2s ease-out both fade-in; }
 @keyframes fade-out { to { opacity: 0; } }
+
+/* Favourite names stay on one line: the start of the name is enough to recognise it */
+.fav-tile__name { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
