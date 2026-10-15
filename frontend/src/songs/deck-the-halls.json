@@ -2,6 +2,7 @@
   "id": "deck-the-halls",
   "title": "Deck the Halls",
   "artist": "Traditional",
+  "emoji": "🎄",
   "level": 1,
   "licence": "traditional",
   "checked": false,

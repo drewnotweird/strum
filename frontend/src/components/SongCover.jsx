@@ -1,4 +1,4 @@
-// Each song's "cover": a guitar pick in its own colours with the song's initials.
+// Each song's "cover": a guitar pick in its own colours with the song's emoji.
 // The colours come from the song id, so a song always looks the same.
 const PALETTES = [
   ['#2f8cf0', '#1458a8'], // blue
@@ -16,16 +16,6 @@ function hash(text) {
   for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) >>> 0
   return h
 }
-
-const initials = (title) =>
-  title
-    .replace(/[^A-Za-z0-9 ]/g, '')
-    .split(/\s+/)
-    .filter((w) => !/^(the|a|an|of|on|in)$/i.test(w))
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase() || title[0]
 
 export default function SongCover({ song, size = 56 }) {
   const [from, to] = PALETTES[hash(song.id) % PALETTES.length]
@@ -46,13 +36,13 @@ export default function SongCover({ song, size = 56 }) {
           <stop offset="1" stopColor={to} />
         </linearGradient>
       </defs>
-      {/* A plectrum: wide rounded top, tapering to a soft point */}
+      {/* A standard pick: a rounded triangle with a soft, rounded tip */}
       <path
-        d="M50 97C38 85 8 58 6 34 4 16 24 4 50 4s46 12 44 30C92 58 62 85 50 97z"
+        d="M50 5C77 5 95 14 95 31C95 50 72 79 60 92C55 98 45 98 40 92C28 79 5 50 5 31C5 14 23 5 50 5Z"
         fill={`url(#${id})`}
       />
-      <path d="M50 10c-18 0-34 8-37 20" stroke="rgba(255,255,255,0.35)" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <text x="50" y="52" textAnchor="middle" dominantBaseline="middle" className="song-cover__text">{initials(song.title)}</text>
+      <path d="M24 16C33 11 42 10 50 10" stroke="rgba(255,255,255,0.4)" strokeWidth="5" fill="none" strokeLinecap="round" />
+      <text x="50" y="44" textAnchor="middle" dominantBaseline="central" className="song-cover__emoji">{song.emoji || '🎸'}</text>
     </svg>
   )
 }

@@ -2,6 +2,7 @@
   "id": "house-of-the-rising-sun",
   "title": "House of the Rising Sun",
   "artist": "Traditional",
+  "emoji": "🌅",
   "level": 2,
   "licence": "traditional",
   "checked": false,
@@ -9,13 +10,52 @@
   "bpm": 180,
   "beatsPerBar": 6,
   "perBeat": 1,
-  "patterns": { "pick": "B 3 2 1 2 3" },
+  "patterns": {
+    "pick": "B 3 2 1 2 3"
+  },
   "defaultPattern": "pick",
   "sections": {
-    "verse": { "name": "Verse", "steps": ["Am", "C", "D", "F", "Am", "C", "E", "E", "Am", "C", "D", "F", "Am", "E", "Am", "E"] },
-    "end": { "name": "Ending", "steps": ["Am", "C", "D", "F", "Am", "E", "Am"] }
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "Am",
+        "C",
+        "D",
+        "F",
+        "Am",
+        "C",
+        "E",
+        "E",
+        "Am",
+        "C",
+        "D",
+        "F",
+        "Am",
+        "E",
+        "Am",
+        "E"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "steps": [
+        "Am",
+        "C",
+        "D",
+        "F",
+        "Am",
+        "E",
+        "Am"
+      ]
+    }
   },
-  "form": ["verse", "verse", "verse", "verse", "end"],
+  "form": [
+    "verse",
+    "verse",
+    "verse",
+    "verse",
+    "end"
+  ],
   "notes": "Pick one string at a time. B means the bass note of the chord, then strings 3, 2, 1, 2, 3 (1 is the thinnest string). This picking pattern is our own arrangement of the traditional song.",
   "songsterr": "https://www.songsterr.com/a/wsa/animals-the-house-of-the-rising-sun-tab-s63"
 }

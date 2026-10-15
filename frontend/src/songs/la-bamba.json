@@ -2,6 +2,7 @@
   "id": "la-bamba",
   "title": "La Bamba",
   "artist": "Traditional",
+  "emoji": "💃",
   "level": 1,
   "licence": "traditional",
   "checked": false,

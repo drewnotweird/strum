@@ -2,6 +2,7 @@
   "id": "louie-louie",
   "title": "Louie Louie",
   "artist": "The Kingsmen",
+  "emoji": "🎉",
   "level": 1,
   "licence": "chords-only",
   "checked": false,
@@ -15,11 +16,46 @@
   },
   "defaultPattern": "three",
   "sections": {
-    "riff": { "name": "Riff", "repeat": 4, "steps": ["A|three", "D|two", "Em|three", "D|two"] },
-    "verse": { "name": "Verse", "repeat": 8, "steps": ["A|three", "D|two", "Em|three", "D|two"] },
-    "chorus": { "name": "Chorus", "repeat": 4, "steps": ["A|three", "D|two", "Em|three", "D|two"] }
+    "riff": {
+      "name": "Riff",
+      "repeat": 4,
+      "steps": [
+        "A|three",
+        "D|two",
+        "Em|three",
+        "D|two"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 8,
+      "steps": [
+        "A|three",
+        "D|two",
+        "Em|three",
+        "D|two"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "A|three",
+        "D|two",
+        "Em|three",
+        "D|two"
+      ]
+    }
   },
-  "form": ["riff", "chorus", "verse", "chorus", "verse", "chorus", "riff"],
+  "form": [
+    "riff",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "riff"
+  ],
   "notes": "The whole song is one pattern: dum dum dum, da-da. Three strums on A, two quick ones on D, three on Em, two on D.",
   "songsterr": "https://www.songsterr.com/a/wsa/kingsmen-louie-louie-tab-s440104"
 }

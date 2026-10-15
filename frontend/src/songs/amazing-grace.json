@@ -2,6 +2,7 @@
   "id": "amazing-grace",
   "title": "Amazing Grace",
   "artist": "Traditional",
+  "emoji": "🕊️",
   "level": 1,
   "licence": "traditional",
   "checked": false,

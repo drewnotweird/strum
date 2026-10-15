@@ -2,6 +2,7 @@
   "id": "the-trooper",
   "title": "The Trooper",
   "artist": "Iron Maiden",
+  "emoji": "⚔️",
   "level": 3,
   "licence": "chords-only",
   "kind": "drill",
@@ -16,12 +17,54 @@
   },
   "defaultPattern": "gallop",
   "sections": {
-    "slow": { "name": "Slow gallop on E", "repeat": 4, "steps": ["E5|hit", "E5"] },
-    "gallop": { "name": "Gallop on E", "repeat": 4, "steps": ["E5", "E5"] },
-    "moves": { "name": "Gallop moves", "repeat": 2, "steps": ["E5", "E5", "G5", "G5", "A5", "A5", "E5", "E5"] },
-    "climb": { "name": "Climb", "repeat": 2, "steps": ["C5", "D5", "E5", "E5"] }
+    "slow": {
+      "name": "Slow gallop on E",
+      "repeat": 4,
+      "steps": [
+        "E5|hit",
+        "E5"
+      ]
+    },
+    "gallop": {
+      "name": "Gallop on E",
+      "repeat": 4,
+      "steps": [
+        "E5",
+        "E5"
+      ]
+    },
+    "moves": {
+      "name": "Gallop moves",
+      "repeat": 2,
+      "steps": [
+        "E5",
+        "E5",
+        "G5",
+        "G5",
+        "A5",
+        "A5",
+        "E5",
+        "E5"
+      ]
+    },
+    "climb": {
+      "name": "Climb",
+      "repeat": 2,
+      "steps": [
+        "C5",
+        "D5",
+        "E5",
+        "E5"
+      ]
+    }
   },
-  "form": ["slow", "gallop", "moves", "climb", "gallop"],
+  "form": [
+    "slow",
+    "gallop",
+    "moves",
+    "climb",
+    "gallop"
+  ],
   "notes": "A warm-up for Iron Maiden's famous gallop, not the song itself: dum, da-da, dum, da-da. All down-strums, palm-muted, with the two quick ones squeezed together. Start slow, get it steady, then speed up. When it's comfortable, learn the real riff on Songsterr.",
   "songsterr": "https://www.songsterr.com/a/wsa/iron-maiden-the-trooper-tab-s338"
 }

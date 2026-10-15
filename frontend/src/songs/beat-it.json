@@ -2,6 +2,7 @@
   "id": "beat-it",
   "title": "Beat It",
   "artist": "Michael Jackson",
+  "emoji": "🕺",
   "level": 2,
   "licence": "chords-only",
   "checked": false,

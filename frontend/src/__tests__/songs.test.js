@@ -14,6 +14,7 @@ describe('song files', () => {
       it('has the basics', () => {
         expect(song.title).toBeTruthy()
         expect(song.artist).toBeTruthy()
+        expect(song.emoji, 'emoji for the pick cover').toBeTruthy()
         expect([1, 2, 3]).toContain(song.level)
         expect(song.bpm).toBeGreaterThan(30)
         expect(['chords-only', 'traditional']).toContain(song.licence)
