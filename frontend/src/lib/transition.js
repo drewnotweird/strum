@@ -5,6 +5,7 @@ const scrolls = new Map()
 const here = () => window.location.pathname + window.location.search
 // Resolves a history-back transition once the page has rendered (see pageReady)
 let pending = null
+let tabNavigation = 0
 
 // Elements only receive a view-transition name while their song is travelling.
 function nameShared(song, on) {
@@ -17,11 +18,30 @@ function nameShared(song, on) {
   })
 }
 
+// The tab bar's order, so switching tabs can slide the right way
+const TAB_ORDER = ['/', '/songs', '/practice', '/progress']
+const PRACTICE_PAGES = ['/tuner', '/changes', '/chords']
+const appPath = (path) => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const p = (path.startsWith(base) ? path.slice(base.length) : path).split('?')[0] || '/'
+  return PRACTICE_PAGES.includes(p) ? '/practice' : p
+}
+const tabIndex = (path) => TAB_ORDER.indexOf(appPath(path))
+
+// 'tab' becomes 'tab-next' or 'tab-prev' depending on where the target sits in the tab bar
+function tabDirection(to) {
+  const from = tabIndex(window.location.pathname)
+  const target = tabIndex(to)
+  if (from < 0 || target < 0 || from === target) return 'tab'
+  return target > from ? 'tab-next' : 'tab-prev'
+}
+
 // Navigate with a View Transition. direction:
 // - 'forward': the new page rises in from below (opening a song, a tool)
 // - 'back': the reverse; steps back in history when there is somewhere to go back to
 // - 'tab': switching between the tab bar's pages, a quick crossfade
 export function go(navigate, to, direction, shared) {
+  if (direction === 'tab') direction = tabDirection(to)
   // Going back to a page we came from: step back in history rather than pushing a new
   // entry, so the phone's own back gesture keeps working as expected afterwards
   const historyBack = direction === 'back' && window.history.state?.idx > 0
@@ -41,7 +61,43 @@ export function go(navigate, to, direction, shared) {
   }
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (!document.startViewTransition || reduced) {
+  if (reduced) {
+    swap()
+    return
+  }
+
+  if (direction.startsWith('tab')) {
+    const page = document.querySelector('main')
+    if (!page || typeof page.animate !== 'function') {
+      swap()
+      return
+    }
+    const token = ++tabNavigation
+    const forward = direction === 'tab-next'
+    page.getAnimations().forEach((animation) => {
+      if (animation.effect?.target === page) animation.cancel()
+    })
+    page.animate(
+      [
+        { opacity: 1, transform: 'translateX(0)' },
+        { opacity: 0, transform: `translateX(${forward ? '-18px' : '18px'})` },
+      ],
+      { duration: 110, easing: 'ease-in', fill: 'forwards' }
+    ).finished.catch(() => {}).then(() => {
+      if (token !== tabNavigation) return
+      swap()
+      document.querySelector('main')?.animate(
+        [
+          { opacity: 0, transform: `translateX(${forward ? '28px' : '-28px'})` },
+          { opacity: 1, transform: 'translateX(0)' },
+        ],
+        { duration: 260, easing: 'cubic-bezier(0.2, 0.75, 0.25, 1)' }
+      )
+    })
+    return
+  }
+
+  if (!document.startViewTransition) {
     swap()
     return
   }

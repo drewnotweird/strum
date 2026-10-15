@@ -31,6 +31,8 @@ export default function TabBar() {
         const on = tab.match(pathname)
         return (
           <Link key={tab.to} {...goLink(navigate, tab.to, 'tab')} className={`tabbar__tab ${on ? 'is-on' : ''}`} aria-current={on ? 'page' : undefined}>
+            {/* Static highlight keeps the active tab clear without snapshot transitions. */}
+            {on && <span className="tabbar__pill" aria-hidden="true" />}
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{tab.icon}</svg>
             <span>{tab.name}</span>
           </Link>

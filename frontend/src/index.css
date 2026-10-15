@@ -1709,7 +1709,6 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   backdrop-filter: blur(14px) saturate(1.4);
   border: 2px solid var(--line);
   box-shadow: 0 10px 30px -10px rgba(20, 40, 80, 0.3);
-  view-transition-name: tabbar;
 }
 
 .tabbar__tab {
@@ -1726,7 +1725,15 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
 
 .tabbar__tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.tabbar__tab.is-on { background: var(--brand-soft); color: var(--brand-dark); }
+.tabbar__tab { position: relative; }
+.tabbar__tab svg, .tabbar__tab span:not(.tabbar__pill) { position: relative; }
+.tabbar__tab.is-on { color: var(--brand-dark); }
+.tabbar__pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: var(--brand-soft);
+}
 .tabbar__tab.is-on svg { stroke-width: 2.6; }
 .tabbar__tab:active { transform: scale(0.95); }
 
@@ -1991,7 +1998,7 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
 
 .known-chord.is-on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
-.diagram--known { width: 56px; }
+.diagram--known { grid-area: auto; width: 56px; max-width: 100%; }
 
 /* ---------- Practice ---------- */
 .practice-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; }
@@ -2023,11 +2030,6 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 .practice-tool__go { font-size: 22px; font-weight: 900; color: var(--brand); }
 
 .prefs h2 { margin-bottom: 0; }
-
-/* Tab switches crossfade quickly; the tab bar itself stays put */
-:root[data-nav='tab']::view-transition-old(root) { animation: 0.12s ease-in both fade-out; }
-:root[data-nav='tab']::view-transition-new(root) { animation: 0.2s ease-out both fade-in; }
-@keyframes fade-out { to { opacity: 0; } }
 
 /* Favourite names stay on one line: the start of the name is enough to recognise it */
 .fav-tile__name { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
