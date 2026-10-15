@@ -213,6 +213,8 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   margin: 0 auto;
   padding: 16px 16px 48px;
   display: grid;
+  /* One column that never grows past the screen, whatever a row inside wants */
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -446,10 +448,13 @@ h1[tabindex='-1']:focus { outline: none; }
 
 .key:disabled { opacity: 0.4; cursor: default; }
 
-.key--arrow { width: 72px; }
+.key--arrow { width: 72px; flex: none; }
 
 .key--space {
-  width: min(340px, 48vw);
+  /* Fills what the arrows leave, up to 340px. A vw width ignored the page padding and
+     pushed the row (and the whole song page) wider than a phone screen */
+  flex: 0 1 340px;
+  min-width: 0;
   font-size: 18px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -925,6 +930,7 @@ h1[tabindex='-1']:focus { outline: none; }
   margin: 0 auto;
   padding: 40px 16px 48px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
 
@@ -986,7 +992,7 @@ h1[tabindex='-1']:focus { outline: none; }
 .tuner__detail { margin: 0; color: var(--muted); font-size: 14px; }
 
 .tuner__actions { display: flex; justify-content: center; }
-.tuner__actions .key--space { width: min(320px, 80vw); color: var(--brand-dark); }
+.tuner__actions .key--space { flex: 0 1 320px; color: var(--brand-dark); }
 
 .string-buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-width: 460px; }
 .string-button { font-size: 20px; font-weight: 900; height: 52px; padding: 0; color: var(--text); }
@@ -1779,6 +1785,8 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 
 .hub-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .hub-head .home__title h1 { font-size: clamp(44px, 11vw, 64px); margin: 0; }
+/* Small phones: the burst marks give way so the progress pill fits beside the title */
+@media (max-width: 360px) { .hub-head .burst { display: none; } }
 
 .progress-pill {
   display: flex;
