@@ -1,0 +1,58 @@
+{
+  "id": "every-rose-has-its-thorn",
+  "title": "Every Rose Has Its Thorn",
+  "artist": "Poison",
+  "emoji": "🌹",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 74,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "G*",
+        "Cadd9"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "G*",
+        "Cadd9"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "steps": [
+        "G*",
+        "Cadd9",
+        "G*",
+        "Cadd9",
+        "D",
+        "Cadd9",
+        "G*",
+        "G*"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Mostly G and Cadd9, using the same shapes as Wonderwall: keep your ring and pinky fingers on the 3rd fret of the top two strings and only move the other two. D comes in on the chorus. The record is tuned half a step down, so it sounds a little lower than this.",
+  "songsterr": ""
+}

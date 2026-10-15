@@ -1,0 +1,83 @@
+{
+  "id": "dont-stop-believin",
+  "title": "Don't Stop Believin'",
+  "artist": "Journey",
+  "emoji": "🚂",
+  "level": 2,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 4,
+  "bpm": 119,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F",
+        "C",
+        "G",
+        "Em",
+        "F"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F",
+        "C",
+        "G",
+        "Em",
+        "F"
+      ]
+    },
+    "pre": {
+      "name": "“Strangers waiting”",
+      "repeat": 2,
+      "steps": [
+        "F",
+        "F",
+        "C",
+        "C",
+        "F",
+        "F",
+        "C",
+        "G"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "verse",
+    "pre",
+    "intro",
+    "verse",
+    "pre",
+    "chorus"
+  ],
+  "notes": "Capo on the 4th fret, then C, G, Am, F, the famous piano part. Turn on Easy chords if the F is tricky. The “Strangers waiting” section is a first draft: check it against the record.",
+  "songsterr": "https://www.songsterr.com/a/wsa/prince-purple-rain-tab-s14754"
+}

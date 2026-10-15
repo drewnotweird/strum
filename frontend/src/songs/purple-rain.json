@@ -1,0 +1,59 @@
+{
+  "id": "purple-rain",
+  "title": "Purple Rain",
+  "artist": "Prince",
+  "emoji": "💜",
+  "level": 1,
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 3,
+  "bpm": 58,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "Em",
+        "D",
+        "C"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "Em",
+        "D",
+        "C"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "Em",
+        "D",
+        "C"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus"
+  ],
+  "notes": "Capo on the 3rd fret, then G, Em, D, C, one bar each, the whole way through. It's slow: let every chord ring out.",
+  "songsterr": "https://www.songsterr.com/a/wsa/poison-every-rose-has-its-thorn-tab-s385"
+}
