@@ -39,11 +39,9 @@ export default function Progress() {
 
   return (
     <main className="tool progress-page">
-      <header className="player__head">
-        <div className="player__title">
-          <h1>Progress</h1>
-          <p>Your practice, songs and badges</p>
-        </div>
+      <header className="page-head">
+        <h1>Progress</h1>
+        <p>Your practice, songs and badges</p>
       </header>
 
       <section className="stat-card stat-card--today">

@@ -2025,3 +2025,27 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 
 /* Favourite names stay on one line: the start of the name is enough to recognise it */
 .fav-tile__name { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------- Page themes: each main page has its own colour; Home and songs stay blue ---------- */
+:root[data-theme='songs'] {
+  --brand: #7b61ff; --brand-dark: #4a2fc2; --brand-deep: #3a22a0;
+  --brand-soft: #e7e1ff; --brand-edge: #b9aaff; --blob: #b3a5ff;
+}
+:root[data-theme='practice'] {
+  --brand: #14a394; --brand-dark: #0b6b62; --brand-deep: #08564f;
+  --brand-soft: #d3f3ef; --brand-edge: #8fdcd3; --blob: #7fd6cc;
+}
+:root[data-theme='progress'] {
+  --brand: #e06c0e; --brand-dark: #a64b00; --brand-deep: #8a3e00;
+  --brand-soft: #ffe6d1; --brand-edge: #ffbf8a; --blob: #ffb070;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='songs'] { --brand-dark: #b7a8ff; --brand-soft: #2e2558; --brand-edge: #4d3f99; --blob: #3a2f7a; }
+  :root[data-theme='practice'] { --brand-dark: #6fe0d2; --brand-soft: #133f3b; --brand-edge: #1f6a63; --blob: #145a54; }
+  :root[data-theme='progress'] { --brand-dark: #ffb37a; --brand-soft: #4a2a12; --brand-edge: #8a4a1c; --blob: #6b3a14; }
+}
+
+/* Blob colour changes smoothly when switching tabs */
+.blob { transition: transform 0.6s cubic-bezier(0.3, 1, 0.4, 1), fill 0.4s ease; }
+@media (prefers-reduced-motion: reduce) { .blob { transition: none; } }

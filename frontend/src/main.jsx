@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home.jsx'
@@ -14,11 +14,24 @@ import TabBar from './components/TabBar.jsx'
 import Toaster from './components/Toaster.jsx'
 import './index.css'
 
-// Corner blobs: on the home page only. Other pages slide them away off-screen.
+// Each main page has its own colour (Home blue, Songs violet, Practice teal, Progress
+// orange); the practice tools share Practice's. Song pages keep the blue.
+const pageTheme = (pathname) => {
+  if (pathname === '/songs') return 'songs'
+  if (['/practice', '/tuner', '/changes', '/chords'].includes(pathname)) return 'practice'
+  if (pathname === '/progress') return 'progress'
+  return 'home'
+}
+
+// Corner blobs, in the page's colour. Song pages slide them away for the chords.
 function Blobs() {
   const { pathname } = useLocation()
+  const onSong = pathname.startsWith('/song/')
+  useEffect(() => {
+    document.documentElement.dataset.theme = pageTheme(pathname)
+  }, [pathname])
   return (
-    <div className={`blobs ${pathname === '/' ? '' : 'is-away'}`} aria-hidden="true">
+    <div className={`blobs ${onSong ? 'is-away' : ''}`} aria-hidden="true">
       <svg className="blob blob--tr" viewBox="0 0 200 160">
         <path d="M0 0h200v160c-22 2-40-14-48-38-10-30-22-44-56-50C58 66 22 50 6 22 2 14 0 7 0 0z" />
       </svg>
