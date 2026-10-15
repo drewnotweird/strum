@@ -1670,3 +1670,7 @@ body.has-panel { overflow: hidden; }
 }
 
 .song-card__body .song-card__title { line-height: 1.15; }
+
+/* Pick and difficulty sit on the right of the card, the song details on the left */
+.song-card { grid-template-columns: 1fr auto; }
+.song-card__side { order: 2; }
