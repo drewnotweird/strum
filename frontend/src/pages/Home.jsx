@@ -27,11 +27,6 @@ const FINDERS = [
 const PLAIN_SECTIONS = /^(intro|verse|pre-chorus|chorus|bridge|outro|ending|riff|song|changes)$/i
 const pickUpFrom = (section) => (PLAIN_SECTIONS.test(section) ? `the ${section.toLowerCase()}` : `“${section}”`)
 
-function greeting() {
-  const h = new Date().getHours()
-  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
-}
-
 // Home is about him: what he was playing, today's song, his favourites, then ways into
 // the library. The full song list lives on the Songs page, so this never grows.
 export default function Home() {
@@ -67,7 +62,6 @@ export default function Home() {
               <line x1="4" y1="46" x2="20" y2="48" />
             </svg>
           </div>
-          <p className="hub-head__hello">{greeting()}. Ready to play?</p>
         </div>
         <Link {...goLink(navigate, '/progress', 'tab')} className="progress-pill" aria-label={`Today ${minutesToday} of ${goalMinutes} minutes, ${streak}-day streak. Open Progress.`}>
           <GoalRing share={goalShare} size={34} />

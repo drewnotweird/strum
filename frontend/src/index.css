@@ -1733,9 +1733,8 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 /* minmax(0, 1fr): the sideways-scrolling favourites row must not stretch the page */
 .home--hub { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
 
-.hub-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.hub-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .hub-head .home__title h1 { font-size: clamp(44px, 11vw, 64px); margin: 0; }
-.hub-head__hello { margin: 4px 0 0; color: var(--muted); font-weight: 800; font-size: 17px; }
 
 .progress-pill {
   display: flex;
