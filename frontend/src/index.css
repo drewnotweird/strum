@@ -1853,6 +1853,7 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 }
 
 .featured__cta svg { width: 18px; height: 18px; fill: currentColor; }
+.featured__cta .featured__level { margin-left: 2px; padding: 3px 7px; border-radius: 8px; font-size: 10px; }
 .featured__cta:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.14); }
 .featured__fav.fav { width: 44px; height: 44px; border-radius: 14px; background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.45); color: #fff; }
 .featured__fav.fav.is-on { background: #fff; color: #e8436b; border-color: #fff; }

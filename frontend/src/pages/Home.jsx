@@ -98,13 +98,13 @@ export default function Home() {
           </Link>
           <span className="featured__artist">{featured.artist}</span>
           <span className="featured__meta">
-            <span className={`level level--${featured.level}`}>{LEVELS[featured.level]}</span>
             {songChords(featured).slice(0, 4).map((c) => <span key={c} className="mini-chord">{c}</span>)}
           </span>
           <span className="featured__actions">
-            <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__cta" aria-label={`Play ${featured.title}`}>
+            <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__cta" aria-label={`Play ${featured.title}, ${LEVELS[featured.level]} difficulty`}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
               Play it
+              <span className={`level level--${featured.level} featured__level`}>{LEVELS[featured.level]}</span>
             </Link>
             <FavouriteButton song={featured} className="featured__fav" />
           </span>
