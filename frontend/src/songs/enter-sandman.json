@@ -4,6 +4,10 @@
   "artist": "Metallica",
   "emoji": "😴",
   "level": 3,
+  "tags": [
+    "rock",
+    "90s"
+  ],
   "licence": "chords-only",
   "kind": "drill",
   "checked": false,

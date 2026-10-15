@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useLayoutEffect } from 'react'
+import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import GoalRing from '../components/GoalRing.jsx'
 import { BADGES } from '../lib/badges.js'
 import { songs } from '../lib/song.js'
-import { go } from '../lib/transition.js'
+import { go, pageReady } from '../lib/transition.js'
 import { bestStreak, lastDays, practisedToday, secondsToday, setGoalMinutes, streakOf, totalSeconds, useStore } from '../lib/store.js'
 
 const GOALS = [5, 10, 15, 20]
@@ -17,6 +17,11 @@ const hoursAndMinutes = (seconds) => {
 // Everything Strum knows about his practice, in one place
 export default function Progress() {
   const navigate = useNavigate()
+  const navigationType = useNavigationType()
+  useLayoutEffect(() => {
+    if (navigationType === 'POP') pageReady()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const state = useStore((st) => st)
   const { days, goalMinutes, learned, playedChords, badges } = state
 
@@ -35,7 +40,6 @@ export default function Progress() {
   return (
     <main className="tool progress-page">
       <header className="player__head">
-        <Link to="/" className="back" aria-label="All songs" onClick={(e) => { e.preventDefault(); go(navigate, '/', 'back') }}>←</Link>
         <div className="player__title">
           <h1>Progress</h1>
           <p>Your practice, songs and badges</p>

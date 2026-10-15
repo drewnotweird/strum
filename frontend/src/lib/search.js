@@ -25,7 +25,10 @@ export function makeCatalogue(songs) {
 // - one chord ("C"): songs that use it
 // - several ("G C D"): songs you can play with nothing but those
 // Otherwise it matches song titles and artists.
-export function search({ catalogue, allChords }, { query = '', level = null, learnedOnly = false, learned = [] } = {}) {
+export function search(
+  { catalogue, allChords },
+  { query = '', level = null, learnedOnly = false, learned = [], favouritesOnly = false, favourites = [], tag = null, knownChords = null } = {}
+) {
   const q = query.trim().toLowerCase()
   const tokens = q.split(/[\s,]+/).filter(Boolean)
   const chordQuery = tokens.length > 0 && tokens.every((t) => allChords.has(t)) ? new Set(tokens) : null
@@ -33,6 +36,10 @@ export function search({ catalogue, allChords }, { query = '', level = null, lea
   const results = catalogue.filter((entry) => {
     if (level && entry.song.level !== level) return false
     if (learnedOnly && !learned.includes(entry.song.id)) return false
+    if (favouritesOnly && !favourites.includes(entry.song.id)) return false
+    if (tag && !(entry.song.tags || []).includes(tag)) return false
+    // Chords I know: only songs that need nothing beyond them
+    if (knownChords && ![...entry.chordSet].every((c) => knownChords.has(c))) return false
     if (!q) return true
     if (!chordQuery) return entry.text.includes(q)
     if (chordQuery.size === 1) return entry.chordSet.has(tokens[0])

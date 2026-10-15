@@ -4,6 +4,9 @@
   "artist": "Stephen Foster",
   "emoji": "🪕",
   "level": 1,
+  "tags": [
+    "singalong"
+  ],
   "licence": "traditional",
   "checked": false,
   "capo": 0,

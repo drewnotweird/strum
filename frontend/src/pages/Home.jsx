@@ -1,293 +1,158 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect } from 'react'
 import { Link, useNavigate, useNavigationType } from 'react-router-dom'
-import { songs } from '../lib/song.js'
-import { makeCatalogue, search } from '../lib/search.js'
-import { chordLabel } from '../data/chords.js'
-import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
-import { secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
+import { getSong, songs } from '../lib/song.js'
+import { songChords } from '../lib/search.js'
+import { goLink, pageReady } from '../lib/transition.js'
+import { secondsToday, streakOf, useStore } from '../lib/store.js'
+import { songOfTheDay } from '../lib/daily.js'
 import GoalRing from '../components/GoalRing.jsx'
 import SongCover from '../components/SongCover.jsx'
+import FavouriteButton from '../components/FavouriteButton.jsx'
+import { LEVELS } from '../components/SongCard.jsx'
 
-const levels = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
-
-const index = makeCatalogue(songs)
-
-const capitalise = (c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))
-
-// Kept outside the component so the search survives a trip to a song and back
-const remembered = { query: '', level: null, learnedOnly: false }
-
-// Icons drawn on a 24×24 grid, matching the pages they open
-const TOOLS = [
-  {
-    to: '/tuner',
-    name: 'Tuner',
-    blurb: 'Get every string in tune',
-    // A tuning meter: the arc, its centre mark, and the needle
-    icon: (
-      <>
-        <path d="M3.5 17a8.5 8.5 0 0 1 17 0" />
-        <path d="M12 6.5v2" />
-        <path d="M12 17l3.5-6" />
-        <circle className="fill" cx="12" cy="17" r="1.8" />
-      </>
-    ),
-  },
-  {
-    to: '/changes',
-    name: 'Chord changes',
-    blurb: 'Practise switching between two chords',
-    // Round and round between two chords
-    icon: (
-      <>
-        <path d="M4 11V9.5A3.5 3.5 0 0 1 7.5 6H19" />
-        <path d="M16 3l3 3-3 3" />
-        <path d="M20 13v1.5a3.5 3.5 0 0 1-3.5 3.5H5" />
-        <path d="M8 21l-3-3 3-3" />
-      </>
-    ),
-  },
-  {
-    to: '/chords',
-    name: 'Chords',
-    blurb: 'Every shape, tap to hear it',
-    // A little chord diagram: a thick nut, thin strings and frets, two finger dots
-    icon: (
-      <>
-        <path d="M4.5 4.5h15" strokeWidth="3" />
-        <path className="thin" d="M4.5 4.5v15M9.5 4.5v15M14.5 4.5v15M19.5 4.5v15M4.5 10h15M4.5 15h15" />
-        <circle className="fill" cx="9.5" cy="12.5" r="2" />
-        <circle className="fill" cx="14.5" cy="7.3" r="2" />
-      </>
-    ),
-  },
+// Ways into the song library. Each opens the Songs page with a filter already on.
+const FINDERS = [
+  { to: '/songs?level=1', name: 'Easy songs', emoji: '🌱' },
+  { to: '/songs?known=1', name: 'Chords I know', emoji: '🖐️' },
+  { to: '/songs?tag=80s', name: '80s', emoji: '📼' },
+  { to: '/songs?tag=rock', name: 'Rock and metal', emoji: '🤘' },
+  { to: '/songs?tag=classic', name: 'Classics', emoji: '📻' },
+  { to: '/songs?tag=90s', name: '90s and now', emoji: '💿' },
+  { to: '/songs?tag=singalong', name: 'Sing-alongs', emoji: '🎤' },
+  { to: '/songs?tag=christmas', name: 'Christmas', emoji: '🎄' },
 ]
 
+// "Pick up from the chorus" for ordinary section names, and as written for named ones
+// like a drill's "D, B, G"
+const PLAIN_SECTIONS = /^(intro|verse|pre-chorus|chorus|bridge|outro|ending|riff|song|changes)$/i
+const pickUpFrom = (section) => (PLAIN_SECTIONS.test(section) ? `the ${section.toLowerCase()}` : `“${section}”`)
+
+function greeting() {
+  const h = new Date().getHours()
+  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
+}
+
+// Home is about him: what he was playing, today's song, his favourites, then ways into
+// the library. The full song list lives on the Songs page, so this never grows.
 export default function Home() {
   const navigate = useNavigate()
   const navigationType = useNavigationType()
-  // Arriving from the chord library with ?q=C: start with just that search showing
-  // (read once per visit, before the search state below is set up)
-  const incoming = useRef(undefined)
-  if (incoming.current === undefined) {
-    incoming.current = new URLSearchParams(window.location.search).get('q')
-    if (incoming.current !== null) Object.assign(remembered, { query: incoming.current, level: null, learnedOnly: false })
-  }
-  const [query, setQueryState] = useState(remembered.query)
-  const [level, setLevelState] = useState(remembered.level)
-  const setQuery = (q) => setQueryState((remembered.query = q))
-  const setLevel = (l) => setLevelState((remembered.level = l))
-  const [learnedOnly, setLearnedOnlyState] = useState(remembered.learnedOnly)
-  const setLearnedOnly = (v) => setLearnedOnlyState((remembered.learnedOnly = v))
   const learned = useStore((st) => st.learned)
+  const favourites = useStore((st) => st.favourites)
+  const lastPlayed = useStore((st) => st.lastPlayed)
   const days = useStore((st) => st.days)
-  const lefty = useStore((st) => st.lefty)
-  const easy = useStore((st) => st.easyChords)
   const goalMinutes = useStore((st) => st.goalMinutes)
-  const earned = useStore((st) => st.badges)
+
+  useLayoutEffect(() => {
+    if (navigationType === 'POP') pageReady()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const streak = streakOf(days)
   const minutesToday = Math.floor(secondsToday(days) / 60)
   const goalShare = Math.min(1, secondsToday(days) / (goalMinutes * 60))
-
-  // Coming back from a song (our back arrow or the browser's): restore the scroll
-  // position and let a waiting page transition finish
-  useLayoutEffect(() => {
-    if (navigationType === 'POP') listReady()
-    // The search lives in the box now, so tidy ?q= out of the address
-    if (incoming.current !== null) navigate('/', { replace: true })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const { results, chordQuery } = useMemo(
-    () => search(index, { query, level, learnedOnly, learned }),
-    [query, level, learnedOnly, learned]
-  )
+  const resume = lastPlayed && getSong(lastPlayed.id)
+  const featured = songOfTheDay(songs, learned)
+  const favouriteSongs = songs.filter((s) => favourites.includes(s.id))
 
   return (
-    <main className="home">
-      <header className="home__head">
-        <div className="home__title">
-          <h1>Strum</h1>
-          <svg className="burst" viewBox="0 0 64 64" aria-hidden="true">
-            <line x1="22" y1="8" x2="28" y2="20" />
-            <line x1="6" y1="22" x2="20" y2="32" />
-            <line x1="4" y1="46" x2="20" y2="48" />
-          </svg>
+    <main className="home home--hub">
+      <header className="hub-head">
+        <div>
+          <div className="home__title">
+            <h1>Strum</h1>
+            <svg className="burst" viewBox="0 0 64 64" aria-hidden="true">
+              <line x1="22" y1="8" x2="28" y2="20" />
+              <line x1="6" y1="22" x2="20" y2="32" />
+              <line x1="4" y1="46" x2="20" y2="48" />
+            </svg>
+          </div>
+          <p className="hub-head__hello">{greeting()}. Ready to play?</p>
         </div>
-        <p>Pick a song. Play the chord in the big box, and get ready for the next one.</p>
+        <Link {...goLink(navigate, '/progress', 'tab')} className="progress-pill" aria-label={`Today ${minutesToday} of ${goalMinutes} minutes, ${streak}-day streak. Open Progress.`}>
+          <GoalRing share={goalShare} size={34} />
+          <span>
+            <strong>{minutesToday}/{goalMinutes} min</strong>
+            <span>🔥 {streak} {streak === 1 ? 'day' : 'days'}</span>
+          </span>
+        </Link>
       </header>
 
-      <Link
-        to="/progress"
-        className="progress-card"
-        onClick={(e) => {
-          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-          e.preventDefault()
-          go(navigate, '/progress', 'forward')
-        }}
-        aria-label={`Progress: ${minutesToday} of ${goalMinutes} minutes today, ${streak}-day streak, ${learned.length} songs learned, ${earned.length} badges. Open your progress page.`}
-      >
-        <span className="progress-card__goal">
-          <GoalRing share={goalShare} size={52} />
-          <span>
-            <strong>{goalShare >= 1 ? 'Goal done!' : `${minutesToday} / ${goalMinutes} min`}</strong>
-            <span>today</span>
+      {resume && (
+        <Link {...goLink(navigate, `/song/${resume.id}?from=${lastPlayed.step}`)} className="resume">
+          <SongCover song={resume} size={48} fly={false} />
+          <span className="resume__text">
+            <span className="resume__label">Keep going</span>
+            <strong>{resume.title}</strong>
+            <span>Pick up from {pickUpFrom(lastPlayed.section)}</span>
           </span>
-        </span>
-        <span className={`progress-card__stat ${streak > 0 ? 'is-hot' : ''}`}>
-          <strong>🔥 {streak}</strong>
-          <span>{streak === 1 ? 'day streak' : 'day streak'}</span>
-        </span>
-        <span className="progress-card__stat">
-          <strong>✓ {learned.length}</strong>
-          <span>learned</span>
-        </span>
-        <span className="progress-card__stat">
-          <strong>🏅 {earned.length}</strong>
-          <span>badges</span>
-        </span>
-        <span className="progress-card__more" aria-hidden="true">→</span>
-      </Link>
-
-      <nav className="tools" aria-label="Practice tools">
-        {TOOLS.map((tool) => (
-          <Link
-            key={tool.to}
-            to={tool.to}
-            className="tool-card"
-            onClick={(e) => {
-              if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-              e.preventDefault()
-              go(navigate, tool.to, 'forward')
-            }}
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">{tool.icon}</svg>
-            <span className="tool-card__name">{tool.name}</span>
-            <span className="tool-card__blurb">{tool.blurb}</span>
-          </Link>
-        ))}
-      </nav>
-
-      <div className="filter">
-        <label className="search">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <circle cx="10.5" cy="10.5" r="6.5" />
-            <line x1="15.5" y1="15.5" x2="21" y2="21" />
-          </svg>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Song, band, or chords like G C D"
-            aria-label="Search songs"
-            autoComplete="off"
-            spellCheck="false"
-          />
-          {query && (
-            <button className="search__clear" onClick={() => setQuery('')} aria-label="Clear search">×</button>
-          )}
-        </label>
-        <div className="levels" role="group" aria-label="Filter by level">
-          {Object.entries(levels).map(([n, name]) => (
-            <button
-              key={n}
-              className={`level-filter level-filter--${n} ${level === Number(n) ? 'is-on' : ''}`}
-              onClick={() => setLevel(level === Number(n) ? null : Number(n))}
-              aria-pressed={level === Number(n)}
-            >
-              {name}
-            </button>
-          ))}
-          <button
-            className={`level-filter level-filter--learned ${learnedOnly ? 'is-on' : ''}`}
-            onClick={() => setLearnedOnly(!learnedOnly)}
-            aria-pressed={learnedOnly}
-          >
-            ✓ Learned
-          </button>
-        </div>
-      </div>
-
-      <h2 className="sr-only">Songs</h2>
-      <p className="sr-only" aria-live="polite">
-        {query || level || learnedOnly ? `${results.length} ${results.length === 1 ? 'song' : 'songs'} found` : ''}
-      </p>
-
-      {chordQuery && (
-        <p className="filter__hint">
-          {chordQuery.size === 1
-            ? `Songs with ${capitalise([...chordQuery][0])}`
-            : `Songs you can play with ${[...chordQuery].map(capitalise).join(', ')}`}
-        </p>
+          <span className="resume__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          </span>
+        </Link>
       )}
 
-      {results.length === 0 ? (
-        <p className="empty">
-          {learnedOnly && learned.length === 0
-            ? 'No songs learned yet. When you can play one, tap "I can play this!" on its page.'
-            : 'No songs match. Try fewer letters, or add a chord you know.'}
-        </p>
-      ) : (
-        <ul className="songs">
-          {results.map(({ song, chords }) => (
-            <li key={song.id}>
-              <Link
-                to={`/song/${song.id}`}
-                className="song-card"
-                onClick={(e) => {
-                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-                  e.preventDefault()
-                  go(navigate, `/song/${song.id}`, 'forward')
-                }}
-              >
-                <span className="song-card__side">
-                  <span className="song-card__pick">
-                    <SongCover song={song} size={58} />
-                    {learned.includes(song.id) && <span className="tick" aria-label="Learned">✓</span>}
-                  </span>
-                  <span className={`level level--${song.level}`}>{levels[song.level]}</span>
+      {featured && (
+        <section className="featured" aria-labelledby="featured-title">
+          <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__link">
+            <span className="featured__label" id="featured-title">Song of the day</span>
+            <span className="featured__main">
+              <SongCover song={featured} size={92} fly={false} />
+              <span className="featured__text">
+                <strong>{featured.title}</strong>
+                <span>{featured.artist}</span>
+                <span className="featured__meta">
+                  <span className={`level level--${featured.level}`}>{LEVELS[featured.level]}</span>
+                  {songChords(featured).slice(0, 5).map((c) => <span key={c} className="mini-chord">{c}</span>)}
                 </span>
-                <span className="song-card__body">
-                  <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
-                  <span className="song-card__artist">
-                    <span>
-                      <span style={artistTransitionName(song.id)}>{song.artist}</span>
-                      {song.kind === 'drill' ? ' · warm-up drill' : ''}
-                    </span>
-                    {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
-                  </span>
-                  <span className="song-card__chords">
-                    {chords.map((c) => (
-                      <span key={c} className={`mini-chord ${chordQuery?.has(c.toLowerCase()) ? 'is-match' : ''}`}>{c}</span>
-                    ))}
-                  </span>
-                </span>
+              </span>
+            </span>
+            <span className="featured__cta">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              Play it
+            </span>
+          </Link>
+          <FavouriteButton song={featured} className="featured__fav" />
+        </section>
+      )}
+
+      <section className="hub-section" aria-labelledby="fav-title">
+        <div className="hub-section__head">
+          <h2 id="fav-title">Favourites</h2>
+          {favouriteSongs.length > 0 && <Link {...goLink(navigate, '/songs?fav=1', 'tab')} className="see-all">See all</Link>}
+        </div>
+        {favouriteSongs.length ? (
+          <ul className="fav-row">
+            {favouriteSongs.map((song) => (
+              <li key={song.id}>
+                <Link {...goLink(navigate, `/song/${song.id}`)} className="fav-tile">
+                  <SongCover song={song} size={64} fly={false} />
+                  <span>{song.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="hub-empty">Tap the ♥ on a song you like and it'll wait for you here.</p>
+        )}
+      </section>
+
+      <section className="hub-section" aria-labelledby="find-title">
+        <div className="hub-section__head">
+          <h2 id="find-title">Find a song</h2>
+          <Link {...goLink(navigate, '/songs', 'tab')} className="see-all">All {songs.length} songs</Link>
+        </div>
+        <ul className="finders">
+          {FINDERS.map((f) => (
+            <li key={f.to}>
+              <Link {...goLink(navigate, f.to, 'tab')} className="finder">
+                <span className="finder__emoji" aria-hidden="true">{f.emoji}</span>
+                <span>{f.name}</span>
               </Link>
             </li>
           ))}
         </ul>
-      )}
-
-      <footer className="home__foot">
-        <a
-          className="btn btn--request"
-          href={`mailto:drewnotweird@gmail.com?subject=${encodeURIComponent('Strum: song request')}&body=${encodeURIComponent('Song:\nBand:\n')}`}
-        >
-          Request a song
-        </a>
-        <div className="toggles">
-          <button
-            className={`btn btn--toggle ${easy ? 'is-on' : ''}`}
-            onClick={() => setEasyChords(!easy)}
-            aria-pressed={easy}
-            title="Swap hard chords for easier ones: F becomes Fmaj7, Bm becomes Bm7"
-          >
-            Easy chords
-          </button>
-          <button className={`btn btn--toggle ${lefty ? 'is-on' : ''}`} onClick={() => setLefty(!lefty)} aria-pressed={lefty}>
-            Left-handed chord diagrams
-          </button>
-        </div>
-      </footer>
+      </section>
     </main>
   )
 }

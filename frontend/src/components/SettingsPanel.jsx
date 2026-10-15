@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 // An on/off row: label, one line of explanation, and a switch
-function Switch({ label, note, checked, onChange, disabled = false }) {
+export function Switch({ label, note, checked, onChange, disabled = false }) {
   return (
     <button
       type="button"

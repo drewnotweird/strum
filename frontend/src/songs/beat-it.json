@@ -4,6 +4,10 @@
   "artist": "Michael Jackson",
   "emoji": "🕺",
   "level": 2,
+  "tags": [
+    "80s",
+    "rock"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

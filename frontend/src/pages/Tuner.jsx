@@ -137,7 +137,7 @@ export default function Tuner() {
   return (
     <main className="tool">
       <header className="player__head">
-        <Link to="/" className="back" aria-label="All songs" onClick={(e) => { e.preventDefault(); go(navigate, '/', 'back') }}>←</Link>
+        <Link to="/practice" className="back" aria-label="Back to Practice" onClick={(e) => { e.preventDefault(); go(navigate, '/practice', 'back') }}>←</Link>
         <div className="player__title">
           <h1>Tuner</h1>
           <p>Standard tuning: E A D G B E</p>

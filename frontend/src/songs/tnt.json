@@ -4,6 +4,9 @@
   "artist": "AC/DC",
   "emoji": "🧨",
   "level": 2,
+  "tags": [
+    "rock"
+  ],
   "licence": "chords-only",
   "kind": "drill",
   "checked": false,

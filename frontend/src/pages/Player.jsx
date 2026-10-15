@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { songNotes, voiceFor } from '../lib/guitar.js'
@@ -11,7 +11,8 @@ import { confetti } from '../lib/confetti.js'
 import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
-import { addPlayedChord, addPractice, setBeat, setEasyChords, setLefty, toggleLearned, useStore } from '../lib/store.js'
+import { addPlayedChord, addPractice, setBeat, setEasyChords, setLastPlayed, setLefty, toggleLearned, useStore } from '../lib/store.js'
+import FavouriteButton from '../components/FavouriteButton.jsx'
 
 function tokenLabel(token, chord) {
   if (token === 'D') return '↓'
@@ -76,7 +77,10 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     return s + 1 < steps.length ? s + 1 : null
   }
 
-  const [stepIndex, setStepIndex] = useState(0)
+  // "Keep going" on the home page opens a song part-way through with ?from=<step>
+  const [params] = useSearchParams()
+  const startStep = Math.max(0, Math.min(steps.length - 1, Number(params.get('from')) || 0))
+  const [stepIndex, setStepIndex] = useState(startStep)
   const [countIn, setCountIn] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [ended, setEnded] = useState(false)
@@ -102,7 +106,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
   const playerRef = useRef(null)
   const strumRef = useRef(null)
-  const stepRef = useRef(0)
+  const stepRef = useRef(startStep)
   const slotRef = useRef(-1)
   const nowRef = useRef(null)
   const nextRef = useRef(null)
@@ -526,7 +530,13 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       clearInterval(timer)
       keepAwake(false)
       bank()
+      // Remember where he got to, for "Keep going" (a finished song starts again)
+      if (trackable) {
+        const step = stepRef.current >= steps.length - 1 ? 0 : stepRef.current
+        setLastPlayed({ id: song.id, step, section: steps[step].section })
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
   // The song map is one sideways-scrolling strip; keep the current section in view
@@ -581,6 +591,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
             {song.capo > 0 && <span className="badge player__capo">Capo {song.capo}</span>}
           </p>
         </div>
+        {trackable && <FavouriteButton song={song} className="player__fav" />}
         <span className="player__pick">
           <SongCover song={song} size={44} />
           {LEVELS[song.level] && <span className={`level level--${song.level}`}>{LEVELS[song.level]}</span>}

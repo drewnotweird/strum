@@ -4,6 +4,10 @@
   "artist": "Traditional",
   "emoji": "🌅",
   "level": 2,
+  "tags": [
+    "classic",
+    "singalong"
+  ],
   "licence": "traditional",
   "checked": false,
   "capo": 0,

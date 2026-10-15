@@ -24,12 +24,12 @@ export default function Chords() {
   }, [])
 
   // Tapping a chord shows the song list searched for it (the search box understands chord names)
-  const showSongs = (name) => go(navigate, `/?q=${encodeURIComponent(chordLabel(name))}`, 'forward')
+  const showSongs = (name) => go(navigate, `/songs?q=${encodeURIComponent(chordLabel(name))}`, 'forward')
 
   return (
     <main className="tool">
       <header className="player__head">
-        <Link to="/" className="back" aria-label="All songs" onClick={(e) => { e.preventDefault(); go(navigate, '/', 'back') }}>←</Link>
+        <Link to="/practice" className="back" aria-label="Back to Practice" onClick={(e) => { e.preventDefault(); go(navigate, '/practice', 'back') }}>←</Link>
         <div className="player__title">
           <h1>Chords</h1>
           <p>Tap a chord to see the songs that use it</p>
@@ -55,7 +55,7 @@ export default function Chords() {
                 <li key={name} className="chord-card">
                   {count ? (
                     <Link
-                      to={`/?q=${encodeURIComponent(chordLabel(name))}`}
+                      to={`/songs?q=${encodeURIComponent(chordLabel(name))}`}
                       className="chord-card__link"
                       onClick={(e) => {
                         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return

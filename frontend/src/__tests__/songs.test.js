@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { songs, buildSteps, buildTimeline, barsOf, lastStrumOf } from '../lib/song.js'
 import { chords, EASY, playable } from '../data/chords.js'
+import { TAGS } from '../data/collections.js'
 
 // Every song file has to be playable: these catch typos before they reach the site
 describe('song files', () => {
@@ -15,6 +16,8 @@ describe('song files', () => {
         expect(song.title).toBeTruthy()
         expect(song.artist).toBeTruthy()
         expect(song.emoji, 'emoji for the pick cover').toBeTruthy()
+        expect(song.tags?.length, 'at least one category').toBeGreaterThan(0)
+        for (const tag of song.tags) expect(TAGS[tag], `category "${tag}"`).toBeDefined()
         expect([1, 2, 3]).toContain(song.level)
         expect(song.bpm).toBeGreaterThan(30)
         expect(['chords-only', 'traditional']).toContain(song.licence)

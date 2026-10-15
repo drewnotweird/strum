@@ -17,7 +17,9 @@ function hash(text) {
   return h
 }
 
-export default function SongCover({ song, size = 56 }) {
+// `fly`: give it a shared name so it travels between pages. Only one cover per song may
+// have it on any page, so pages that show a song twice (Home) turn it off.
+export default function SongCover({ song, size = 56, fly = true }) {
   const [from, to] = PALETTES[hash(song.id) % PALETTES.length]
   const id = `cover-${song.id}`
   return (
@@ -28,7 +30,7 @@ export default function SongCover({ song, size = 56 }) {
       viewBox="0 0 100 100"
       aria-hidden="true"
       focusable="false"
-      style={{ viewTransitionName: `cover-${song.id}` }}
+      style={fly ? { viewTransitionName: `cover-${song.id}` } : undefined}
     >
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">

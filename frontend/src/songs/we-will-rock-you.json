@@ -4,6 +4,10 @@
   "artist": "Queen",
   "emoji": "👏",
   "level": 1,
+  "tags": [
+    "rock",
+    "singalong"
+  ],
   "licence": "chords-only",
   "kind": "drill",
   "checked": false,

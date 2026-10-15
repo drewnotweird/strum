@@ -4,6 +4,9 @@
   "artist": "Queen",
   "emoji": "❤️",
   "level": 2,
+  "tags": [
+    "classic"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

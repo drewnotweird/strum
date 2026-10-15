@@ -4,6 +4,9 @@
   "artist": "Creedence Clearwater Revival",
   "emoji": "🌕",
   "level": 1,
+  "tags": [
+    "classic"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

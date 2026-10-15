@@ -4,6 +4,10 @@
   "artist": "Lynyrd Skynyrd",
   "emoji": "🏡",
   "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

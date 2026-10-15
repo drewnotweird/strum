@@ -4,6 +4,10 @@
   "artist": "The Troggs",
   "emoji": "🐯",
   "level": 1,
+  "tags": [
+    "classic",
+    "rock"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

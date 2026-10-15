@@ -4,6 +4,7 @@ import { makeCatalogue, search } from '../lib/search.js'
 import { bestStreak, lastDays, streakOf } from '../lib/store.js'
 import { BADGES, newlyEarned } from '../lib/badges.js'
 import { drumHits } from '../lib/drums.js'
+import { songOfTheDay } from '../lib/daily.js'
 
 const index = makeCatalogue(songs)
 const titles = (opts) => search(index, opts).results.map((r) => r.song.title)
@@ -104,5 +105,32 @@ describe('drum beat', () => {
 
   it('keeps hats on eighths when the song counts in sixteenths', () => {
     expect(bar(4, 4).filter((h) => h.includes('hat')).length).toBe(8)
+  })
+})
+
+describe('library filters', () => {
+  it('filter by category, favourites and the chords he knows', () => {
+    expect(search(index, { tag: 'christmas' }).results.map((r) => r.song.id).sort()).toEqual(['deck-the-halls', 'jingle-bells'])
+    expect(titles({ favouritesOnly: true, favourites: ['riptide'] })).toEqual(['Riptide'])
+    const known = new Set(['g', 'c', 'd'])
+    const playable = search(index, { knownChords: known }).results
+    expect(playable.length).toBeGreaterThan(0)
+    for (const r of playable) expect([...r.chordSet].every((c) => known.has(c))).toBe(true)
+  })
+})
+
+describe('song of the day', () => {
+  it('is the same all day and changes between days', () => {
+    const morning = new Date(2026, 9, 15, 8)
+    const night = new Date(2026, 9, 15, 22)
+    expect(songOfTheDay(songs, [], morning).id).toBe(songOfTheDay(songs, [], night).id)
+    const week = Array.from({ length: 7 }, (_, i) => songOfTheDay(songs, [], new Date(2026, 9, 15 + i)).id)
+    expect(new Set(week).size).toBeGreaterThan(3)
+  })
+
+  it('skips songs he has already learned', () => {
+    const day = new Date(2026, 9, 15)
+    const first = songOfTheDay(songs, [], day)
+    expect(songOfTheDay(songs, [first.id], day).id).not.toBe(first.id)
   })
 })

@@ -4,6 +4,10 @@
   "artist": "AC/DC",
   "emoji": "⚡",
   "level": 1,
+  "tags": [
+    "rock",
+    "80s"
+  ],
   "licence": "chords-only",
   "checked": false,
   "capo": 0,

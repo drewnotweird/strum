@@ -8,10 +8,13 @@ import Trainer from './pages/Trainer.jsx'
 import Chords from './pages/Chords.jsx'
 import Sheet from './pages/Sheet.jsx'
 import Progress from './pages/Progress.jsx'
+import Songs from './pages/Songs.jsx'
+import Practice from './pages/Practice.jsx'
+import TabBar from './components/TabBar.jsx'
 import Toaster from './components/Toaster.jsx'
 import './index.css'
 
-// Green corner blobs: on the song list only. Song pages slide them away off-screen.
+// Corner blobs: on the home page only. Other pages slide them away off-screen.
 function Blobs() {
   const { pathname } = useLocation()
   return (
@@ -31,6 +34,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Blobs />
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/songs" element={<Songs />} />
+      <Route path="/practice" element={<Practice />} />
       <Route path="/song/:id" element={<Player />} />
       <Route path="/song/:id/sheet" element={<Sheet />} />
       <Route path="/tuner" element={<Tuner />} />
@@ -38,6 +43,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Route path="/chords" element={<Chords />} />
       <Route path="/progress" element={<Progress />} />
     </Routes>
+    <TabBar />
     <Toaster />
   </BrowserRouter>
 )

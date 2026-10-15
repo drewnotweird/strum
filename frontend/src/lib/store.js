@@ -13,6 +13,9 @@ const DEFAULTS = {
   days: {},
   playedChords: [],
   badges: [],
+  favourites: [],
+  knownChords: [], // ticked on the Songs page: "show me songs I can play with these"
+  lastPlayed: null, // { id, step, section } for "Keep going" on the home page
 }
 
 function load() {
@@ -59,11 +62,22 @@ export function addPlayedChord(name) {
 
 export const addBadges = (ids) => set({ badges: [...state.badges, ...ids] })
 
+export const toggleFavourite = (id) =>
+  set({ favourites: state.favourites.includes(id) ? state.favourites.filter((x) => x !== id) : [...state.favourites, id] })
+
+export const setKnownChords = (knownChords) => set({ knownChords })
+
+export function setLastPlayed(lastPlayed) {
+  const prev = state.lastPlayed
+  if (prev && lastPlayed && prev.id === lastPlayed.id && prev.step === lastPlayed.step) return
+  set({ lastPlayed })
+}
+
 export const toggleLearned = (id) =>
   set({ learned: state.learned.includes(id) ? state.learned.filter((x) => x !== id) : [...state.learned, id] })
 
 // Local calendar date, e.g. 2026-10-12
-const dayKey = (date = new Date()) => date.toLocaleDateString('en-CA')
+export const dayKey = (date = new Date()) => date.toLocaleDateString('en-CA')
 
 export function addPractice(seconds) {
   if (seconds < 1) return
