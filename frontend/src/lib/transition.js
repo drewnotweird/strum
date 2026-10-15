@@ -38,7 +38,8 @@ function tabDirection(to) {
 // Navigate with a View Transition. direction:
 // - 'forward': the new page rises in from below (opening a song, a tool)
 // - 'back': the reverse; steps back in history when there is somewhere to go back to
-// - 'tab': switching between the tab bar's pages, a quick crossfade
+// - 'tab': switching between the tab bar's pages. No View Transition (rapid taps could
+//   leave a blank page): the new page just eases in from the side its tab sits on
 export function go(navigate, to, direction, shared) {
   if (direction === 'tab') direction = tabDirection(to)
   // Going back to a page we came from: step back in history rather than pushing a new
@@ -74,15 +75,14 @@ export function go(navigate, to, direction, shared) {
     swap()
     const nextPage = document.querySelector('main')
     if (!nextPage) return
-    page.getAnimations().forEach((animation) => {
-      if (animation.effect?.target === page) animation.cancel()
-    })
     nextPage.getAnimations().forEach((animation) => {
       if (animation.effect?.target === nextPage) animation.cancel()
     })
+    // A short nudge from the tab's side; it starts mostly visible so fast tapping never blanks
+    const dx = { 'tab-next': 18, 'tab-prev': -18 }[direction] || 0
     nextPage.animate(
-      [{ opacity: 0.88 }, { opacity: 1 }],
-      { duration: 160, easing: 'ease-out' }
+      [{ opacity: 0.6, transform: `translateX(${dx}px)` }, { opacity: 1, transform: 'none' }],
+      { duration: 240, easing: 'cubic-bezier(0.3, 1, 0.4, 1)' }
     )
     return
   }
@@ -115,10 +115,6 @@ export function pageReady() {
   pending?.()
   pending = null
 }
-
-export const titleTransitionName = (id) => ({ viewTransitionName: `title-${id}` })
-// inline-block: a named element must not break across lines, or the transition is dropped
-export const artistTransitionName = (id) => ({ viewTransitionName: `artist-${id}`, display: 'inline-block' })
 
 // Props for a <Link> that navigates with a transition (and still opens in a new tab
 // with Cmd/Ctrl-click like an ordinary link)

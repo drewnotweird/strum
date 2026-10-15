@@ -55,7 +55,7 @@ export default function Songs() {
   const highlight = chordQuery || (knownOnly ? known : null)
 
   const chip = (label, on, onClick, extra = '') => (
-    <button type="button" className={`chip filter-chip ${on ? 'is-current' : ''} ${extra}`} aria-pressed={on} onClick={onClick}>
+    <button key={label} type="button" className={`chip filter-chip ${on ? 'is-current' : ''} ${extra}`} aria-pressed={on} onClick={onClick}>
       {label}
     </button>
   )

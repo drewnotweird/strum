@@ -97,6 +97,8 @@ body {
   /* Faint paper grain */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   min-height: 100vh;
+  /* Tab switches nudge the page sideways; never let that scroll */
+  overflow-x: clip;
   color: var(--text);
   font-family: var(--font);
   font-weight: 600;
@@ -1735,7 +1737,10 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   inset: 0;
   border-radius: 16px;
   background: var(--brand-soft);
+  animation: pill-in 0.28s cubic-bezier(0.3, 1.4, 0.5, 1);
 }
+@keyframes pill-in { from { opacity: 0; transform: scale(0.7); } }
+@media (prefers-reduced-motion: reduce) { .tabbar__pill { animation: none; } }
 .tabbar__tab.is-on svg { stroke-width: 2.6; }
 .tabbar__tab:active { transform: scale(0.95); }
 

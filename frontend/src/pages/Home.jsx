@@ -74,7 +74,7 @@ export default function Home() {
 
       {resume && (
         <Link {...goLink(navigate, `/song/${resume.id}?from=${lastPlayed.step}`)} className="resume">
-          <SongCover song={resume} size={48} fly={false} />
+          <SongCover song={resume} size={48} />
           <span className="resume__text">
             <span className="resume__label">Keep going</span>
             <strong>{resume.title}</strong>
@@ -90,7 +90,7 @@ export default function Home() {
         <section className="featured" aria-labelledby="featured-title">
           {/* The pick is artwork: big, tilted, half off the card's edge */}
           <span className="featured__art" aria-hidden="true">
-            <SongCover song={featured} size={170} fly={false} />
+            <SongCover song={featured} size={170} />
           </span>
           <span className="featured__label">Song of the day</span>
           <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__title" id="featured-title">
@@ -121,7 +121,7 @@ export default function Home() {
             {favouriteSongs.map((song) => (
               <li key={song.id}>
                 <Link {...goLink(navigate, `/song/${song.id}`)} className="fav-tile">
-                  <SongCover song={song} size={64} fly={false} />
+                  <SongCover song={song} size={64} />
                   <span className="fav-tile__name" title={song.title}>{song.title}</span>
                 </Link>
               </li>

@@ -19,9 +19,8 @@ function hash(text) {
   return h
 }
 
-// `fly`: give it a shared name so it travels between pages. Only one cover per song may
-// have it on any page, so pages that show a song twice (Home) turn it off.
-export default function SongCover({ song, size = 56, fly = true }) {
+// It travels between pages with its song when that song is opened (see travels())
+export default function SongCover({ song, size = 56 }) {
   const [from, to] = PALETTES[hash(song.id) % PALETTES.length]
   const id = `cover-${song.id}`
   return (
