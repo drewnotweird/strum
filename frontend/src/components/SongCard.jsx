@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import SongCover from './SongCover.jsx'
-import { artistTransitionName, goLink, titleTransitionName } from '../lib/transition.js'
+import { goLink, travels } from '../lib/transition.js'
 
 export const LEVELS = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
@@ -10,7 +10,7 @@ export default function SongCard({ song, chords, learned = false, highlight = nu
   const navigate = useNavigate()
   return (
     <div className="song-card-wrap">
-      <Link {...goLink(navigate, `/song/${song.id}`)} className="song-card">
+      <Link {...goLink(navigate, `/song/${song.id}`, 'forward', song.id)} className="song-card">
         <span className="song-card__side">
           <span className="song-card__pick">
             <SongCover song={song} size={58} />
@@ -19,10 +19,10 @@ export default function SongCard({ song, chords, learned = false, highlight = nu
           <span className={`level level--${song.level}`}>{LEVELS[song.level]}</span>
         </span>
         <span className="song-card__body">
-          <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
+          <span className="song-card__title" {...travels('title', song.id)}>{song.title}</span>
           <span className="song-card__artist">
             <span>
-              <span style={artistTransitionName(song.id)}>{song.artist}</span>
+              <span {...travels('artist', song.id)}>{song.artist}</span>
               {song.kind === 'drill' ? ' · warm-up drill' : ''}
             </span>
             {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
