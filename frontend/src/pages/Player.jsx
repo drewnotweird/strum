@@ -8,7 +8,7 @@ import ChordDiagram from '../components/ChordDiagram.jsx'
 import SettingsPanel from '../components/SettingsPanel.jsx'
 import SongCover from '../components/SongCover.jsx'
 import { confetti } from '../lib/confetti.js'
-import { artistTransitionName, go, titleTransitionName } from '../lib/transition.js'
+import { go, travels } from '../lib/transition.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
 import { addPlayedChord, addPractice, setBeat, setEasyChords, setLefty, toggleLearned, useStore } from '../lib/store.js'
@@ -568,15 +568,15 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           aria-label="All songs"
           onClick={(e) => {
             e.preventDefault()
-            go(navigate, '/', 'back')
+            go(navigate, '/', 'back', song.id)
           }}
         >
           ←
         </Link>
         <div className="player__title">
-          <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
+          <h1 {...travels('title', song.id)}>{song.title}</h1>
           <p>
-            <span style={artistTransitionName(song.id)}>{song.artist}</span>
+            <span {...travels('artist', song.id)}>{song.artist}</span>
             {song.kind === 'drill' ? ' · warm-up drill' : ''}
             {song.capo > 0 && <span className="badge player__capo">Capo {song.capo}</span>}
           </p>

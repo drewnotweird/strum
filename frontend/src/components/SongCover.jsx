@@ -1,3 +1,5 @@
+import { travels } from '../lib/transition.js'
+
 // Each song's "cover": a guitar pick in its own colours with the song's emoji.
 // The colours come from the song id, so a song always looks the same.
 const PALETTES = [
@@ -28,7 +30,7 @@ export default function SongCover({ song, size = 56 }) {
       viewBox="0 0 100 100"
       aria-hidden="true"
       focusable="false"
-      style={{ viewTransitionName: `cover-${song.id}` }}
+      {...travels('cover', song.id)}
     >
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
