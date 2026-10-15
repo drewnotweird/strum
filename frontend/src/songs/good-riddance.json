@@ -1,0 +1,74 @@
+{
+  "id": "good-riddance",
+  "title": "Good Riddance (Time of Your Life)",
+  "artist": "Green Day",
+  "emoji": "🎓",
+  "level": 2,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 95,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "steps": [
+        "G",
+        "G",
+        "C|half",
+        "D|half",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "G",
+        "C|half",
+        "D|half",
+        "G"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "Em|half",
+        "D|half",
+        "C|half",
+        "G|half"
+      ]
+    },
+    "outro": {
+      "name": "Outro",
+      "steps": [
+        "G",
+        "C|half",
+        "D|half",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "outro"
+  ],
+  "notes": "G, C and D in the verses, then Em, D, C, G in the chorus. On the record each strum picks out the bass string first, then the rest: try hitting just the thickest string of each chord on beat one before you strum. Swap C for Cadd9 to keep your ring and pinky fingers still.",
+  "songsterr": "https://www.songsterr.com/a/wsa/green-day-good-riddance-time-of-your-life-tab-s75"
+}

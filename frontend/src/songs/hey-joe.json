@@ -1,0 +1,44 @@
+{
+  "id": "hey-joe",
+  "title": "Hey Joe",
+  "artist": "The Jimi Hendrix Experience",
+  "emoji": "🎸",
+  "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 84,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "half": "D - D U",
+    "full": "D - D U - U D U"
+  },
+  "defaultPattern": "half",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "C",
+        "G",
+        "D",
+        "A",
+        "E|full",
+        "E|full"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "verse",
+    "verse",
+    "verse"
+  ],
+  "notes": "Five chords going round and round: C, G, D, A, then two bars of E. Each one gets two beats, so the changes come fast. That makes it brilliant practice: look ahead at NEXT and start moving your fingers early.",
+  "songsterr": "https://www.songsterr.com/a/wsa/the-jimi-hendrix-experience-hey-joe-tab-s22556"
+}

@@ -1,0 +1,60 @@
+{
+  "id": "wish-you-were-here",
+  "title": "Wish You Were Here",
+  "artist": "Pink Floyd",
+  "emoji": "🌫️",
+  "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 61,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "half": "D - D U"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "steps": [
+        "Em7|half",
+        "G|half",
+        "Em7|half",
+        "G|half",
+        "Em7|half",
+        "A7sus4|half",
+        "Em7|half",
+        "A7sus4|half",
+        "G"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "steps": [
+        "C",
+        "D",
+        "Am",
+        "G",
+        "D",
+        "C",
+        "Am",
+        "G"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "intro",
+    "verse",
+    "intro"
+  ],
+  "notes": "The intro sits between Em7, G and A7sus4: your ring and pinky fingers barely move. The verse brings in C, D and Am. The record has a famous picked riff over the intro chords: learn that on Songsterr once the strumming feels relaxed.",
+  "songsterr": "https://www.songsterr.com/a/wsa/pink-floyd-wish-you-were-here-tab-s153"
+}

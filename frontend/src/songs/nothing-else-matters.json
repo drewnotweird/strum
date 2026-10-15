@@ -1,0 +1,67 @@
+{
+  "id": "nothing-else-matters",
+  "title": "Nothing Else Matters",
+  "artist": "Metallica",
+  "emoji": "🌙",
+  "level": 2,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 140,
+  "beatsPerBar": 6,
+  "perBeat": 1,
+  "patterns": {
+    "pick": "B 3 2 1 2 3",
+    "ring": "B - - - - -"
+  },
+  "defaultPattern": "pick",
+  "sections": {
+    "open": {
+      "name": "Open strings",
+      "repeat": 4,
+      "steps": [
+        "Em"
+      ]
+    },
+    "moves": {
+      "name": "Moving the bass",
+      "repeat": 2,
+      "steps": [
+        "Em",
+        "C",
+        "D",
+        "Em"
+      ]
+    },
+    "minor": {
+      "name": "Am and C",
+      "repeat": 2,
+      "steps": [
+        "Am",
+        "C",
+        "D",
+        "Em"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "steps": [
+        "Em|ring"
+      ]
+    }
+  },
+  "form": [
+    "open",
+    "moves",
+    "minor",
+    "open",
+    "end"
+  ],
+  "notes": "A warm-up for Nothing Else Matters, not the intro itself. It drills picking one string at a time: the bass string, then 3, 2, 1 and back. Numbers are strings, 1 is the thinnest. Start on Em, where every string is open, so you can watch your picking hand. When it flows, learn the real intro on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/metallica-nothing-else-matters-tab-s439171"
+}

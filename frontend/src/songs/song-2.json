@@ -1,0 +1,54 @@
+{
+  "id": "song-2",
+  "title": "Song 2",
+  "artist": "Blur",
+  "emoji": "🔊",
+  "level": 2,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 130,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "quiet": "D - - - D - - -",
+    "loud": "D D D D D D D D"
+  },
+  "defaultPattern": "quiet",
+  "sections": {
+    "quiet": {
+      "name": "Quiet bit",
+      "repeat": 2,
+      "steps": [
+        "E5",
+        "A5",
+        "G5",
+        "A5"
+      ]
+    },
+    "loud": {
+      "name": "Loud bit",
+      "repeat": 2,
+      "steps": [
+        "E5|loud",
+        "A5|loud",
+        "G5|loud",
+        "A5|loud"
+      ]
+    }
+  },
+  "form": [
+    "quiet",
+    "loud",
+    "quiet",
+    "loud",
+    "loud"
+  ],
+  "notes": "A warm-up for Song 2, not the riff itself. It drills going from quiet to LOUD on the same power chords: barely touch the strings in the quiet bit, then dig in for the loud bit (and shout the woo-hoo). When the jump feels good, learn the real riff on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/blur-song-2-tab-s3684"
+}

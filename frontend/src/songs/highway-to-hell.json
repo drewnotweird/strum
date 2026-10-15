@@ -1,0 +1,63 @@
+{
+  "id": "highway-to-hell",
+  "title": "Highway to Hell",
+  "artist": "AC/DC",
+  "emoji": "🔥",
+  "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 116,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "hit": "D - - - - - - -",
+    "pair": "D - D -",
+    "push": "D - D - D - D U"
+  },
+  "defaultPattern": "hit",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 4,
+      "steps": [
+        "A",
+        "D|pair",
+        "G|pair"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "D|pair",
+        "G|pair",
+        "A",
+        "D|pair",
+        "G|pair",
+        "A"
+      ]
+    },
+    "outro": {
+      "name": "Outro",
+      "steps": [
+        "A|push",
+        "A|hit"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus",
+    "outro"
+  ],
+  "notes": "Three open chords and lots of space. Hit the A and let it ring, then D and G quickly. The gaps matter as much as the chords: after each hit, rest your strumming hand on the strings to stop them dead. The record uses a D with F# in the bass (thumb over the top); a plain D is fine to start.",
+  "songsterr": "https://www.songsterr.com/a/wsa/ac-dc-highway-to-hell-tab-s289"
+}

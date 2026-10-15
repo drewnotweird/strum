@@ -1,0 +1,64 @@
+{
+  "id": "paranoid",
+  "title": "Paranoid",
+  "artist": "Black Sabbath",
+  "emoji": "😵‍💫",
+  "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 163,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "chug": "D D D D D D D D",
+    "half": "D D D D"
+  },
+  "defaultPattern": "chug",
+  "sections": {
+    "riff": {
+      "name": "Riff",
+      "repeat": 4,
+      "steps": [
+        "E5"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "E5",
+        "E5",
+        "E5",
+        "D5|half",
+        "G5|half",
+        "D5|half",
+        "E5|half"
+      ]
+    },
+    "bridge": {
+      "name": "Bridge",
+      "repeat": 2,
+      "steps": [
+        "C5|half",
+        "D5|half",
+        "E5"
+      ]
+    }
+  },
+  "form": [
+    "riff",
+    "verse",
+    "riff",
+    "verse",
+    "bridge",
+    "verse",
+    "riff"
+  ],
+  "notes": "Your first power chord song. Everything is down-strokes, fast and steady, and it lives on E5. The quick changes are D5, G5, D5, back to E5: keep the same two-finger shape and just move it. Rest the side of your hand on the strings by the bridge to chug the E5.",
+  "songsterr": "https://www.songsterr.com/a/wsa/black-sabbath-paranoid-tab-s296"
+}

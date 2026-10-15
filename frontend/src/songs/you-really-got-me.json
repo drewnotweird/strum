@@ -1,0 +1,65 @@
+{
+  "id": "you-really-got-me",
+  "title": "You Really Got Me",
+  "artist": "The Kinks",
+  "emoji": "👊",
+  "level": 2,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 138,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "stab": "D - D -",
+    "ring": "D - - - - - - -"
+  },
+  "defaultPattern": "stab",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 8,
+      "steps": [
+        "F5",
+        "G5"
+      ]
+    },
+    "up": {
+      "name": "Up a step",
+      "repeat": 4,
+      "steps": [
+        "G5",
+        "A5"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "steps": [
+        "C5",
+        "D5"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "steps": [
+        "G5|ring"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "up",
+    "chorus",
+    "verse",
+    "up",
+    "chorus",
+    "end"
+  ],
+  "notes": "Two power chords, short then long, over and over. The trick is that the whole pair slides up: F5 to G5, then G5 to A5, then C5 to D5. Same shape, new place. Let the second chord of each pair ring a little longer.",
+  "songsterr": "https://www.songsterr.com/a/wsa/the-kinks-you-really-got-me-tab-s10803"
+}

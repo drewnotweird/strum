@@ -1,0 +1,66 @@
+{
+  "id": "iron-man",
+  "title": "Iron Man",
+  "artist": "Black Sabbath",
+  "emoji": "🤖",
+  "level": 3,
+  "tags": [
+    "classic",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 76,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "hit": "D - - -",
+    "quick": "D -",
+    "hold": "D - - - - - - -"
+  },
+  "defaultPattern": "hit",
+  "sections": {
+    "heavy": {
+      "name": "Heavy moves",
+      "repeat": 2,
+      "steps": [
+        "B5|hold",
+        "D5|hold",
+        "E5|hold"
+      ]
+    },
+    "climb": {
+      "name": "Fret by fret",
+      "repeat": 2,
+      "steps": [
+        "G5|quick",
+        "F#5|quick",
+        "G5|quick",
+        "F#5|quick"
+      ]
+    },
+    "together": {
+      "name": "All together",
+      "repeat": 2,
+      "steps": [
+        "B5",
+        "D5",
+        "E5",
+        "G5|quick",
+        "F#5|quick",
+        "D5",
+        "E5"
+      ]
+    }
+  },
+  "form": [
+    "heavy",
+    "climb",
+    "together",
+    "together"
+  ],
+  "notes": "A warm-up for Iron Man, not the riff itself. It drills the slow, heavy power chord moves the riff is built from: big B5, D5 and E5 hits, then sliding one fret between G5 and F#5. Use the movable D5 on the A string if you can. When it feels heavy enough, learn the real riff on Songsterr.",
+  "songsterr": "https://www.songsterr.com/a/wsa/black-sabbath-iron-man-tab-s8"
+}

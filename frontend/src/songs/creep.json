@@ -1,0 +1,53 @@
+{
+  "id": "creep",
+  "title": "Creep",
+  "artist": "Radiohead",
+  "emoji": "🌧️",
+  "level": 3,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 92,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "main": "D - D U - U D U",
+    "chunk": "D D D D D D D D"
+  },
+  "defaultPattern": "main",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "G",
+        "B",
+        "C",
+        "Cm"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "G|chunk",
+        "B|chunk",
+        "C|chunk",
+        "Cm|chunk"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse"
+  ],
+  "notes": "Four chords, one bar each, the whole way through: G, B, C, Cm. B and Cm are your first stretch shapes. Here they are four-string versions; the full barre chords come later. Go from C to Cm by moving just two fingers. The chorus is the same chords played loud.",
+  "songsterr": "https://www.songsterr.com/a/wsa/radiohead-creep-tab-s97"
+}

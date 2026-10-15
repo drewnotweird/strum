@@ -1,0 +1,73 @@
+{
+  "id": "all-the-small-things",
+  "title": "All the Small Things",
+  "artist": "blink-182",
+  "emoji": "🛹",
+  "level": 1,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 148,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "chug": "D D D D D D D D",
+    "stop": "D - - - - - - -"
+  },
+  "defaultPattern": "chug",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "repeat": 2,
+      "steps": [
+        "C5",
+        "G5",
+        "F5",
+        "G5"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "C5",
+        "G5",
+        "F5",
+        "G5"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "C5",
+        "G5",
+        "F5",
+        "G5"
+      ]
+    },
+    "outro": {
+      "name": "Outro",
+      "steps": [
+        "C5",
+        "G5",
+        "F5",
+        "G5|stop"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "outro"
+  ],
+  "notes": "Four power chords, one bar each, nearly the whole way through: C5, G5, F5, G5. The same shape moves between the A and low E strings. It is all about stamina: keep the down-strokes even and don't speed up. The bridge changes the order; learn it from Songsterr once this feels easy.",
+  "songsterr": "https://www.songsterr.com/a/wsa/blink-182-all-the-small-things-tab-s258"
+}

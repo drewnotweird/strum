@@ -22,6 +22,9 @@ export const chords = {
   Bm: { frets: [-1, -1, 4, 4, 3, 2], fingers: [0, 0, 3, 4, 2, 1], root: 4 },
   // Easy four-string Fm, the little sister of the easy F
   Fm: { frets: [-1, -1, 3, 1, 1, 1], fingers: [0, 0, 3, 1, 1, 1], root: 4 },
+  // Easy four-string B and Cm (Creep): the top of the barre shapes, no barre needed
+  B:  { frets: [-1, -1, 4, 4, 4, 2], fingers: [0, 0, 2, 3, 4, 1], root: 4 },
+  Cm: { frets: [-1, -1, 5, 5, 4, 3], fingers: [0, 0, 3, 4, 2, 1], root: 4 },
   // A Horse With No Name's second chord: two fingers, everything else open
   'D6/9': { frets: [2, 0, 0, 2, 0, 0], fingers: [1, 0, 0, 2, 0, 0], root: 6 },
 

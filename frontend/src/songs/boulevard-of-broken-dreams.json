@@ -1,0 +1,63 @@
+{
+  "id": "boulevard-of-broken-dreams",
+  "title": "Boulevard of Broken Dreams",
+  "artist": "Green Day",
+  "emoji": "🌃",
+  "level": 2,
+  "tags": [
+    "90s",
+    "rock"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 1,
+  "bpm": 84,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "mute": "D D D D D D D D",
+    "open": "D - D U - U D U"
+  },
+  "defaultPattern": "mute",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "steps": [
+        "Em",
+        "G",
+        "D",
+        "A"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "steps": [
+        "C|open",
+        "G|open",
+        "D|open",
+        "Em|open"
+      ]
+    },
+    "bridge": {
+      "name": "Bridge",
+      "steps": [
+        "C|open",
+        "G|open",
+        "D|open",
+        "Em|open"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "bridge",
+    "chorus"
+  ],
+  "notes": "Capo on the first fret. The verses are palm-muted: rest the side of your picking hand on the strings by the bridge and keep the down-strokes even and chunky. Lift your hand off for the chorus so the chords open right up. That quiet-to-big switch is the whole song.",
+  "songsterr": "https://www.songsterr.com/a/wsa/green-day-boulevard-of-broken-dreams-tab-s92866"
+}
