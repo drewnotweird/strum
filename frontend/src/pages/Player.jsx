@@ -25,6 +25,8 @@ function tokenLabel(token, chord) {
 const mailto = (subject, body) =>
   `mailto:drewnotweird@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
+const LEVELS = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
+
 const isPick = (token) => token === 'B' || /^\d$/.test(token)
 
 // What a screen reader says for a strum pattern
@@ -571,15 +573,18 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         >
           ←
         </Link>
-        <SongCover song={song} size={44} />
         <div className="player__title">
           <h1 style={titleTransitionName(song.id)}>{song.title}</h1>
           <p>
             <span style={artistTransitionName(song.id)}>{song.artist}</span>
             {song.kind === 'drill' ? ' · warm-up drill' : ''}
+            {song.capo > 0 && <span className="badge player__capo">Capo {song.capo}</span>}
           </p>
         </div>
-        {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
+        <span className="player__pick">
+          <SongCover song={song} size={44} />
+          {LEVELS[song.level] && <span className={`level level--${song.level}`}>{LEVELS[song.level]}</span>}
+        </span>
       </header>
 
       {extra}
