@@ -3,7 +3,7 @@ import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { songs } from '../lib/song.js'
 import { makeCatalogue, search } from '../lib/search.js'
 import { chordLabel } from '../data/chords.js'
-import { artistTransitionName, go, listReady, titleTransitionName } from '../lib/transition.js'
+import { go, listReady, travels } from '../lib/transition.js'
 import { secondsToday, setEasyChords, setLefty, streakOf, useStore } from '../lib/store.js'
 import GoalRing from '../components/GoalRing.jsx'
 import SongCover from '../components/SongCover.jsx'
@@ -236,7 +236,7 @@ export default function Home() {
                 onClick={(e) => {
                   if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
                   e.preventDefault()
-                  go(navigate, `/song/${song.id}`, 'forward')
+                  go(navigate, `/song/${song.id}`, 'forward', song.id)
                 }}
               >
                 <span className="song-card__side">
@@ -247,10 +247,10 @@ export default function Home() {
                   <span className={`level level--${song.level}`}>{levels[song.level]}</span>
                 </span>
                 <span className="song-card__body">
-                  <span className="song-card__title" style={titleTransitionName(song.id)}>{song.title}</span>
+                  <span className="song-card__title" {...travels('title', song.id)}>{song.title}</span>
                   <span className="song-card__artist">
                     <span>
-                      <span style={artistTransitionName(song.id)}>{song.artist}</span>
+                      <span {...travels('artist', song.id)}>{song.artist}</span>
                       {song.kind === 'drill' ? ' · warm-up drill' : ''}
                     </span>
                     {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}

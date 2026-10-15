@@ -770,6 +770,12 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 @keyframes page-out-down { to { opacity: 0; transform: translateY(40px); } }
 @keyframes page-in-from-above { from { opacity: 0; transform: translateY(-56px); } }
 
+/* Song text that travels (see lib/transition.js): the box hugs the words, so the snapshot
+   grows with the text rather than squashing to fit a wider or narrower column. A named
+   element must not break across lines, so the artist stays in one piece. */
+[data-vt='title'] { width: fit-content; max-width: 100%; }
+[data-vt='artist'] { display: inline-block; }
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   .blob { transition: none; }
