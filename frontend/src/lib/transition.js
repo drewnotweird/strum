@@ -79,19 +79,16 @@ export function go(navigate, to, direction, shared) {
     })
     page.animate(
       [
-        { opacity: 1, transform: 'translateX(0)' },
-        { opacity: 0, transform: `translateX(${forward ? '-18px' : '18px'})` },
+        { opacity: 1 },
+        { opacity: 0 },
       ],
-      { duration: 110, easing: 'ease-in', fill: 'forwards' }
+      { duration: 90, easing: 'ease-in', fill: 'forwards' }
     ).finished.catch(() => {}).then(() => {
       if (token !== tabNavigation) return
       swap()
       document.querySelector('main')?.animate(
-        [
-          { opacity: 0, transform: `translateX(${forward ? '28px' : '-28px'})` },
-          { opacity: 1, transform: 'translateX(0)' },
-        ],
-        { duration: 260, easing: 'cubic-bezier(0.2, 0.75, 0.25, 1)' }
+        [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 220, easing: 'ease-out' }
       )
     })
     return

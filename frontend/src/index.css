@@ -1695,11 +1695,12 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 
 .tabbar {
   position: fixed;
-  left: 50%;
+  left: max(10px, calc((100vw - 460px) / 2));
+  right: max(10px, calc((100vw - 460px) / 2));
   bottom: calc(10px + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
   z-index: 50;
-  width: min(460px, calc(100% - 20px));
+  width: auto;
+  max-width: 460px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   padding: 6px;
