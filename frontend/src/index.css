@@ -1988,6 +1988,8 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   gap: 10px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
+  /* Tiles snap to the page edge, in line with the cards, not to the bleed */
+  scroll-padding-inline: 16px;
   scrollbar-width: none;
 }
 
