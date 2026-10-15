@@ -94,25 +94,26 @@ export default function Home() {
 
       {featured && (
         <section className="featured" aria-labelledby="featured-title">
-          <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__link">
-            <span className="featured__label" id="featured-title">Song of the day</span>
-            <span className="featured__main">
-              <SongCover song={featured} size={92} fly={false} />
-              <span className="featured__text">
-                <strong>{featured.title}</strong>
-                <span>{featured.artist}</span>
-                <span className="featured__meta">
-                  <span className={`level level--${featured.level}`}>{LEVELS[featured.level]}</span>
-                  {songChords(featured).slice(0, 5).map((c) => <span key={c} className="mini-chord">{c}</span>)}
-                </span>
-              </span>
-            </span>
-            <span className="featured__cta">
+          {/* The pick is artwork: big, tilted, half off the card's edge */}
+          <span className="featured__art" aria-hidden="true">
+            <SongCover song={featured} size={170} fly={false} />
+          </span>
+          <span className="featured__label">Song of the day</span>
+          <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__title" id="featured-title">
+            {featured.title}
+          </Link>
+          <span className="featured__artist">{featured.artist}</span>
+          <span className="featured__meta">
+            <span className={`level level--${featured.level}`}>{LEVELS[featured.level]}</span>
+            {songChords(featured).slice(0, 4).map((c) => <span key={c} className="mini-chord">{c}</span>)}
+          </span>
+          <span className="featured__actions">
+            <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__cta" aria-label={`Play ${featured.title}`}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
               Play it
-            </span>
-          </Link>
-          <FavouriteButton song={featured} className="featured__fav" />
+            </Link>
+            <FavouriteButton song={featured} className="featured__fav" />
+          </span>
         </section>
       )}
 
