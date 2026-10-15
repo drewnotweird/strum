@@ -3,7 +3,7 @@
 export const TAGS = {
   classic: 'Classics',
   '80s': '80s',
-  '90s': '90s and now',
+  '90s': '90s & now',
   rock: 'Rock & metal',
   singalong: 'Sing-alongs',
   christmas: 'Christmas',

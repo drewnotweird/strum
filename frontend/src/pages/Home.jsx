@@ -17,7 +17,7 @@ const FINDERS = [
   { to: '/songs?tag=80s', name: '80s', emoji: '📼' },
   { to: '/songs?tag=rock', name: 'Rock & metal', emoji: '🤘' },
   { to: '/songs?tag=classic', name: 'Classics', emoji: '📻' },
-  { to: '/songs?tag=90s', name: '90s and now', emoji: '💿' },
+  { to: '/songs?tag=90s', name: '90s & now', emoji: '💿' },
   { to: '/songs?tag=singalong', name: 'Sing-alongs', emoji: '🎤' },
   { to: '/songs?tag=christmas', name: 'Christmas', emoji: '🎄' },
 ]
