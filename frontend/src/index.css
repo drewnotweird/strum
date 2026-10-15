@@ -282,11 +282,15 @@ h1[tabindex='-1']:focus { outline: none; }
   border-bottom-color: var(--brand-deep);
 }
 
-/* Landscape: label on top, chord name beside its diagram, strums along the bottom */
+/* NOW is two equal halves: label and chord name on the left, the diagram on the right,
+   strums along the bottom. The name sizes to its half (see data-len below), so a long
+   name like Cadd9 can never squeeze the diagram out. */
 .now {
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas: "label label" "name diagram" "strum strum";
+  container-type: inline-size;
+  --name-cap: 140px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "label diagram" "name diagram" "strum strum";
   column-gap: 4%;
 }
 
@@ -304,8 +308,8 @@ h1[tabindex='-1']:focus { outline: none; }
 .strum-wrap { grid-area: strum; }
 .now__done { grid-area: done; }
 
-.now .chord-name { justify-self: end; }
-.now .diagram-button { justify-self: start; }
+.now .chord-name { justify-self: start; max-width: 100%; }
+.now .diagram-button { justify-self: center; }
 
 .stage__label {
   justify-self: start;
@@ -320,7 +324,13 @@ h1[tabindex='-1']:focus { outline: none; }
 .now.is-ended .stage__label { color: var(--brand-dark); }
 
 .chord-name { font-weight: 900; line-height: 1; }
-.chord-name--now { font-size: clamp(64px, 11vw, 140px); color: var(--text); }
+.chord-name--now { font-size: min(var(--name-cap), 30cqi); color: var(--text); }
+/* Longer names get smaller, so every name fits the left half of the card (cqi = % of the card) */
+.chord-name--now[data-len='2'] { font-size: min(var(--name-cap), 25cqi); }
+.chord-name--now[data-len='3'] { font-size: min(var(--name-cap), 19cqi); }
+.chord-name--now[data-len='4'] { font-size: min(var(--name-cap), 15.5cqi); }
+.chord-name--now[data-len='5'] { font-size: min(var(--name-cap), 13cqi); }
+.chord-name--now[data-len='6'] { font-size: min(var(--name-cap), 11cqi); }
 .chord-name--next { font-size: clamp(36px, 5vw, 64px); margin: 20px 0 8px; color: var(--muted); }
 .chord-name.is-end { color: var(--muted); }
 
@@ -528,7 +538,7 @@ h1[tabindex='-1']:focus { outline: none; }
   .stage { grid-template-columns: 1fr; }
 
   .now, .next {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     padding: 14px 10px 14px 16px;
     grid-template-rows: auto auto 1fr;
     grid-template-areas: "label diagram" "name diagram" "strum diagram";
@@ -543,7 +553,8 @@ h1[tabindex='-1']:focus { outline: none; }
   .now .diagram-button { justify-self: stretch; }
   .next .diagram { justify-self: center; }
 
-  .chord-name--now { font-size: clamp(48px, 13vw, 120px); margin: 6px 0 12px; }
+  .now { --name-cap: 120px; }
+  .chord-name--now { margin: 6px 0 12px; }
   .chord-name--next { margin: 6px 0 0; }
 
   .diagram--now { width: 100%; max-height: 52vh; }
@@ -583,10 +594,7 @@ h1[tabindex='-1']:focus { outline: none; }
 
   .now, .next { min-height: 0; overflow: hidden; }
 
-  .now {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-  }
+  .now { --name-cap: 22vh; }
   .next { grid-template-rows: auto auto minmax(0, 1fr); }
 
   /* Height-led sizing: aspect-ratio lets the width follow the height */
@@ -603,7 +611,6 @@ h1[tabindex='-1']:focus { outline: none; }
   .diagram--now { padding: 8px 0; }
   .diagram--next { padding: 6px 0 0; }
 
-  .chord-name--now { font-size: min(22vh, 12vw); }
   .chord-name--next { font-size: min(10vh, 6vw); margin: 10px 0 0; }
 
   .strum-wrap { min-height: 0; }

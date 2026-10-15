@@ -624,7 +624,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
             </div>
           ) : (
             <>
-              <span className="chord-name chord-name--now">{chordLabel(now.chord)}</span>
+              <span className="chord-name chord-name--now" data-len={Math.min(6, chordLabel(now.chord).length)}>{chordLabel(now.chord)}</span>
               <button
                 className="diagram-button"
                 onClick={() => playerRef.current.preview(voiceFor(now.chord, 'D', song.capo))}
