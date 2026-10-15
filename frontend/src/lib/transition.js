@@ -5,7 +5,6 @@ const scrolls = new Map()
 const here = () => window.location.pathname + window.location.search
 // Resolves a history-back transition once the page has rendered (see pageReady)
 let pending = null
-let tabNavigation = 0
 
 // Elements only receive a view-transition name while their song is travelling.
 function nameShared(song, on) {
@@ -72,25 +71,19 @@ export function go(navigate, to, direction, shared) {
       swap()
       return
     }
-    const token = ++tabNavigation
-    const forward = direction === 'tab-next'
+    swap()
+    const nextPage = document.querySelector('main')
+    if (!nextPage) return
     page.getAnimations().forEach((animation) => {
       if (animation.effect?.target === page) animation.cancel()
     })
-    page.animate(
-      [
-        { opacity: 1 },
-        { opacity: 0 },
-      ],
-      { duration: 90, easing: 'ease-in', fill: 'forwards' }
-    ).finished.catch(() => {}).then(() => {
-      if (token !== tabNavigation) return
-      swap()
-      document.querySelector('main')?.animate(
-        [{ opacity: 0 }, { opacity: 1 }],
-        { duration: 220, easing: 'ease-out' }
-      )
+    nextPage.getAnimations().forEach((animation) => {
+      if (animation.effect?.target === nextPage) animation.cancel()
     })
+    nextPage.animate(
+      [{ opacity: 0.88 }, { opacity: 1 }],
+      { duration: 160, easing: 'ease-out' }
+    )
     return
   }
 
