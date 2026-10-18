@@ -626,10 +626,12 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
             <>
               <span className="chord-name chord-name--now" data-len={Math.min(6, chordLabel(now.chord).length)}>{chordLabel(now.chord)}</span>
               <button
+                type="button"
                 className="diagram-button"
                 onClick={() => playerRef.current.preview(voiceFor(now.chord, 'D', song.capo))}
-                aria-label={`Hear ${chordLabel(now.chord)}`}
               >
+                {/* Named by its content: "Hear" plus the diagram's description of the shape */}
+                <span className="sr-only">Hear </span>
                 <ChordDiagram name={now.chord} className="diagram--now" />
               </button>
               <div className="strum-wrap">
@@ -665,13 +667,13 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
               goTo(stepIndex + 1)
             }
           } : undefined}
-          aria-label={next && !ended ? `Move ${chordLabel(next.chord)} up to now` : undefined}
         >
           <span className="stage__label">Next{next && next.section !== now.section ? ` · ${next.section}` : ''}</span>
           {next && !ended ? (
             <>
               <span className="chord-name chord-name--next">{chordLabel(next.chord)}</span>
-              <ChordDiagram name={next.chord} className="diagram--next" />
+              <span className="sr-only">, tap to move it up to now</span>
+              <ChordDiagram name={next.chord} className="diagram--next" decorative />
             </>
           ) : (
             <span className="chord-name chord-name--next is-end">End</span>

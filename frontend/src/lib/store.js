@@ -53,9 +53,6 @@ export const setBeat = (beat) => set({ beat })
 
 export const setGoalMinutes = (goalMinutes) => set({ goalMinutes })
 
-const GOALS = [5, 10, 15, 20]
-export const cycleGoal = () => set({ goalMinutes: GOALS[(GOALS.indexOf(state.goalMinutes) + 1) % GOALS.length] })
-
 export function addPlayedChord(name) {
   if (!state.playedChords.includes(name)) set({ playedChords: [...state.playedChords, name] })
 }

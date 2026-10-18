@@ -63,11 +63,12 @@ export default function Home() {
             </svg>
           </div>
         </div>
-        <Link {...goLink(navigate, '/progress', 'tab')} className="progress-pill" aria-label={`Today ${minutesToday} of ${goalMinutes} minutes, ${streak}-day streak. Open Progress.`}>
+        {/* Named by what it shows, so voice control works by saying it */}
+        <Link {...goLink(navigate, '/progress', 'tab')} className="progress-pill">
           <GoalRing share={goalShare} size={34} />
           <span>
-            <strong>{minutesToday}/{goalMinutes} min</strong>
-            <span>🔥 {streak} {streak === 1 ? 'day' : 'days'}</span>
+            <strong>{minutesToday}/{goalMinutes} min<span className="sr-only"> today,</span></strong>
+            <span><span aria-hidden="true">🔥 </span>{streak} {streak === 1 ? 'day' : 'days'}<span className="sr-only"> streak. Open Progress</span></span>
           </span>
         </Link>
       </header>
@@ -101,9 +102,9 @@ export default function Home() {
             {songChords(featured).slice(0, 4).map((c) => <span key={c} className="mini-chord">{c}</span>)}
           </span>
           <span className="featured__actions">
-            <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__cta" aria-label={`Play ${featured.title}, ${LEVELS[featured.level]} difficulty`}>
+            <Link {...goLink(navigate, `/song/${featured.id}`)} className="featured__cta">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-              Play it
+              Play it<span className="sr-only">: {featured.title},</span>
               <span className={`level level--${featured.level} featured__level`}>{LEVELS[featured.level]}</span>
             </Link>
             <FavouriteButton song={featured} className="featured__fav" />

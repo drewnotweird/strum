@@ -130,21 +130,6 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
   padding: 40px 16px 64px;
 }
 
-.home__head h1 {
-  font-size: clamp(56px, 14vw, 88px);
-  font-weight: 900;
-  line-height: 0.9;
-  margin: 0 0 12px;
-  color: var(--brand);
-  letter-spacing: -0.02em;
-}
-
-.home__head p {
-  margin: 0 0 24px;
-  color: var(--muted);
-  font-size: 19px;
-}
-
 .songs {
   list-style: none;
   margin: 0;
@@ -164,15 +149,7 @@ button { font: inherit; color: inherit; -webkit-tap-highlight-color: transparent
 
 .song-card:hover { background: var(--soft); }
 
-.song-card__top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 .song-card__title { font-size: 21px; font-weight: 900; line-height: 1.15; }
-.song-card__top .level { flex: none; margin-top: 2px; }
 
 .song-card__artist {
   display: flex;
@@ -506,6 +483,7 @@ h1[tabindex='-1']:focus { outline: none; }
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   padding: 2px 16px 8px;
   margin: 0 -16px;
@@ -660,8 +638,6 @@ h1[tabindex='-1']:focus { outline: none; }
 .burst { width: clamp(44px, 9vw, 64px); flex: none; margin-top: -0.3em; }
 .burst line { stroke: var(--brand); stroke-width: 7; stroke-linecap: round; }
 
-.home__head p { max-width: 460px; color: var(--muted); font-weight: 800; }
-
 /* The capo badge can sit over the top-right blob, so give it its own backing */
 .player__head .badge { background: var(--surface); border: 2px solid var(--brand); }
 
@@ -725,30 +701,6 @@ h1[tabindex='-1']:focus { outline: none; }
   cursor: pointer;
 }
 
-.levels { display: flex; gap: 8px; }
-
-.level-filter {
-  height: 54px;
-  padding: 0 14px;
-  border-radius: 16px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
-  background: var(--surface);
-  color: var(--muted);
-  font-weight: 900;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
-}
-
-.level-filter:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
-
-.level-filter--1.is-on { background: var(--easy-soft); border-color: var(--easy-edge); color: var(--easy); }
-.level-filter--2.is-on { background: var(--medium-soft); border-color: var(--medium-edge); color: var(--medium); }
-.level-filter--3.is-on { background: var(--tricky-soft); border-color: var(--tricky-edge); color: var(--tricky); }
-
 .filter__hint { margin: -4px 0 14px; color: var(--brand-dark); font-weight: 800; }
 
 .empty {
@@ -759,11 +711,6 @@ h1[tabindex='-1']:focus { outline: none; }
   background: var(--surface);
   border: 2px dashed var(--line-dark);
   border-radius: 16px;
-}
-
-@media (max-width: 480px) {
-  .levels { width: 100%; }
-  .level-filter { flex: 1; height: 46px; }
 }
 
 /* Page transitions (View Transitions API): pages slide up and down and the song title
@@ -816,8 +763,6 @@ h1[tabindex='-1']:focus { outline: none; }
 .diagram-button:active .diagram { transform: scale(0.97); }
 .diagram-button .diagram { transition: transform 0.08s; }
 
-.toggles { display: flex; gap: 8px; }
-
 /* Keyboard focus: a clear blue ring on anything focusable */
 :focus-visible {
   outline: 3px solid var(--brand-dark);
@@ -848,49 +793,13 @@ h1[tabindex='-1']:focus { outline: none; }
   margin-bottom: 24px;
 }
 
-.tool-card {
-  display: grid;
-  align-content: start;
-  gap: 4px;
-  padding: 14px;
-  border-radius: 16px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
-  background: var(--surface);
-  text-decoration: none;
-  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
-}
-
-.tool-card:hover { border-color: var(--brand); }
-.tool-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
-
-.tool-card svg {
-  width: 32px;
-  height: 32px;
-  fill: none;
-  stroke: var(--brand);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.tool-card svg .fill { fill: var(--brand); stroke: none; }
-.tool-card svg .thin { stroke-width: 1.3; }
-
-.tool-card__name { font-weight: 900; font-size: 17px; }
-.tool-card__blurb { font-size: 13px; color: var(--muted); line-height: 1.3; }
-
 /* Phones: three compact tiles in a row, so the songs stay near the top */
 @media (max-width: 480px) {
   .tools { gap: 8px; margin-bottom: 18px; }
-  .tool-card { justify-items: center; text-align: center; padding: 10px 6px; }
-  .tool-card__name { font-size: 14px; line-height: 1.15; }
-  .tool-card__blurb { display: none; }
-  .level-filter { padding: 0 6px; font-size: 13px; white-space: nowrap; }
-}
+  
 
-/* ---------- Learned songs ---------- */
-.song-card__badges { display: flex; align-items: center; gap: 6px; flex: none; }
+  
+}
 
 .tick {
   display: grid;
@@ -903,8 +812,6 @@ h1[tabindex='-1']:focus { outline: none; }
   font-weight: 900;
   font-size: 14px;
 }
-
-.level-filter--learned.is-on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
 
 .btn--learned {
   padding: 12px 20px;
@@ -924,7 +831,6 @@ h1[tabindex='-1']:focus { outline: none; }
 
 .home__foot { margin-top: 28px; display: flex; justify-content: center; }
 
-.toggles { flex-wrap: wrap; justify-content: center; }
 .btn--toggle:disabled { opacity: 0.45; cursor: default; }
 
 /* ---------- Tool pages (tuner, chords) ---------- */
@@ -1149,8 +1055,6 @@ h1[tabindex='-1']:focus { outline: none; }
   100% { opacity: 0.45; transform: scale(1); }
 }
 
-.btn--listen.is-on { background: var(--brand); border-color: var(--brand-deep); color: #fff; }
-
 .segmented--small { height: auto; }
 .segmented--small button { padding: 8px 10px; font-size: 13px; }
 
@@ -1358,38 +1262,6 @@ h1[tabindex='-1']:focus { outline: none; }
 .goal-ring__fill { fill: none; stroke: var(--brand); stroke-width: 5; stroke-linecap: round; transition: stroke-dasharray 0.4s; }
 .goal-ring.is-done .goal-ring__fill { stroke: var(--easy-edge); }
 
-/* ---------- Progress card on the home page ---------- */
-.progress-card {
-  display: flex;
-  align-items: center;
-  gap: 6px 14px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-  padding: 12px 16px;
-  border-radius: 18px;
-  border: 2px solid var(--line);
-  border-bottom-width: 4px;
-  background: var(--surface);
-  text-decoration: none;
-  transition: transform 0.08s, border-bottom-width 0.08s, margin 0.08s;
-}
-
-.progress-card:hover { border-color: var(--brand); }
-.progress-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 16px; }
-
-.progress-card__goal { display: flex; align-items: center; gap: 10px; margin-right: auto; }
-.progress-card strong { display: block; font-weight: 900; font-size: 17px; line-height: 1.1; }
-.progress-card span span, .progress-card__stat > span { font-size: 12px; color: var(--muted); font-weight: 800; }
-.progress-card__stat { text-align: center; min-width: 54px; }
-.progress-card__stat.is-hot strong { color: var(--hot); }
-.progress-card__more { font-size: 22px; font-weight: 900; color: var(--brand); }
-
-@media (max-width: 480px) {
-  .progress-card { gap: 8px 10px; padding: 10px 12px; }
-  .progress-card__goal { flex-basis: 100%; }
-  .progress-card__more { margin-left: auto; }
-}
-
 /* ---------- Progress page ---------- */
 .stat-card {
   padding: 16px 18px;
@@ -1474,7 +1346,6 @@ h1[tabindex='-1']:focus { outline: none; }
 .quick:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
 .quick:disabled { opacity: 0.45; cursor: default; }
 .quick.is-on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-dark); }
-
 
 /* Phones: three even tiles, icon above the label */
 @media (max-width: 480px) {
@@ -1624,7 +1495,7 @@ body.has-panel { overflow: hidden; }
    ===================================================================== */
 
 /* Soft depth on the main surfaces, on top of the chunky pressable edge */
-.song-card, .now, .next, .tool-card, .stat-card, .chord-card, .progress-card, .search {
+.song-card, .now, .next, .stat-card, .chord-card, .search {
   box-shadow: var(--shadow);
 }
 
@@ -1643,37 +1514,6 @@ body.has-panel { overflow: hidden; }
 .song-card:hover .song-cover { transform: rotate(-8deg) scale(1.05); }
 .song-cover { transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1); }
 .song-card__body { display: grid; gap: 4px; min-width: 0; }
-
-
-
-/* ---------- Progress card as the home page hero ---------- */
-.progress-card {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #2f8cf0 0%, #1f6fd1 55%, #1458a8 100%);
-  border-color: #1458a8;
-  color: #fff;
-}
-
-/* A soft highlight sweeping across the card */
-.progress-card::before {
-  content: '';
-  position: absolute;
-  inset: -40% auto auto -20%;
-  width: 70%;
-  height: 180%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.22), transparent);
-  pointer-events: none;
-}
-
-.progress-card:hover { border-color: #0f4685; }
-.progress-card strong { color: #fff; }
-.progress-card span span, .progress-card__stat > span { color: rgba(255, 255, 255, 0.85); }
-.progress-card__stat.is-hot strong { color: #ffd58a; }
-.progress-card__more { color: #fff; transition: transform 0.2s; }
-.progress-card:hover .progress-card__more { transform: translateX(4px); }
-.progress-card .goal-ring__track { stroke: rgba(255, 255, 255, 0.28); }
-.progress-card .goal-ring__fill { stroke: #fff; }
 
 /* ---------- Focus mode: while a song plays, everything but the stage steps back ---------- */
 .player .player__head,
@@ -1758,7 +1598,7 @@ body.has-panel { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .strum__slot.is-on::after, .count { animation: none; }
-  .song-card, .song-cover, .progress-card__more { transition: none; }
+  .song-card, .song-cover { transition: none; }
   .player .player__head, .player .quickbar, .player .song-actions, .player .tips, .player .report { transition: none; }
   .action-card, .action-card--learned.is-on .action-card__icon { transition: none; animation: none; }
 }
@@ -1875,9 +1715,9 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   box-shadow: var(--shadow);
 }
 
-.progress-pill span { display: grid; line-height: 1.15; }
+.progress-pill > span { display: grid; line-height: 1.15; }
 .progress-pill strong { font-size: 14px; font-weight: 900; }
-.progress-pill span span { font-size: 12px; font-weight: 800; color: var(--hot); }
+.progress-pill > span > span { font-size: 12px; font-weight: 800; color: var(--hot); }
 
 /* Keep going */
 .resume {
@@ -1987,6 +1827,7 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   display: flex;
   gap: 10px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   /* Tiles snap to the page edge, in line with the cards, not to the bleed */
   scroll-padding-inline: 16px;
@@ -2081,6 +1922,7 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   margin: 0 -16px 10px;
   padding: 2px 16px 6px;
   scrollbar-width: none;

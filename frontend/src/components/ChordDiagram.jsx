@@ -16,7 +16,8 @@ function describe(name, shape) {
   return `${shape.label || name} chord: ${parts.join(', ')}`
 }
 
-export default function ChordDiagram({ name, className = '' }) {
+// `decorative`: the chord is already named nearby, so screen readers skip the picture
+export default function ChordDiagram({ name, className = '', decorative = false }) {
   const lefty = useStore((s) => s.lefty)
   const shape = chords[name]
   if (!shape) return <div className={`diagram diagram--missing ${className}`}>?</div>
@@ -35,7 +36,7 @@ export default function ChordDiagram({ name, className = '' }) {
   const y = (f) => top + f * fretH
 
   return (
-    <svg className={`diagram ${className}`} viewBox={`0 0 ${w} ${h}`} role="img" aria-label={describe(name, shape)}>
+    <svg className={`diagram ${className}`} viewBox={`0 0 ${w} ${h}`} {...(decorative ? { 'aria-hidden': true, focusable: 'false' } : { role: 'img', 'aria-label': describe(name, shape) })}>
       {base === 1 ? (
         <rect x={left - 1} y={top - 4} width={5 * gap + 2} height={4} className="diagram__nut" />
       ) : (

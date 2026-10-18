@@ -1,18 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home.jsx'
-import Player from './pages/Player.jsx'
-import Tuner from './pages/Tuner.jsx'
-import Trainer from './pages/Trainer.jsx'
-import Chords from './pages/Chords.jsx'
-import Sheet from './pages/Sheet.jsx'
-import Progress from './pages/Progress.jsx'
-import Songs from './pages/Songs.jsx'
-import Practice from './pages/Practice.jsx'
 import TabBar from './components/TabBar.jsx'
 import Toaster from './components/Toaster.jsx'
 import './index.css'
+
+// Every page but Home loads on demand, so the first visit downloads only what it shows.
+// Once loaded, a page renders straight away (no Suspense pause), which keeps page
+// transitions from snapshotting a blank screen.
+function page(load) {
+  let Loaded = null
+  const preload = () => load().then((m) => (Loaded = m.default))
+  const Lazy = lazy(() => preload().then(() => ({ default: Loaded })))
+  const Page = (props) => (Loaded ? <Loaded {...props} /> : <Lazy {...props} />)
+  Page.preload = preload
+  return Page
+}
+
+const Songs = page(() => import('./pages/Songs.jsx'))
+const Practice = page(() => import('./pages/Practice.jsx'))
+const Player = page(() => import('./pages/Player.jsx'))
+const Sheet = page(() => import('./pages/Sheet.jsx'))
+const Tuner = page(() => import('./pages/Tuner.jsx'))
+const Trainer = page(() => import('./pages/Trainer.jsx'))
+const Chords = page(() => import('./pages/Chords.jsx'))
+const Progress = page(() => import('./pages/Progress.jsx'))
+
+// Fetch the rest in the background once the first page is up, so every tap is instant
+const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200))
+window.addEventListener('load', () => idle(() => {
+  for (const P of [Songs, Player, Practice, Progress, Trainer, Tuner, Chords, Sheet]) P.preload().catch(() => {})
+}))
 
 // Each main page has its own colour (Home blue, Songs violet, Practice teal, Progress
 // orange); the practice tools share Practice's. Song pages keep the blue.
@@ -45,17 +64,19 @@ function Blobs() {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Blobs />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/songs" element={<Songs />} />
-      <Route path="/practice" element={<Practice />} />
-      <Route path="/song/:id" element={<Player />} />
-      <Route path="/song/:id/sheet" element={<Sheet />} />
-      <Route path="/tuner" element={<Tuner />} />
-      <Route path="/changes" element={<Trainer />} />
-      <Route path="/chords" element={<Chords />} />
-      <Route path="/progress" element={<Progress />} />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/songs" element={<Songs />} />
+        <Route path="/practice" element={<Practice />} />
+        <Route path="/song/:id" element={<Player />} />
+        <Route path="/song/:id/sheet" element={<Sheet />} />
+        <Route path="/tuner" element={<Tuner />} />
+        <Route path="/changes" element={<Trainer />} />
+        <Route path="/chords" element={<Chords />} />
+        <Route path="/progress" element={<Progress />} />
+      </Routes>
+    </Suspense>
     <TabBar />
     <Toaster />
   </BrowserRouter>
