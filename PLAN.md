@@ -89,6 +89,9 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 - Each part can carry `chords` ("G:6 | C:4 D:2", chord:slots, `-` for none), written against the tune bar by bar.
   In melody mode each one is strummed softly where it starts, on a second guitar so it never cuts a note short.
   Tests check each chord track is exactly as long as its tune.
+- Listen mode in melody mode checks the pitch: 110 ms after each onset it measures ~85 ms of sound
+  (`src/lib/pitch.js`, the tuner's autocorrelation) and only moves on within half a semitone of the right note.
+  Octaves count, as the detector can land an octave off. "Check the note" in Settings turns it off.
 - Never for copyrighted songs: their melody is the protected part. Those link to Songsterr.
 - Melodies so far: Happy Birthday, Jingle Bells (chorus), Deck the Halls, When the Saints, Amazing Grace, Drunken
   Sailor, Oh! Susanna. Not yet (tune not certain enough to write note by note): House of the Rising Sun, La Bamba,
@@ -133,6 +136,5 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 
 ## Future ideas
 - Full barre F once the easy F is comfortable
-- Melody: listen mode that checks the pitch, not just that a note was played
 - Accents and sixteenth-note patterns (Mr. Brightside, Basket Case)
 - Sync progress between devices (would need accounts)

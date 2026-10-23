@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { go } from '../lib/transition.js'
 import { playNote } from '../lib/audio.js'
 import { keepAwake } from '../lib/wakeLock.js'
+import { detectPitch } from '../lib/pitch.js'
 
 // Standard tuning, low to high
 const STRINGS = [
@@ -19,42 +20,6 @@ const IN_TUNE = 5 // cents either way
 const midiOf = (freq) => 69 + 12 * Math.log2(freq / 440)
 const freqOf = (midi) => 440 * 2 ** ((midi - 69) / 12)
 
-// Autocorrelation pitch detection, only searching the lags a guitar can produce
-// (about 70–1000 Hz), which keeps it light enough to run many times a second on a phone.
-export function detectPitch(buf, sampleRate) {
-  let rms = 0
-  for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i]
-  if (Math.sqrt(rms / buf.length) < 0.01) return null // too quiet: nothing being played
-
-  const minLag = Math.floor(sampleRate / 1000)
-  const maxLag = Math.min(Math.floor(sampleRate / 70), buf.length >> 1)
-  const n = buf.length - maxLag
-  const corr = new Float32Array(maxLag + 2)
-  for (let lag = minLag - 1; lag <= maxLag + 1; lag++) {
-    let sum = 0
-    for (let i = 0; i < n; i++) sum += buf[i] * buf[i + lag]
-    corr[lag] = sum
-  }
-  // Skip past the first dip, then find the strongest peak. The waveform also lines up
-  // with itself at 2x, 3x… the period, nearly as well, so take the *first* peak that's
-  // almost as strong: that's the true period, not an octave below it.
-  let lag = minLag
-  while (lag < maxLag && corr[lag] > corr[lag + 1]) lag++
-  let strongest = lag
-  for (let l = lag; l <= maxLag; l++) if (corr[l] > corr[strongest]) strongest = l
-  if (corr[strongest] <= 0) return null
-  let best = strongest
-  for (let l = lag; l < strongest; l++) {
-    if (corr[l] >= 0.9 * corr[strongest] && corr[l] >= corr[l - 1] && corr[l] >= corr[l + 1]) {
-      best = l
-      break
-    }
-  }
-  // Refine between samples with a parabola through the peak
-  const [a, b, c] = [corr[best - 1], corr[best], corr[best + 1]]
-  const shift = (a - c) / (2 * (a - 2 * b + c)) || 0
-  return sampleRate / (best + shift)
-}
 
 export default function Tuner() {
   const navigate = useNavigate()

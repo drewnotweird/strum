@@ -16,6 +16,10 @@ import { addPlayedChord, addPractice, addSkillsPlayed, getState, setBeat, setEas
 import { stepSkills } from '../lib/skills.js'
 import GetReady from '../components/GetReady.jsx'
 import { melodySong, whereIs } from '../lib/melody.js'
+import { matchesNote, noteNameOf } from '../lib/pitch.js'
+
+const OPEN_STRINGS = [40, 45, 50, 55, 59, 64] // low E → high e, as MIDI notes
+const noteMidi = ({ string, fret }) => OPEN_STRINGS[6 - string] + fret
 import FavouriteButton from '../components/FavouriteButton.jsx'
 
 
@@ -109,6 +113,9 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const [listening, setListening] = useState(false)
   const [sensitivity, setSensitivity] = useState('medium')
   const [micError, setMicError] = useState('')
+  // Melody mode: listen for the right note, not just any note
+  const [checkNotes, setCheckNotes] = useState(true)
+  const [noteCheck, setNoteCheck] = useState(null) // { ok, text } for the last note heard
   const listenerRef = useRef(null)
   const heardRef = useRef(null)
   const lefty = useStore((st) => st.lefty)
@@ -370,8 +377,19 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
   // A strum was heard: light the next strum in NOW (rests are skipped), and on its last
   // strum bring the next chord up, exactly as when playing along to the clock
-  const onHeard = () => {
+  const onHeard = (freq) => {
     const step = stepRef.current
+    // Melody mode: only move on for the right note
+    const note = melody && checkNotes ? chords[steps[step].chord]?.note : null
+    if (note) {
+      if (!matchesNote(freq, noteMidi(note))) {
+        const heardText = freq ? `Heard ${noteNameOf(freq)}: try ${chordLabel(steps[step].chord)}` : `Didn't catch that: try ${chordLabel(steps[step].chord)} again`
+        setNoteCheck({ ok: false, text: heardText })
+        setAnnouncement(heardText)
+        return
+      }
+      setNoteCheck({ ok: true, text: 'Yes!' })
+    }
     const pattern = steps[step].pattern
     let k = slotRef.current + 1
     while (k < pattern.length && pattern[k] === '-') k++
@@ -413,7 +431,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     slotRef.current = -1
     paintSlot()
     try {
-      listenerRef.current = await listenToMicrophone({ onStrum: () => onHeardRef.current(), sensitivity })
+      setNoteCheck(null)
+      listenerRef.current = await listenToMicrophone({ onStrum: (freq) => onHeardRef.current(freq), sensitivity, pitch: melody })
       setListening(true)
       setAnnouncement('Listening. Start strumming.')
     } catch {
@@ -647,6 +666,9 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                 Listening
               </span>
             )}
+            {listening && melody && checkNotes && noteCheck && (
+              <span key={noteCheck.text + stepIndex} className={`note-check ${noteCheck.ok ? 'is-ok' : 'is-wrong'}`}>{noteCheck.text}</span>
+            )}
             {!ended && now.cue && <span className="stage__cue">{now.cue}</span>}
           </span>
           {ended ? (
@@ -815,7 +837,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         s={{
           speed, setSpeed: changeSpeed,
           loopOn, rampOn, setRampOn,
-          listenMode, toggleListenMode, sensitivity, setSensitivity,
+          listenMode, toggleListenMode, sensitivity, setSensitivity, melody, checkNotes, setCheckNotes,
           guitarOn, setGuitarOn: setGuitar,
           beat, setBeat,
           easy, setEasyChords, lefty, setLefty,
@@ -867,6 +889,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
             <p className="tips__hint">
               The big letter is the note. Underneath it: which string, and which fret to press (0 means play it open).
               The numbers in the boxes are the fret. All in first position: one finger per fret.
+              In Listen to me mode it waits until it hears the right note.
             </p>
           )}
           {!melody && song.notes && <p>{song.notes}</p>}

@@ -2155,3 +2155,9 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
   font: 700 14px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
   color: var(--text);
 }
+
+/* Melody listen mode: was that the right note? */
+.note-check { display: block; width: fit-content; margin-top: 6px; padding: 3px 10px; border-radius: 9px; font-size: 14px; font-weight: 900; letter-spacing: 0; text-transform: none; animation: count-pop 0.3s ease-out; }
+.note-check.is-ok { background: var(--easy-soft); color: var(--easy); }
+.note-check.is-wrong { background: var(--tricky-soft); color: var(--tricky); }
+@media (prefers-reduced-motion: reduce) { .note-check { animation: none; } }

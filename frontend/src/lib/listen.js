@@ -1,7 +1,12 @@
 // Hears strums. Watches the sound for sudden bursts of new energy across the spectrum
 // ("spectral flux"): a pick hitting the strings makes one, while a chord ringing on
 // doesn't. Each burst that stands out from the recent background counts as one strum.
-// It doesn't judge the notes, only that something was strummed or picked.
+// It doesn't judge chords, only that something was strummed or picked. With `pitch` on (melody
+// mode), it also measures the note a moment after each onset and passes its frequency on.
+import { detectPitch } from './pitch.js'
+
+const PITCH_WINDOW = 4096 // ~85 ms: enough cycles for the lowest note in a melody
+const PITCH_DELAY_MS = 110 // let the pick's click die down before measuring
 
 const FFT_SIZE = 1024
 const HISTORY = 45 // frames of recent flux used to judge the background
@@ -22,12 +27,26 @@ export const DEFAULTS = {
 // How far above the background a burst must be, by sensitivity
 const SENSITIVITY = { low: 3.2, medium: 2.4, high: 1.7 }
 
-export function createStrumListener({ ctx, source, onStrum, sensitivity = 'medium', tuning = {} }) {
+export function createStrumListener({ ctx, source, onStrum, sensitivity = 'medium', tuning = {}, pitch = false }) {
   const cfg = { ...DEFAULTS, ...tuning }
   const analyser = ctx.createAnalyser()
   analyser.fftSize = FFT_SIZE
   analyser.smoothingTimeConstant = 0
   source.connect(analyser)
+  let pitchAnalyser = null
+  const pitchBuf = new Float32Array(PITCH_WINDOW)
+  if (pitch) {
+    pitchAnalyser = ctx.createAnalyser()
+    pitchAnalyser.fftSize = PITCH_WINDOW
+    source.connect(pitchAnalyser)
+  }
+  const heard = () => {
+    if (!pitch) return onStrum()
+    setTimeout(() => {
+      pitchAnalyser.getFloatTimeDomainData(pitchBuf)
+      onStrum(detectPitch(pitchBuf, ctx.sampleRate))
+    }, PITCH_DELAY_MS)
+  }
 
   const bins = analyser.frequencyBinCount
   // Roughly 80 Hz to 8 kHz: the body of a strum and the bright pick attack
@@ -86,7 +105,7 @@ export function createStrumListener({ ctx, source, onStrum, sensitivity = 'mediu
     if (ready && loudEnough && flux > threshold && flux > lastFlux && sinceStrum > cfg.minGapMs) {
       lastStrum = now
       lastStrumFlux = flux
-      onStrum()
+      heard()
     } else if (sinceStrum < cfg.minGapMs && flux > lastStrumFlux) {
       // Still the same strum building up: remember its real peak
       lastStrumFlux = flux
@@ -100,19 +119,20 @@ export function createStrumListener({ ctx, source, onStrum, sensitivity = 'mediu
     stop: () => {
       cancelAnimationFrame(raf)
       source.disconnect(analyser)
+      if (pitchAnalyser) source.disconnect(pitchAnalyser)
     },
   }
 }
 
 // Microphone in, listener attached. Resolves to an object with stop() and setSensitivity().
-export async function listenToMicrophone({ onStrum, sensitivity }) {
+export async function listenToMicrophone({ onStrum, sensitivity, pitch = false }) {
   const stream = await navigator.mediaDevices.getUserMedia({
     // Raw sound: noise suppression and auto-gain smear exactly the bursts we're looking for
     audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
   })
   const ctx = new (window.AudioContext || window.webkitAudioContext)()
   const source = ctx.createMediaStreamSource(stream)
-  const listener = createStrumListener({ ctx, source, onStrum, sensitivity })
+  const listener = createStrumListener({ ctx, source, onStrum, sensitivity, pitch })
   return {
     setSensitivity: listener.setSensitivity,
     stop: () => {

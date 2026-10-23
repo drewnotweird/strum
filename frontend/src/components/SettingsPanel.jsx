@@ -94,6 +94,14 @@ export default function SettingsPanel({ open, onClose, s }) {
               checked={s.listenMode}
               onChange={s.toggleListenMode}
             />
+            {s.listenMode && s.melody && (
+              <Switch
+                label="Check the note"
+                note="Only moves on when it hears the right note"
+                checked={s.checkNotes}
+                onChange={s.setCheckNotes}
+              />
+            )}
             {s.listenMode && (
               <Choice
                 label="Room"

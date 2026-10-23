@@ -11,6 +11,8 @@ import { TOKEN } from '../lib/strum.js'
 import { SKILLS, songSkills, stepSkills } from '../lib/skills.js'
 import { fingersToMove, trickiestChange } from '../lib/changes.js'
 import { voiceFor } from '../lib/guitar.js'
+import { detectPitch, matchesNote, noteNameOf } from '../lib/pitch.js'
+import { parseMelody } from '../lib/melody.js'
 
 const index = makeCatalogue(songs)
 const titles = (opts) => search(index, opts).results.map((r) => r.song.title)
@@ -211,5 +213,38 @@ describe('guitar voices', () => {
 
   it('carry each section cue onto its steps', () => {
     expect(buildSteps(getSong('im-yours')).steps[0].cue).toBe('Chucks on 2 and 4')
+  })
+})
+
+describe('note checking in melody listen mode', () => {
+  // A plucked-string-like tone: the note plus strong overtones, dying away
+  const tone = (freq, sampleRate = 48000, length = 4096) => {
+    const buf = new Float32Array(length)
+    for (let i = 0; i < length; i++) {
+      const t = i / sampleRate
+      buf[i] = Math.exp(-t * 3) * (0.6 * Math.sin(2 * Math.PI * freq * t) + 0.45 * Math.sin(4 * Math.PI * freq * t) + 0.3 * Math.sin(6 * Math.PI * freq * t))
+    }
+    return buf
+  }
+  const OPEN = [40, 45, 50, 55, 59, 64]
+  const hz = (midi) => 440 * 2 ** ((midi - 69) / 12)
+
+  it('recognises every note the melodies use', () => {
+    const midis = new Set()
+    for (const song of songs.filter((s) => s.melody)) {
+      for (const part of song.melody) for (const n of parseMelody(part.notes)) midis.add(OPEN[6 - n.string] + n.fret)
+    }
+    for (const midi of midis) {
+      const heard = detectPitch(tone(hz(midi)), 48000)
+      expect(matchesNote(heard, midi), `midi ${midi} heard ${heard?.toFixed(1)} Hz`).toBe(true)
+    }
+  })
+
+  it('accepts the right note in another octave, and nothing else', () => {
+    expect(matchesNote(220, 57)).toBe(true) // A
+    expect(matchesNote(440, 57)).toBe(true) // A an octave up
+    expect(matchesNote(233.1, 57)).toBe(false) // B flat
+    expect(matchesNote(null, 57)).toBe(false)
+    expect(noteNameOf(246.9)).toBe('B')
   })
 })
