@@ -15,7 +15,11 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U D U",
+    "two": "D - D U",
+    "one": "D U",
     "bass": "B - D U D U",
+    "btwo": "B - D U",
+    "bone": "B -",
     "ring": "D - - - - -"
   },
   "defaultPattern": "main",
@@ -30,8 +34,8 @@
         "G|bass",
         "G|bass",
         "C|bass",
-        "G|bass",
-        "D|bass",
+        "G|btwo",
+        "D|bone",
         "G|bass"
       ]
     },
@@ -46,8 +50,8 @@
         "G",
         "G",
         "C",
-        "G",
-        "D",
+        "G|two",
+        "D|one",
         "G"
       ]
     },
@@ -64,5 +68,5 @@
     "song",
     "end"
   ],
-  "notes": "Count 1, 2, 3. Everyone sings 'Happy' before the first G. Out of copyright, and handy to know for parties."
+  "notes": "Count 1, 2, 3. Everyone sings \"Happy\" on the last click of the count-in, and the G lands on \"birthday\". The last line is quick: two beats of G, one of D, then home to G. Out of copyright, and handy to know for parties."
 }
