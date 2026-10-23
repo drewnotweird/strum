@@ -68,5 +68,11 @@
     "song",
     "end"
   ],
-  "notes": "Count 1, 2, 3. Everyone sings \"Happy\" on the last click of the count-in, and the G lands on \"birthday\". The last line is quick: two beats of G, one of D, then home to G. Out of copyright, and handy to know for parties."
+  "notes": "Count 1, 2, 3. Everyone sings \"Happy\" on the last click of the count-in, and the G lands on \"birthday\". The last line is quick: two beats of G, one of D, then home to G. Out of copyright, and handy to know for parties.",
+  "melody": [
+    {
+      "name": "Tune",
+      "notes": "-:4 4-0:1 4-0:1 | 4-2:2 4-0:2 3-0:2 | 4-4:4 4-0:1 4-0:1 | 4-2:2 4-0:2 3-2:2 | 3-0:4 4-0:1 4-0:1 | 2-3:2 2-0:2 3-0:2 | 4-4:2 4-2:2 2-1:1 2-1:1 | 2-0:2 3-0:2 3-2:2 | 3-0:6"
+    }
+  ]
 }

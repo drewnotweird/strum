@@ -7,6 +7,10 @@ const ordinal = (n) => `${n}${n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' :
 
 // e.g. "Am chord: low E not played, A open, D 2nd fret, …"
 function describe(name, shape) {
+  if (shape.note) {
+    const s = 6 - shape.note.string
+    return `${shape.label} note: ${STRING_NAMES[s]} string, ${shape.note.fret ? `${ordinal(shape.note.fret)} fret` : 'open'}`
+  }
   const parts = shape.frets.map((fret, s) => {
     const string = STRING_NAMES[s]
     if (fret < 0) return `${string} not played`
@@ -50,6 +54,7 @@ export default function ChordDiagram({ name, className = '', decorative = false 
       ))}
       {shape.frets.map((fret, s) => {
         if (fret === -1) {
+          if (shape.note) return null
           return <text key={s} x={x(s)} y={top - 9} className="diagram__mute">×</text>
         }
         if (fret === 0) {

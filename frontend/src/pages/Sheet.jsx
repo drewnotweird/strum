@@ -6,6 +6,7 @@ import { barsOf, getSong } from '../lib/song.js'
 import { go } from '../lib/transition.js'
 import { glyph } from '../lib/strum.js'
 import { strumFor } from '../data/strums.js'
+import { melodyTab } from '../lib/melody.js'
 import { setEasyChords, useStore } from '../lib/store.js'
 
 
@@ -126,6 +127,19 @@ export default function Sheet() {
           })}
         </ol>
       </section>
+
+      {song.melody && (
+        <section className="tool__section">
+          <h2>Melody</h2>
+          <p className="sheet__legend">Tab: each line is a string, high E at the top. The numbers are frets.</p>
+          {song.melody.map((part, i) => (
+            <div key={i} className="sheet__tab">
+              <h3>{part.name}{part.repeat > 1 && <span className="sheet__repeat"> ×{part.repeat}</span>}</h3>
+              <pre tabIndex={0} aria-label={`Tab for the ${part.name.toLowerCase()}`}>{melodyTab(part.notes)}</pre>
+            </div>
+          ))}
+        </section>
+      )}
 
       {song.notes && <p className="sheet__notes">{song.notes}</p>}
     </main>

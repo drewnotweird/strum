@@ -26,6 +26,7 @@ export default function SongCard({ song, chords, learned = false, highlight = nu
               {song.kind === 'drill' ? ' · warm-up drill' : ''}
             </span>
             {song.capo > 0 && <span className="badge">Capo {song.capo}</span>}
+            {song.melody && <span className="badge badge--melody">♪ Melody</span>}
           </span>
           <span className="song-card__chords">
             {chords.map((c) => (

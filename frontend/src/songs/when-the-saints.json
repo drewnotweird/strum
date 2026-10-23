@@ -101,5 +101,12 @@
     "last",
     "end"
   ],
-  "notes": "Lots of G, a D, then G7 into C. G7 is just G with your first finger on the 1st fret of the top string."
+  "notes": "Lots of G, a D, then G7 into C. G7 is just G with your first finger on the 1st fret of the top string.",
+  "melody": [
+    {
+      "name": "Tune",
+      "repeat": 2,
+      "notes": "-:2 3-0:2 2-0:2 2-1:2 | 2-3:8 | -:2 3-0:2 2-0:2 2-1:2 | 2-3:8 | -:2 3-0:2 2-0:2 2-1:2 | 2-3:4 2-0:4 | 3-0:4 2-0:4 | 3-2:8 | -:2 2-0:2 2-0:2 3-2:2 | 3-0:6 3-0:2 | 2-0:4 2-3:4 | 2-3:2 2-1:6 | -:2 2-0:2 2-1:2 2-3:2 | 2-0:4 3-0:4 | 3-2:8 | 3-0:8"
+    }
+  ]
 }

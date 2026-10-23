@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { songNotes, voiceFor } from '../lib/guitar.js'
-import { chordLabel } from '../data/chords.js'
+import { chordLabel, chords } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import SettingsPanel from '../components/SettingsPanel.jsx'
 import SongCover from '../components/SongCover.jsx'
@@ -15,6 +15,7 @@ import { listenToMicrophone } from '../lib/listen.js'
 import { addPlayedChord, addPractice, addSkillsPlayed, getState, setBeat, setEasyChords, setLastPlayed, setLefty, setSongSpeed, toggleLearned, useStore } from '../lib/store.js'
 import { stepSkills } from '../lib/skills.js'
 import GetReady from '../components/GetReady.jsx'
+import { melodySong, whereIs } from '../lib/melody.js'
 import FavouriteButton from '../components/FavouriteButton.jsx'
 
 
@@ -37,7 +38,22 @@ export default function Player() {
       </main>
     )
   }
-  return <SongPlayer key={song.id} song={song} />
+  return <SongOrMelody key={song.id} song={song} />
+}
+
+// Out-of-copyright songs can also be played as a melody, one note at a time (?mode=melody)
+function SongOrMelody({ song }) {
+  const [params, setParams] = useSearchParams()
+  const melody = Boolean(song.melody) && params.get('mode') === 'melody'
+  const shown = useMemo(() => (melody ? melodySong(song) : song), [song, melody])
+  const pick = (m) => setParams(m ? { mode: 'melody' } : {}, { replace: true })
+  const toggle = song.melody && (
+    <div className="segmented mode-switch" role="group" aria-label="What to play">
+      <button type="button" className={melody ? '' : 'is-on'} aria-pressed={!melody} onClick={() => pick(false)}>Chords</button>
+      <button type="button" className={melody ? 'is-on' : ''} aria-pressed={melody} onClick={() => pick(true)}>Melody</button>
+    </div>
+  )
+  return <SongPlayer key={melody ? 'melody' : 'chords'} song={shown} extra={toggle} melody={melody} />
 }
 
 // The play-along screen. Also used by the chord change trainer, which passes its own
@@ -45,7 +61,9 @@ export default function Player() {
 // `back`: where the back arrow goes. Songs return home; tools (the chord trainer) return to
 // Practice and sit like the other tool pages.
 const HOME = { to: '/', label: 'All songs' }
-export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true, back = HOME }) {
+// `melody`: the song is its tune, one note per step (see lib/melody.js)
+export function SongPlayer({ song, extra = null, defaultLoop = false, trackable = true, back = HOME, melody = false }) {
+  const speedKey = melody ? `${song.id}:melody` : song.id
   const navigate = useNavigate()
   const easy = useStore((st) => st.easyChords)
   const beat = useStore((st) => st.beat)
@@ -53,9 +71,10 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const { timeline, stepStart } = useMemo(() => buildTimeline(steps), [steps])
   // Where each chord's last strum falls: that's when the next chord moves up into NOW,
   // giving a moment's warning to change shape
+  // A melody note is held to the end of its pattern, so it stays in NOW until then
   const lastStrum = useMemo(
-    () => steps.map((st) => st.pattern.reduce((last, token, k) => (token === '-' ? last : k), 0)),
-    [steps]
+    () => steps.map((st) => (melody ? st.pattern.length - 1 : st.pattern.reduce((last, token, k) => (token === '-' ? last : k), 0))),
+    [steps, melody]
   )
   // The techniques each step uses, recorded for Progress as he plays them
   const stepSkillList = useMemo(() => steps.map((st) => stepSkills(st.chord, st.pattern)), [steps])
@@ -75,7 +94,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const [playing, setPlaying] = useState(false)
   const [ended, setEnded] = useState(false)
   // Each song opens at the speed he last played it at
-  const [speed, setSpeed] = useState(() => (trackable && getState().speeds[song.id]) || 0.7)
+  const [speed, setSpeed] = useState(() => (trackable && getState().speeds[speedKey]) || 0.7)
   // "Hear this section": plays the section once with the guitar, then stops
   const [previewing, setPreviewing] = useState(false)
   const previewRef = useRef(null)
@@ -240,7 +259,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         }
         slotRef.current = slot
         if (!previewRef.current && steps[step].pattern[slot] !== '-') {
-          addPlayedChord(chordLabel(steps[step].chord))
+          if (!melody) addPlayedChord(chordLabel(steps[step].chord))
           addSkillsPlayed(stepSkillList[step])
         }
         if (step !== stepRef.current) {
@@ -271,7 +290,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       // The speed trainer nudges the tempo up each time round the loop
       onSpeed: (s) => {
         setSpeed(s)
-        if (trackable) setSongSpeed(song.id, s)
+        if (trackable) setSongSpeed(speedKey, s)
       },
       // A section preview finished: back to the start of that section, guitar as it was
       onStopAt: () => {
@@ -351,7 +370,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     if (k >= pattern.length) return
     slotRef.current = k
     paintSlot()
-    addPlayedChord(chordLabel(steps[step].chord))
+    if (!melody) addPlayedChord(chordLabel(steps[step].chord))
     addSkillsPlayed(stepSkillList[step])
     const dot = heardRef.current
     if (dot) {
@@ -359,7 +378,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       void dot.offsetWidth // restart the flash
       dot.classList.add('is-heard')
     }
-    if (k === lastStrum[step]) {
+    if (k === lastStrum[step] || melody) {
       const next = followingStep(step)
       if (next === null) {
         stopListening()
@@ -419,7 +438,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const changeSpeed = (s) => {
     setSpeed(s)
     playerRef.current.setSpeed(s)
-    if (trackable) setSongSpeed(song.id, s)
+    if (trackable) setSongSpeed(speedKey, s)
   }
 
   // Finished below full speed: go again, a notch faster
@@ -496,6 +515,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const now = steps[stepIndex]
   const next = steps[stepIndex + 1]
   const picking = now.pattern.some(isPick)
+  const nowNote = chords[now.chord]?.note
   // For the tips: does any part of the song use picking?
   const songPicks = Object.values(song.patterns).some((p) => p.split(/\s+/).some(isPick))
   const currentSection = sectionStarts.findLastIndex((s) => s.step <= stepIndex)
@@ -540,7 +560,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       keepAwake(false)
       bank()
       // Remember where he got to, for "Keep going" (a finished song starts again)
-      if (trackable) {
+      if (trackable && !melody) {
         const step = stepRef.current >= steps.length - 1 ? 0 : stepRef.current
         setLastPlayed({ id: song.id, step, section: steps[step].section })
       }
@@ -643,16 +663,17 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                 <ChordDiagram name={now.chord} className="diagram--now" />
               </button>
               <div className="strum-wrap">
+                {nowNote && <p className="note-where">{whereIs(nowNote)}</p>}
                 {countIn > 0 && <div key={countIn} className="count">{countIn}</div>}
                 <div
                   ref={strumRef}
                   className={`strum ${picking ? 'strum--pick' : ''} ${countIn > 0 ? 'is-hidden' : ''}`}
                   role="img"
-                  aria-label={describePattern(now.pattern, now.chord)}
+                  aria-label={nowNote ? `Play ${chordLabel(now.chord)}: ${whereIs(nowNote)}, for ${now.pattern.length} counts` : describePattern(now.pattern, now.chord)}
                 >
                   {now.pattern.map((token, k) => (
                     <span key={k} className={`strum__slot ${slotKind(token)}`} aria-hidden="true">
-                      {glyph(token, now.chord)}
+                      {nowNote && token !== '-' ? nowNote.fret : glyph(token, now.chord)}
                       {token === 'M' && <small className="strum__pm">PM</small>}
                     </span>
                   ))}
@@ -681,6 +702,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           {next && !ended ? (
             <>
               <span className="chord-name chord-name--next">{chordLabel(next.chord)}</span>
+              {chords[next.chord]?.note && <span className="note-where note-where--next">{whereIs(chords[next.chord].note)}</span>}
               <span className="sr-only">, tap to move it up to now</span>
               <ChordDiagram name={next.chord} className="diagram--next" decorative />
             </>
@@ -832,9 +854,15 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       {(song.notes || songPicks || song.songsterr || !song.checked) && (
         <section className="tips" aria-labelledby="tips-title">
           <h2 id="tips-title">Tips</h2>
-          {trackable && <GetReady song={song} steps={steps} />}
-          {song.notes && <p>{song.notes}</p>}
-          {songPicks && <p className="tips__hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
+          {trackable && !melody && <GetReady song={song} steps={steps} />}
+          {melody && (
+            <p className="tips__hint">
+              The big letter is the note. Underneath it: which string, and which fret to press (0 means play it open).
+              The numbers in the boxes are the fret. All in first position: one finger per fret.
+            </p>
+          )}
+          {!melody && song.notes && <p>{song.notes}</p>}
+          {!melody && songPicks && <p className="tips__hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
           {song.songsterr && (
             <a href={song.songsterr} target="_blank" rel="noreferrer" className="tips__link">
               {song.kind === 'drill' ? 'Learn the real riff on Songsterr' : 'Full tab on Songsterr'}

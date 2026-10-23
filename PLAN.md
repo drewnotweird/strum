@@ -80,6 +80,15 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 - A step is `"Chord"` (default pattern) or `"Chord|patternName"`. Each step is one Now box, and its pattern is however long that chord lasts. Louie Louie uses a 6-slot pattern on A and a 2-slot one on D.
 - Chord shapes live in `src/data/chords.js`. Variants with a `*` (e.g. `G*`, the Wonderwall G) show their `label`.
 
+## Melodies (out-of-copyright songs only)
+- A song's `melody` is a list of parts `{ name, repeat, notes }`. Notes: `"3-2:2"` = string 3, fret 2, for 2 slots;
+  `"-:4"` a rest (a lead-in at the start, otherwise it holds the note before); `|` a bar line. First position only.
+- `src/lib/melody.js` turns it into a normal song, one step per note (each note a one-dot shape), so the player,
+  listen mode, loop and speed all work. Chords / Melody switch on the song page (`?mode=melody`); the chord sheet
+  shows it as tab. Tests check every part fills whole bars.
+- Never for copyrighted songs: their melody is the protected part. Those link to Songsterr.
+- Melodies so far: Happy Birthday, Jingle Bells (chorus), Deck the Halls, When the Saints, Amazing Grace.
+
 ## Learning helpers
 - **Strum trainer** (`/strums?p=chuck&c=G`): the patterns in `src/data/strums.js` on any chord, looping, in the normal
   player. The Practice page shows them as cards. A song pattern that matches one exactly links to it.
@@ -115,7 +124,10 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
   boogie drill (two-string 5/6 shapes). Iron Man's drill reordered so it no longer follows the riff.
 - **2026-10-23:** Strum trainer, Get ready, techniques on Progress and the Songs filter, speed per song, play again faster.
 
+- **2026-10-23:** Melody mode for traditional songs. Wellerman left out until its tune can be checked note by note.
+
 ## Future ideas
 - Full barre F once the easy F is comfortable
+- Melody: hear it quietly over the chords; listen mode that checks the pitch, not just that a note was played
 - Accents and sixteenth-note patterns (Mr. Brightside, Basket Case)
 - Sync progress between devices (would need accounts)

@@ -3,6 +3,7 @@ import { songs, buildSteps, buildTimeline, barsOf, lastStrumOf } from '../lib/so
 import { chords, EASY, playable } from '../data/chords.js'
 import { TAGS } from '../data/collections.js'
 import { TOKEN } from '../lib/strum.js'
+import { melodyLength, melodySong, melodyTab, noteShape, parseMelody } from '../lib/melody.js'
 
 // Every song file has to be playable: these catch typos before they reach the site
 describe('song files', () => {
@@ -31,6 +32,30 @@ describe('song files', () => {
           if (section.feel) expect(['soft', 'loud']).toContain(section.feel)
         }
       })
+
+      if (song.melody) {
+        it('has a melody in first position that fills whole bars', () => {
+          for (const part of song.melody) {
+            for (const n of parseMelody(part.notes)) {
+              expect([1, 2, 3, 4, 5, 6], part.name).toContain(n.string)
+              expect(n.fret, part.name).toBeGreaterThanOrEqual(0)
+              expect(n.fret, part.name).toBeLessThanOrEqual(4)
+              expect(n.slots, part.name).toBeGreaterThan(0)
+            }
+            expect(melodyLength(part.notes) % (song.perBeat * song.beatsPerBar), `${part.name} length`).toBe(0)
+            const lines = melodyTab(part.notes).split('\n')
+            expect(new Set(lines.map((l) => l.length)).size, 'tab lines line up').toBe(1)
+          }
+        })
+
+        it('plays as a melody', () => {
+          const tune = melodySong(song)
+          const { steps } = buildSteps(tune)
+          const { timeline } = buildTimeline(steps)
+          expect(steps.length).toBe(song.melody.reduce((n, p) => n + parseMelody(p.notes).length * (p.repeat || 1), 0))
+          expect(timeline.length).toBe(song.melody.reduce((n, p) => n + melodyLength(p.notes) * (p.repeat || 1), 0))
+        })
+      }
 
       it('only uses sections that exist', () => {
         for (const key of song.form) expect(song.sections[key], `section "${key}"`).toBeDefined()
@@ -99,5 +124,22 @@ describe('easy chords', () => {
     expect(playable('G', true)).toBe('G')
     const trouper = songs.find((s) => s.id === 'super-trouper')
     expect(buildSteps(trouper, { easy: true }).steps.some((s) => s.chord === 'Bm7')).toBe(true)
+  })
+})
+
+describe('melody notes', () => {
+  it('are named from their string and fret', () => {
+    const name = (string, fret) => chords[noteShape(string, fret)].label
+    expect(name(3, 2)).toBe('A')
+    expect(name(2, 1)).toBe('C')
+    expect(name(4, 4)).toBe('F#')
+    expect(name(1, 0)).toBe('E')
+  })
+
+  it('treat a rest at the start as a lead-in and elsewhere as holding the note', () => {
+    expect(parseMelody('-:4 4-0:1 -:3 3-0:2')).toEqual([
+      { string: 4, fret: 0, slots: 4, lead: 4 },
+      { string: 3, fret: 0, slots: 2, lead: 0 },
+    ])
   })
 })

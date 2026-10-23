@@ -147,5 +147,12 @@
     "last",
     "end"
   ],
-  "notes": "A traditional Welsh carol, free for anyone to play. Each line is \"Deck the halls\" on G, a quick D on \"holly\", then C to G and D to G for the \"fa la la\"s. The third line moves away: D, then G and D, Em and A, back to D. The last line is the same as the first. Some chords only get one or two beats, so look ahead at NEXT."
+  "notes": "A traditional Welsh carol, free for anyone to play. Each line is \"Deck the halls\" on G, a quick D on \"holly\", then C to G and D to G for the \"fa la la\"s. The third line moves away: D, then G and D, Em and A, back to D. The last line is the same as the first. Some chords only get one or two beats, so look ahead at NEXT.",
+  "melody": [
+    {
+      "name": "Tune",
+      "repeat": 2,
+      "notes": "2-3:3 2-1:1 2-0:2 3-2:2 | 3-0:2 3-2:2 2-0:2 3-0:2 | 3-2:1 2-0:1 2-1:1 3-2:1 2-0:3 3-2:1 | 3-0:2 4-4:2 3-0:4 | 2-3:3 2-1:1 2-0:2 3-2:2 | 3-0:2 3-2:2 2-0:2 3-0:2 | 3-2:1 2-0:1 2-1:1 3-2:1 2-0:3 3-2:1 | 3-0:2 4-4:2 3-0:4 | 3-2:3 2-0:1 2-1:2 3-2:2 | 2-0:3 2-1:1 2-3:2 3-2:2 | 2-0:1 2-2:1 2-3:2 1-0:1 1-2:1 1-3:2 | 1-2:2 1-0:2 2-3:4 | 2-3:3 2-1:1 2-0:2 3-2:2 | 3-0:2 3-2:2 2-0:2 3-0:2 | 3-2:1 2-0:1 2-1:1 3-2:1 2-0:3 3-2:1 | 3-0:2 4-4:2 3-0:4"
+    }
+  ]
 }

@@ -2137,3 +2137,21 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 .skill-list a span { color: var(--muted); font-size: 14px; font-weight: 700; }
 .skill-list a:hover strong { text-decoration: underline; }
 .skill-list__go { flex: none; color: var(--brand-dark); font-weight: 900; }
+
+/* ---------- Melody mode ---------- */
+.mode-switch { justify-self: center; width: min(100%, 320px); height: 44px; }
+.mode-switch button { flex: 1; }
+.note-where { margin: 0 0 8px; color: var(--brand-dark); font-size: 15px; font-weight: 900; }
+.note-where--next { display: block; margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.badge--melody { border-color: var(--brand); color: var(--brand-dark); }
+.sheet__tab h3 { margin: 12px 0 6px; font-size: 16px; font-weight: 900; }
+.sheet__tab pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  font: 700 14px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--text);
+}
