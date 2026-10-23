@@ -15,7 +15,7 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "chug": "D D D D D D D D",
+    "chug": "M M M M M M M M",
     "oi": "D - - - D - - -",
     "move": "D D D D"
   },
@@ -24,6 +24,7 @@
     "chug": {
       "name": "Chug on A",
       "repeat": 4,
+      "cue": "Palm-muted chug",
       "steps": [
         "A5"
       ]
@@ -31,6 +32,8 @@
     "oi": {
       "name": "Oi! Oi! Oi!",
       "repeat": 4,
+      "cue": "Big hits: let them ring",
+      "feel": "loud",
       "steps": [
         "A5|oi"
       ]

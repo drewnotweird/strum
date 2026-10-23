@@ -15,12 +15,14 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U D - D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
+      "cue": "Snappy rock and roll bounce",
       "steps": [
         "D",
         "D",
@@ -38,10 +40,19 @@
     "end": {
       "name": "Ending",
       "repeat": 3,
+      "cue": "Big finish",
+      "feel": "loud",
       "steps": [
         "Bb5|half",
         "C|half",
         "D"
+      ]
+    },
+    "last": {
+      "name": "Last chord",
+      "cue": "Let it ring",
+      "steps": [
+        "D|ring"
       ]
     }
   },
@@ -50,7 +61,8 @@
     "verse",
     "verse",
     "verse",
-    "end"
+    "end",
+    "last"
   ],
   "notes": "A bouncy rock'n'roll strum. D for \"this thing called love\", G and C for \"I must get round to it\", then B♭5 and C into D for \"crazy little thing called love\". B♭5 is a power chord standing in for the full barre B♭. The middle section (\"There goes my baby…\") isn't charted yet: it's on Songsterr.",
   "songsterr": "https://www.songsterr.com/a/wsa/queen-crazy-little-thing-called-love-tab-s23541"

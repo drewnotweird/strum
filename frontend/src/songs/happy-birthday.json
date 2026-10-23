@@ -14,12 +14,31 @@
   "beatsPerBar": 3,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U D U"
+    "main": "D - D U D U",
+    "bass": "B - D U D U",
+    "ring": "D - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
+    "first": {
+      "name": "Song",
+      "cue": "Bass note, then strum",
+      "steps": [
+        "G|bass",
+        "D|bass",
+        "D|bass",
+        "G|bass",
+        "G|bass",
+        "C|bass",
+        "G|bass",
+        "D|bass",
+        "G|bass"
+      ]
+    },
     "song": {
       "name": "Song",
+      "cue": "Everyone joins in",
+      "feel": "loud",
       "steps": [
         "G",
         "D",
@@ -31,11 +50,19 @@
         "D",
         "G"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
+    "first",
     "song",
-    "song"
+    "end"
   ],
   "notes": "Count 1, 2, 3. Everyone sings 'Happy' before the first G. Out of copyright, and handy to know for parties."
 }

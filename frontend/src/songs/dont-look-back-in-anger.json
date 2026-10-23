@@ -15,27 +15,34 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "thalf": "D - - -",
+    "two": "D - - - D - - -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Single strums, like the piano",
+      "feel": "soft",
       "steps": [
-        "C|half",
-        "G|half",
-        "Am|half",
-        "E|half",
-        "F|half",
-        "G|half",
-        "C|half",
-        "Am|half",
-        "G"
+        "C|thalf",
+        "G|thalf",
+        "Am|thalf",
+        "E|thalf",
+        "F|thalf",
+        "G|thalf",
+        "C|thalf",
+        "Am|thalf",
+        "G|two"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Gentle",
+      "feel": "soft",
       "steps": [
         "C|half",
         "G|half",
@@ -51,6 +58,7 @@
     "pre": {
       "name": "Pre-chorus",
       "repeat": 2,
+      "cue": "Build it up",
       "steps": [
         "F",
         "Fm",
@@ -61,6 +69,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Big chorus: sing it",
+      "feel": "loud",
       "steps": [
         "C|half",
         "G|half",
@@ -72,6 +82,13 @@
         "Am|half",
         "G"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
+      ]
     }
   },
   "form": [
@@ -82,7 +99,8 @@
     "verse",
     "pre",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "The verse and chorus use the same run of chords, most of them two beats long: C G, Am E, F G, C Am, G. The F and Fm are the easy four-string versions. The 'step outside' section isn't charted yet.",
   "songsterr": "https://www.songsterr.com/a/wsa/oasis-dont-look-back-in-anger-tab-s5706611"

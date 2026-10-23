@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { songs, buildSteps, buildTimeline, barsOf, lastStrumOf } from '../lib/song.js'
 import { chords, EASY, playable } from '../data/chords.js'
 import { TAGS } from '../data/collections.js'
+import { TOKEN } from '../lib/strum.js'
 
 // Every song file has to be playable: these catch typos before they reach the site
 describe('song files', () => {
@@ -24,6 +25,13 @@ describe('song files', () => {
         if (song.songsterr) expect(song.songsterr).toMatch(/^https:\/\/www\.songsterr\.com\/a\/wsa\/.+-s\d+$/)
       })
 
+      it('has short cues and a known feel on its sections', () => {
+        for (const section of Object.values(song.sections)) {
+          if (section.cue) expect(section.cue.length, `cue "${section.cue}"`).toBeLessThanOrEqual(40)
+          if (section.feel) expect(['soft', 'loud']).toContain(section.feel)
+        }
+      })
+
       it('only uses sections that exist', () => {
         for (const key of song.form) expect(song.sections[key], `section "${key}"`).toBeDefined()
       })
@@ -42,7 +50,9 @@ describe('song files', () => {
         for (const [name, pattern] of Object.entries(song.patterns)) {
           const slots = pattern.split(/\s+/)
           expect(slots.length % song.perBeat, `pattern "${name}"`).toBe(0)
-          for (const t of slots) expect(t, `pattern "${name}"`).toMatch(/^(D|U|-|B|[1-6])$/)
+          for (const t of slots) expect(t, `pattern "${name}"`).toMatch(TOKEN)
+          // Listen mode moves on when it hears a strum, so every pattern needs one
+          expect(slots.some((t) => t !== '-'), `pattern "${name}" has a strum`).toBe(true)
         }
       })
 

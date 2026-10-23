@@ -15,12 +15,16 @@
   "beatsPerBar": 6,
   "perBeat": 1,
   "patterns": {
-    "pick": "B 3 2 1 2 3"
+    "pick": "B 3 2 1 2 3",
+    "strum": "D - D U D U",
+    "ring": "B - - - - -"
   },
   "defaultPattern": "pick",
   "sections": {
     "verse": {
       "name": "Verse",
+      "cue": "Pick one string at a time",
+      "feel": "soft",
       "steps": [
         "Am",
         "C",
@@ -42,6 +46,7 @@
     },
     "end": {
       "name": "Ending",
+      "cue": "Slow down and let it ring",
       "steps": [
         "Am",
         "C",
@@ -49,14 +54,37 @@
         "F",
         "Am",
         "E",
-        "Am"
+        "Am|ring"
+      ]
+    },
+    "loud": {
+      "name": "Verse",
+      "cue": "Strum it big this time",
+      "feel": "loud",
+      "steps": [
+        "Am|strum",
+        "C|strum",
+        "D|strum",
+        "F|strum",
+        "Am|strum",
+        "C|strum",
+        "E|strum",
+        "E|strum",
+        "Am|strum",
+        "C|strum",
+        "D|strum",
+        "F|strum",
+        "Am|strum",
+        "E|strum",
+        "Am|strum",
+        "E|strum"
       ]
     }
   },
   "form": [
     "verse",
     "verse",
-    "verse",
+    "loud",
     "verse",
     "end"
   ],

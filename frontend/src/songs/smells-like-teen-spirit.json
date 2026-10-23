@@ -15,33 +15,40 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D D D D"
+    "main": "D D D D",
+    "scratch": "D - X X",
+    "pm": "M M M M"
   },
   "defaultPattern": "main",
   "sections": {
     "riff": {
       "name": "Power chord loop",
       "repeat": 4,
+      "cue": "Chord, then two muted scratches",
       "steps": [
-        "F5",
-        "Bb5",
-        "Ab5",
-        "Db5"
+        "F5|scratch",
+        "Bb5|scratch",
+        "Ab5|scratch",
+        "Db5|scratch"
       ]
     },
     "quiet": {
       "name": "Quiet bit",
       "repeat": 4,
+      "cue": "Quiet: palm mute",
+      "feel": "soft",
       "steps": [
-        "F5",
-        "Bb5",
-        "Ab5",
-        "Db5"
+        "F5|pm",
+        "Bb5|pm",
+        "Ab5|pm",
+        "Db5|pm"
       ]
     },
     "loud": {
       "name": "Loud bit",
       "repeat": 4,
+      "cue": "Loud!",
+      "feel": "loud",
       "steps": [
         "F5",
         "Bb5",
@@ -56,6 +63,6 @@
     "loud",
     "riff"
   ],
-  "notes": "Four power chords, two beats each, on repeat: F5, Bb5, Ab5, Db5. Keep the same shape and slide it around. The record has muted scratches between the chords: add those once the shapes are comfortable.",
+  "notes": "Four power chords, two beats each, on repeat: F5, Bb5, Ab5, Db5. Keep the same shape and slide it around. The × marks are the muted scratches between the chords: slap the strings with your strumming hand. Palm-mute the quiet bit, then let rip.",
   "songsterr": "https://www.songsterr.com/a/wsa/nirvana-smells-like-teen-spirit-tab-s269"
 }

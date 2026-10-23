@@ -15,13 +15,15 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Bright and bouncy",
       "steps": [
         "D",
         "A|half",
@@ -41,6 +43,8 @@
     },
     "chorus": {
       "name": "Chorus",
+      "cue": "Chorus: dig in",
+      "feel": "loud",
       "steps": [
         "G",
         "G",
@@ -51,6 +55,13 @@
         "D",
         "D"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "D|ring"
+      ]
     }
   },
   "form": [
@@ -60,7 +71,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "In the verse, A and G share a bar: two beats each. Then back to D.",
   "songsterr": "https://www.songsterr.com/a/wsa/creedence-clearwater-revival-bad-moon-rising-tab-s4232"

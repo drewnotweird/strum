@@ -14,26 +14,32 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "half": "D - D U"
+    "half": "D - D U",
+    "thalf": "D - - -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "half",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Single strums, like the piano",
+      "feel": "soft",
       "steps": [
-        "C",
-        "G",
-        "Am",
-        "F",
-        "C",
-        "G",
-        "F",
-        "C"
+        "C|thalf",
+        "G|thalf",
+        "Am|thalf",
+        "F|thalf",
+        "C|thalf",
+        "G|thalf",
+        "F|thalf",
+        "C|thalf"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Gentle",
+      "feel": "soft",
       "steps": [
         "C",
         "G",
@@ -47,6 +53,8 @@
     },
     "chorus": {
       "name": "Chorus",
+      "cue": "Sing it out",
+      "feel": "loud",
       "steps": [
         "Am",
         "G",
@@ -57,6 +65,13 @@
         "F",
         "C"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
+      ]
     }
   },
   "form": [
@@ -65,7 +80,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Every chord gets two beats. The verse goes C G Am F, then C G F C. The chorus starts on Am instead. The F is the easy four-string one.",
   "songsterr": "https://www.songsterr.com/a/wsa/beatles-let-it-be-tab-s79"

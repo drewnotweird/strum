@@ -14,26 +14,32 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "two": "D - - - D - - -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Two strums a bar: easy start",
+      "feel": "soft",
       "steps": [
-        "G",
-        "D",
-        "Am",
-        "Am",
-        "G",
-        "D",
-        "C",
-        "C"
+        "G|two",
+        "D|two",
+        "Am|two",
+        "Am|two",
+        "G|two",
+        "D|two",
+        "C|two",
+        "C|two"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Gentle",
+      "feel": "soft",
       "steps": [
         "G",
         "D",
@@ -48,6 +54,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Sing along: a bit louder",
+      "feel": "loud",
       "steps": [
         "G",
         "D",
@@ -58,6 +66,13 @@
         "C",
         "C"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
@@ -65,7 +80,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "The same eight bars all the way through: G, D, Am for two, then G, D, C for two. A brilliant first song.",
   "songsterr": "https://www.songsterr.com/a/wsa/bob-dylan-knockin-on-heavens-door-tab-s69238"

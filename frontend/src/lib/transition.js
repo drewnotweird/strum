@@ -19,7 +19,7 @@ function nameShared(song, on) {
 
 // The tab bar's order, so switching tabs can slide the right way
 const TAB_ORDER = ['/', '/songs', '/practice', '/progress']
-const PRACTICE_PAGES = ['/tuner', '/changes', '/chords']
+const PRACTICE_PAGES = ['/tuner', '/changes', '/strums', '/chords']
 const appPath = (path) => {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
   const p = (path.startsWith(base) ? path.slice(base.length) : path).split('?')[0] || '/'

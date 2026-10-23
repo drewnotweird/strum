@@ -14,13 +14,17 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "half": "D - D U"
+    "half": "D - D U",
+    "dhalf": "D U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "half",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Light and steady",
+      "feel": "soft",
       "steps": [
         "D|half",
         "Dsus4|half",
@@ -31,6 +35,7 @@
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "feel": "soft",
       "steps": [
         "D|half",
         "Dsus4|half",
@@ -41,11 +46,20 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Chorus: down-ups all the way",
+      "feel": "loud",
       "steps": [
-        "D|half",
-        "Dsus4|half",
-        "D|half",
-        "Asus4|half"
+        "D|dhalf",
+        "Dsus4|dhalf",
+        "D|dhalf",
+        "Asus4|dhalf"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "D|ring"
       ]
     }
   },
@@ -55,7 +69,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "One loop all the way through: D, Dsus4, D, Asus4. Your fingers barely move: Dsus4 just adds your pinky. Capo 3 matches the record.",
   "songsterr": "https://www.songsterr.com/a/wsa/tom-petty-free-fallin-tab-s15887"

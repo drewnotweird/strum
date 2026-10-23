@@ -1,0 +1,73 @@
+{
+  "id": "im-yours",
+  "title": "I'm Yours",
+  "artist": "Jason Mraz",
+  "emoji": "🌴",
+  "level": 2,
+  "tags": [
+    "90s"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 150,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "chuck": "D - X U - U X U",
+    "ring": "D - - - - - - -"
+  },
+  "defaultPattern": "chuck",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "cue": "Chucks on 2 and 4",
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "repeat": 2,
+      "cue": "Keep it light and bouncy",
+      "feel": "soft",
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "cue": "Same chords, a bit louder",
+      "feel": "loud",
+      "steps": [
+        "C",
+        "G",
+        "Am",
+        "F"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "end"
+  ],
+  "notes": "The chuck song: C, G, Am and F, one bar each, the whole way through. On beats 2 and 4, land your strumming hand flat on the strings instead of strumming: that muted slap is the ×. Start slow until the chucks feel natural. Turn on Easy chords if the F is tricky."
+}

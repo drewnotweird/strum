@@ -15,13 +15,17 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "chuck": "D - X U - U X U",
+    "chalf": "D - X U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Bright and light",
       "steps": [
         "Am|half",
         "G|half",
@@ -31,19 +35,29 @@
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Chucks on 2 and 4",
+      "steps": [
+        "Am|chalf",
+        "G|chalf",
+        "C|chuck"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 4,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "Am|half",
         "G|half",
         "C"
       ]
     },
-    "chorus": {
-      "name": "Chorus",
-      "repeat": 4,
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
       "steps": [
-        "Am|half",
-        "G|half",
-        "C"
+        "C|ring"
       ]
     }
   },
@@ -52,7 +66,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Am and G for two beats each, then a full bar of C. Written on ukulele, and it works just as well on guitar. The 'I just wanna know' bridge isn't charted yet.",
   "songsterr": "https://www.songsterr.com/a/wsa/vance-joy-riptide-tab-s390524"

@@ -8,7 +8,7 @@ const TABS = [
   {
     to: '/practice',
     name: 'Practice',
-    match: (p) => ['/practice', '/tuner', '/changes', '/chords'].includes(p),
+    match: (p) => ['/practice', '/tuner', '/changes', '/strums', '/chords'].includes(p),
     icon: <path d="M12 21C9 18 4.5 12.5 4.5 8.5 4.5 5.5 7.5 3 12 3s7.5 2.5 7.5 5.5c0 4-4.5 9.5-7.5 12.5z" />,
   },
   { to: '/progress', name: 'Progress', match: (p) => p === '/progress', icon: <><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" /><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4" /></> },

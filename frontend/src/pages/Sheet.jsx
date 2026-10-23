@@ -4,9 +4,10 @@ import ChordDiagram from '../components/ChordDiagram.jsx'
 import { chordLabel, playable } from '../data/chords.js'
 import { barsOf, getSong } from '../lib/song.js'
 import { go } from '../lib/transition.js'
+import { glyph } from '../lib/strum.js'
+import { strumFor } from '../data/strums.js'
 import { setEasyChords, useStore } from '../lib/store.js'
 
-const ARROWS = { D: '↓', U: '↑', '-': '·', B: 'B' }
 
 // The whole song on one page: every section's chords bar by bar, the shapes and the
 // strum patterns. Good for looking ahead, and it prints for a music stand.
@@ -33,6 +34,19 @@ export default function Sheet() {
 
   const shown = (raw) => playable(raw.split('|')[0], easy)
   const shapes = [...new Set(song.form.flatMap((key) => song.sections[key].steps.map(shown)))]
+  const allTokens = Object.values(song.patterns).join(' ')
+  // Each pattern the song uses, named for people: its trainer name if it has one, otherwise
+  // the parts of the song that use it
+  const used = new Map()
+  song.form.forEach((key) => {
+    const section = song.sections[key]
+    section.steps.forEach((raw) => {
+      const name = raw.split('|')[1] || song.defaultPattern
+      if (!used.has(name)) used.set(name, new Set())
+      used.get(name).add(section.name)
+    })
+  })
+  const patternLabel = (name) => strumFor(song.patterns[name])?.name || [...used.get(name)].join(' · ')
   const back = `/song/${song.id}`
 
   return (
@@ -68,15 +82,25 @@ export default function Sheet() {
       <section className="tool__section">
         <h2>Strumming</h2>
         <ul className="sheet__patterns">
-          {Object.entries(song.patterns).map(([name, pattern]) => (
+          {[...used.keys()].map((name) => [name, song.patterns[name]]).map(([name, pattern]) => (
             <li key={name}>
-              {Object.keys(song.patterns).length > 1 && <span className="sheet__pattern-name">{name}</span>}
+              {used.size > 1 && <span className="sheet__pattern-name">{patternLabel(name)}</span>}
               <span className="sheet__pattern" aria-label={pattern}>
-                {pattern.split(/\s+/).map((t, k) => <span key={k}>{ARROWS[t] || t}</span>)}
+                {pattern.split(/\s+/).map((t, k) => (
+                  <span key={k} className={t === 'M' ? 'is-muted' : t === 'X' ? 'is-chuck' : ''}>
+                    {glyph(t)}{t === 'M' && <small>PM</small>}
+                  </span>
+                ))}
               </span>
             </li>
           ))}
         </ul>
+        {(allTokens.includes('X') || allTokens.includes('M')) && (
+          <p className="sheet__legend">
+            {allTokens.includes('X') && <span>× is a chuck: land your strumming hand flat on the strings.</span>}
+            {allTokens.includes('M') && <span>↓PM is a palm-muted down-strum: rest your hand on the strings by the bridge.</span>}
+          </p>
+        )}
       </section>
 
       <section className="tool__section">
@@ -90,6 +114,7 @@ export default function Sheet() {
                 <h3>
                   {section.name}
                   {section.repeat > 1 && <span className="sheet__repeat"> ×{section.repeat}</span>}
+                  {section.cue && <span className="sheet__cue">{section.cue}</span>}
                 </h3>
                 <div className="sheet__bars">
                   {bars.map((bar, b) => (

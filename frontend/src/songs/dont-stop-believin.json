@@ -14,55 +14,64 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "eights": "D U D U D U D U",
+    "pm": "M M M M M M M M",
+    "two": "D - - - D - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Light eighths, like the piano",
+      "feel": "soft",
       "steps": [
-        "C",
-        "G",
-        "Am",
-        "F",
-        "C",
-        "G",
-        "Em",
-        "F"
+        "C|eights",
+        "G|eights",
+        "Am|eights",
+        "F|eights",
+        "C|eights",
+        "G|eights",
+        "Em|eights",
+        "F|eights"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Palm-muted chugs",
       "steps": [
-        "C",
-        "G",
-        "Am",
-        "F",
-        "C",
-        "G",
-        "Em",
-        "F"
+        "C|pm",
+        "G|pm",
+        "Am|pm",
+        "F|pm",
+        "C|pm",
+        "G|pm",
+        "Em|pm",
+        "F|pm"
       ]
     },
     "pre": {
       "name": "“Strangers waiting”",
       "repeat": 2,
+      "cue": "Let each strum ring",
       "steps": [
-        "F",
-        "F",
-        "C",
-        "C",
-        "F",
-        "F",
-        "C",
-        "G"
+        "F|two",
+        "F|two",
+        "C|two",
+        "C|two",
+        "F|two",
+        "F|two",
+        "C|two",
+        "G|two"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Sing it loud",
+      "feel": "loud",
       "steps": [
         "C",
         "G",
@@ -81,6 +90,6 @@
     "pre",
     "chorus"
   ],
-  "notes": "Capo on the 4th fret, then C, G, Am, F, the famous piano part. Turn on Easy chords if the F is tricky. The “Strangers waiting” section is a first draft: check it against the record.",
+  "notes": "Capo on the 4th fret, then C, G, Am, F, the famous piano part. Turn on Easy chords if the F is tricky. The “Strangers waiting” section is a first draft: check it against the record. Palm-mute the verses (PM), like the record's chugging guitar.",
   "songsterr": "https://www.songsterr.com/a/wsa/prince-purple-rain-tab-s14754"
 }

@@ -24,6 +24,7 @@
     "open": {
       "name": "Open strings",
       "repeat": 4,
+      "cue": "All open strings: watch your picking",
       "steps": [
         "Em"
       ]

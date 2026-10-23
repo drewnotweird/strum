@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect } from 'react'
 import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import GoalRing from '../components/GoalRing.jsx'
 import { BADGES } from '../lib/badges.js'
+import { SKILLS } from '../lib/skills.js'
 import { songs } from '../lib/song.js'
 import { go, pageReady } from '../lib/transition.js'
 import { bestStreak, lastDays, practisedToday, secondsToday, setGoalMinutes, streakOf, totalSeconds, useStore } from '../lib/store.js'
@@ -23,7 +24,7 @@ export default function Progress() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const state = useStore((st) => st)
-  const { days, goalMinutes, learned, playedChords, badges } = state
+  const { days, goalMinutes, learned, playedChords, badges, skillsPlayed } = state
 
   useEffect(() => {
     document.title = 'Progress · Strum'
@@ -109,6 +110,26 @@ export default function Progress() {
         ) : (
           <p className="stat-note">Play along with a song and every chord you strum shows up here.</p>
         )}
+      </section>
+
+      <section className="stat-card">
+        <h2>Techniques <span className="stat-count">{skillsPlayed.length} of {Object.keys(SKILLS).length}</span></h2>
+        <ul className="skill-list">
+          {Object.entries(SKILLS).map(([id, skill]) => {
+            const got = skillsPlayed.includes(id)
+            return (
+              <li key={id} className={got ? 'is-done' : ''}>
+                <span className="skill-list__mark" aria-hidden="true">{got ? '✓' : ''}</span>
+                <Link to={`/songs?skill=${id}`} onClick={(e) => { e.preventDefault(); go(navigate, `/songs?skill=${id}`, 'tab') }}>
+                  <strong>{skill.name}</strong>
+                  <span>{skill.blurb}</span>
+                  <span className="sr-only">{got ? '(played)' : '(not yet)'}. Find songs with it</span>
+                </Link>
+                <span className="skill-list__go" aria-hidden="true">→</span>
+              </li>
+            )
+          })}
+        </ul>
       </section>
 
       <section className="stat-card">

@@ -14,12 +14,15 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D - D - D -"
+    "boom": "B - D - B - D -",
+    "bounce": "D - D U D - D U",
+    "ring": "D - - - - - - -"
   },
-  "defaultPattern": "main",
+  "defaultPattern": "boom",
   "sections": {
-    "verse": {
+    "first": {
       "name": "Verse",
+      "cue": "Boom-chuck: bass, then strum",
       "steps": [
         "G",
         "G",
@@ -38,12 +41,65 @@
         "G",
         "G"
       ]
+    },
+    "verse": {
+      "name": "Verse",
+      "cue": "Bouncier now",
+      "steps": [
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "D|bounce",
+        "D|bounce",
+        "G|bounce",
+        "G7|bounce",
+        "C|bounce",
+        "C|bounce",
+        "G|bounce",
+        "D|bounce",
+        "G|bounce",
+        "G|bounce"
+      ]
+    },
+    "last": {
+      "name": "Verse",
+      "cue": "Last time: loud",
+      "feel": "loud",
+      "steps": [
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "G|bounce",
+        "D|bounce",
+        "D|bounce",
+        "G|bounce",
+        "G7|bounce",
+        "C|bounce",
+        "C|bounce",
+        "G|bounce",
+        "D|bounce",
+        "G|bounce",
+        "G|bounce"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
+    "first",
     "verse",
-    "verse",
-    "verse"
+    "last",
+    "end"
   ],
   "notes": "Lots of G, a D, then G7 into C. G7 is just G with your first finger on the 1st fret of the top string."
 }

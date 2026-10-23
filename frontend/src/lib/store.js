@@ -16,6 +16,8 @@ const DEFAULTS = {
   favourites: [],
   knownChords: [], // ticked on the Songs page: "show me songs I can play with these"
   lastPlayed: null, // { id, step, section } for "Keep going" on the home page
+  speeds: {}, // song id → the speed he last played it at, so it opens where he left off
+  skillsPlayed: [], // techniques he's played (see lib/skills.js), for Progress and badges
 }
 
 function load() {
@@ -58,6 +60,15 @@ export function addPlayedChord(name) {
 }
 
 export const addBadges = (ids) => set({ badges: [...state.badges, ...ids] })
+
+export const setSongSpeed = (id, speed) => {
+  if (state.speeds[id] !== speed) set({ speeds: { ...state.speeds, [id]: speed } })
+}
+
+export function addSkillsPlayed(ids) {
+  const fresh = ids.filter((id) => !state.skillsPlayed.includes(id))
+  if (fresh.length) set({ skillsPlayed: [...state.skillsPlayed, ...fresh] })
+}
 
 export const toggleFavourite = (id) =>
   set({ favourites: state.favourites.includes(id) ? state.favourites.filter((x) => x !== id) : [...state.favourites, id] })

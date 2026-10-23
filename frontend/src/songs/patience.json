@@ -15,23 +15,28 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "pick": "B 3 2 3 1 3 2 3"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro (whistling)",
       "repeat": 2,
+      "cue": "Pick through each chord",
+      "feel": "soft",
       "steps": [
-        "C",
-        "G",
-        "A",
-        "D"
+        "C|pick",
+        "G|pick",
+        "A|pick",
+        "D|pick"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Gentle strum",
+      "feel": "soft",
       "steps": [
         "C",
         "G",
@@ -42,6 +47,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Lift it up",
+      "feel": "loud",
       "steps": [
         "C",
         "G",

@@ -16,13 +16,15 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D - D - D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Big chords: let them ring",
       "steps": [
         "G",
         "C|half",
@@ -51,11 +53,20 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Sing it loud",
+      "feel": "loud",
       "steps": [
         "G",
         "C",
         "G",
         "D"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
       ]
     }
   },
@@ -69,7 +80,8 @@
     "pre",
     "chorus",
     "chorus",
-    "intro"
+    "intro",
+    "end"
   ],
   "notes": "Big, loud down-strums on G, C and D, with a quick up-strum at the end of each bar. Let the chords ring. This chart is a first draft: the chords are right for the song, but check the order of the sections against the record. The intro riff and Angus Young's solo are on Songsterr.",
   "songsterr": "https://www.songsterr.com/a/wsa/ac-dc-you-shook-me-all-night-long-tab-s63275"

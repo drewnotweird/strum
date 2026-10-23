@@ -24,6 +24,7 @@
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Hit, then stop the strings dead",
       "steps": [
         "A",
         "D|pair",
@@ -33,6 +34,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "D|pair",
         "G|pair",
@@ -44,6 +47,7 @@
     },
     "outro": {
       "name": "Outro",
+      "cue": "Let the last A ring",
       "steps": [
         "A|push",
         "A|hit"

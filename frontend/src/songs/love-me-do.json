@@ -21,6 +21,7 @@
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Strum under the harmonica",
       "steps": [
         "G",
         "C",
@@ -44,6 +45,8 @@
     },
     "bridge": {
       "name": "Bridge",
+      "cue": "Lean in for the middle bit",
+      "feel": "loud",
       "steps": [
         "D",
         "C",

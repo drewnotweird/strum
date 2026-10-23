@@ -14,23 +14,29 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "two": "D - - - D - - -",
+    "heavy": "D D D D D D D D",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Let each chord hang",
       "steps": [
-        "Em",
-        "C",
-        "G",
-        "D"
+        "Em|two",
+        "C|two",
+        "G|two",
+        "D|two"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Gentle",
+      "feel": "soft",
       "steps": [
         "Em",
         "C",
@@ -41,11 +47,20 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Loud and heavy",
+      "feel": "loud",
       "steps": [
-        "Em",
-        "C",
-        "G",
-        "D"
+        "Em|heavy",
+        "C|heavy",
+        "G|heavy",
+        "D|heavy"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "Em|ring"
       ]
     }
   },
@@ -55,7 +70,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Em, C, G, D on repeat, one bar each. Play it gently in the verse and dig in for the chorus.",
   "songsterr": "https://www.songsterr.com/a/wsa/cranberries-zombie-tab-s431"

@@ -23,6 +23,7 @@
     "verse": {
       "name": "Verse",
       "repeat": 8,
+      "cue": "Short, then long",
       "steps": [
         "F5",
         "G5"
@@ -39,6 +40,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Up a gear",
+      "feel": "loud",
       "steps": [
         "C5",
         "D5"

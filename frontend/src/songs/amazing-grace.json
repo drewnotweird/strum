@@ -14,12 +14,61 @@
   "beatsPerBar": 3,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U D U"
+    "main": "D - D U D U",
+    "bass": "B - D U D U",
+    "ring": "D - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
+    "first": {
+      "name": "Verse",
+      "cue": "One strum a bar: let it ring",
+      "feel": "soft",
+      "steps": [
+        "G|ring",
+        "G|ring",
+        "C|ring",
+        "G|ring",
+        "G|ring",
+        "G|ring",
+        "D|ring",
+        "D|ring",
+        "G|ring",
+        "G|ring",
+        "C|ring",
+        "G|ring",
+        "G|ring",
+        "D|ring",
+        "G|ring",
+        "G|ring"
+      ]
+    },
     "verse": {
       "name": "Verse",
+      "cue": "Bass note, then down-up, down-up",
+      "steps": [
+        "G|bass",
+        "G|bass",
+        "C|bass",
+        "G|bass",
+        "G|bass",
+        "G|bass",
+        "D|bass",
+        "D|bass",
+        "G|bass",
+        "G|bass",
+        "C|bass",
+        "G|bass",
+        "G|bass",
+        "D|bass",
+        "G|bass",
+        "G|bass"
+      ]
+    },
+    "last": {
+      "name": "Verse",
+      "cue": "Full strum: sing it out",
+      "feel": "loud",
       "steps": [
         "G",
         "G",
@@ -38,12 +87,20 @@
         "G",
         "G"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
+    "first",
     "verse",
-    "verse",
-    "verse"
+    "last",
+    "end"
   ],
-  "notes": "This one's a waltz: count 1, 2, 3. Only G, C and D."
+  "notes": "This one's a waltz: count 1, 2, 3. Only G, C and D. Three times through: single strums, then a bass note and strum, then full strumming."
 }

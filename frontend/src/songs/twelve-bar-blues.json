@@ -1,0 +1,92 @@
+{
+  "id": "twelve-bar-blues",
+  "title": "12-Bar Blues Boogie",
+  "artist": "Traditional",
+  "emoji": "🎷",
+  "level": 2,
+  "tags": [
+    "rock",
+    "classic"
+  ],
+  "licence": "traditional",
+  "kind": "drill",
+  "checked": false,
+  "capo": 0,
+  "bpm": 104,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "beat": "D D",
+    "ring": "D - - - - - - -"
+  },
+  "defaultPattern": "beat",
+  "sections": {
+    "blues": {
+      "name": "12 bars",
+      "repeat": 2,
+      "cue": "Pinky on, pinky off",
+      "steps": [
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "D5d",
+        "D6",
+        "D5d",
+        "D6",
+        "D5d",
+        "D6",
+        "D5d",
+        "D6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "E5d",
+        "E6",
+        "E5d",
+        "E6",
+        "D5d",
+        "D6",
+        "D5d",
+        "D6",
+        "A5d",
+        "A6",
+        "A5d",
+        "A6",
+        "E5d",
+        "E6",
+        "E5d",
+        "E6"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Finish on A",
+      "steps": [
+        "A5d|ring"
+      ]
+    }
+  },
+  "form": [
+    "blues",
+    "end"
+  ],
+  "notes": "The 12-bar blues is the shape behind loads of rock and roll. Each beat gets two down-strums: the 5 shape, then add your pinky two frets up for the 6, then take it off again. Four bars of A, two of D, two of A, then E, D, A and E to go round again. Great with the drums on."
+}

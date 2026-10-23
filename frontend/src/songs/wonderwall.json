@@ -14,13 +14,15 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 4,
+      "cue": "Ring and pinky stay put",
       "steps": [
         "Em7",
         "G*",
@@ -31,6 +33,8 @@
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Keep it steady",
+      "feel": "soft",
       "steps": [
         "Em7",
         "G*",
@@ -40,6 +44,7 @@
     },
     "pre": {
       "name": "Pre-chorus",
+      "cue": "Build it up",
       "steps": [
         "Cadd9",
         "Dsus4",
@@ -62,6 +67,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "Cadd9",
         "Em7",
@@ -78,6 +85,13 @@
         "G*",
         "Em7"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "Em7|ring"
+      ]
     }
   },
   "form": [
@@ -91,7 +105,8 @@
     "pre",
     "chorus",
     "chorus",
-    "outro"
+    "outro",
+    "end"
   ],
   "notes": "Capo on the 2nd fret. Keep your ring and pinky fingers on the 3rd fret of the top two strings the whole time. Only the other fingers move.",
   "songsterr": "https://www.songsterr.com/a/wsa/oasis-wonderwall-tab-s2"

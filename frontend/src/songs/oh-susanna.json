@@ -14,13 +14,16 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D - D - D -"
+    "boom": "B - D - B - D -",
+    "bounce": "D - D U D - D U",
+    "ring": "D - - - - - - -"
   },
-  "defaultPattern": "main",
+  "defaultPattern": "boom",
   "sections": {
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Boom-chuck: bass, then strum",
       "steps": [
         "C",
         "C",
@@ -34,15 +37,24 @@
     },
     "chorus": {
       "name": "Chorus",
+      "cue": "Bouncier for the chorus",
+      "feel": "loud",
       "steps": [
-        "F",
-        "F",
-        "C",
-        "G7",
-        "C",
-        "C",
-        "G7",
-        "C"
+        "F|bounce",
+        "F|bounce",
+        "C|bounce",
+        "G7|bounce",
+        "C|bounce",
+        "C|bounce",
+        "G7|bounce",
+        "C|bounce"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
       ]
     }
   },
@@ -50,7 +62,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Written in 1848, so it's free for anyone to use. Mostly C and G7, with F to start the chorus."
 }

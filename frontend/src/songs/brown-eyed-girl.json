@@ -14,13 +14,15 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "downs": "D - D - D - D -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Bright and quick",
       "steps": [
         "G",
         "C",
@@ -40,20 +42,23 @@
     },
     "pre": {
       "name": "Pre-chorus",
+      "cue": "Straight downs: build it up",
       "steps": [
-        "C",
-        "D",
-        "G",
-        "Em",
-        "C",
-        "D",
-        "G",
-        "D"
+        "C|downs",
+        "D|downs",
+        "G|downs",
+        "Em|downs",
+        "C|downs",
+        "D|downs",
+        "G|downs",
+        "D|downs"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Big and bright",
+      "feel": "loud",
       "steps": [
         "G",
         "C",

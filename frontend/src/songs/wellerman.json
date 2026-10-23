@@ -1,0 +1,75 @@
+{
+  "id": "wellerman",
+  "title": "Wellerman",
+  "artist": "Traditional",
+  "emoji": "🐋",
+  "level": 2,
+  "tags": [
+    "singalong"
+  ],
+  "licence": "traditional",
+  "checked": false,
+  "capo": 0,
+  "bpm": 100,
+  "beatsPerBar": 4,
+  "perBeat": 2,
+  "patterns": {
+    "stomp": "D - X - D - X -",
+    "shalf": "D - X -",
+    "main": "D - D U - U D U",
+    "ring": "D - - - - - - -"
+  },
+  "defaultPattern": "stomp",
+  "sections": {
+    "verse": {
+      "name": "Verse",
+      "cue": "Stomp: down, chuck, down, chuck",
+      "steps": [
+        "Am",
+        "Dm|shalf",
+        "Am|shalf",
+        "Am",
+        "E|shalf",
+        "Am|shalf",
+        "Am",
+        "Dm|shalf",
+        "Am|shalf",
+        "E",
+        "Am"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "cue": "Sing it out",
+      "feel": "loud",
+      "steps": [
+        "F|main",
+        "C|main",
+        "Dm|main",
+        "Am|main",
+        "F|main",
+        "C|main",
+        "E|main",
+        "Am|main"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "Am|ring"
+      ]
+    }
+  },
+  "form": [
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "chorus",
+    "end"
+  ],
+  "notes": "A New Zealand whaling song from the 1800s, so it's free for anyone to play. The verse stomps along on Am, with quick moves to Dm and E; the chorus brings in F and C. The × is a chuck: slap the strings on 2 and 4, like stamping your foot."
+}

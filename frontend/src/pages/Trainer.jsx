@@ -29,7 +29,7 @@ function trainerSong(a, b, beats) {
   }
 }
 
-function ChordSelect({ label, value, onChange }) {
+export function ChordSelect({ label, value, onChange }) {
   return (
     <label className="picker">
       <span>{label}</span>

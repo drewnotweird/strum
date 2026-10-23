@@ -42,15 +42,15 @@
       ]
     },
     "together": {
-      "name": "All together",
+      "name": "Mix them up",
       "repeat": 2,
+      "cue": "Move between all the shapes",
       "steps": [
-        "B5",
-        "D5",
         "E5",
-        "G5|quick",
-        "F#5|quick",
         "D5",
+        "B5",
+        "F#5|quick",
+        "G5|quick",
         "E5"
       ]
     }

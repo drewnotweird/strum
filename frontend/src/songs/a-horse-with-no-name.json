@@ -14,13 +14,17 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "chuck": "D - X U - U X U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
       "repeat": 8,
+      "cue": "Light and steady",
+      "feel": "soft",
       "steps": [
         "Em",
         "D6/9"
@@ -29,9 +33,17 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 8,
+      "cue": "Add chucks on 2 and 4",
       "steps": [
-        "Em",
-        "D6/9"
+        "Em|chuck",
+        "D6/9|chuck"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "Em|ring"
       ]
     }
   },
@@ -39,8 +51,9 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
-  "notes": "Only two chords, and they barely move. For D6/9, take your Em fingers off and put one on the 2nd fret of the low E string and one on the 2nd fret of the G string.",
+  "notes": "Only two chords, and they barely move. For D6/9, take your Em fingers off and put one on the 2nd fret of the low E string and one on the 2nd fret of the G string. In the chorus, try chucks: on beats 2 and 4, land your strumming hand flat on the strings for a muted slap (the ×).",
   "songsterr": "https://www.songsterr.com/a/wsa/america-a-horse-with-no-name-tab-s25201"
 }

@@ -16,7 +16,7 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "chug": "D D D D D D D D",
+    "chug": "M M M M M M M M",
     "hit": "D - - - D - D -"
   },
   "defaultPattern": "chug",
@@ -24,6 +24,7 @@
     "chug": {
       "name": "Chug on E",
       "repeat": 4,
+      "cue": "Palm-muted chug",
       "steps": [
         "E5"
       ]

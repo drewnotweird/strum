@@ -15,35 +15,41 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U",
-    "half": "D - D U"
+    "bass": "B - D U - U D U",
+    "bhalf": "B - D U",
+    "half": "D - D U",
+    "ring": "D - - - - - - -"
   },
-  "defaultPattern": "main",
+  "defaultPattern": "bass",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Bass note first, then strum",
       "steps": [
         "G",
         "G",
-        "C|half",
-        "D|half",
+        "C|bhalf",
+        "D|bhalf",
         "G"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "feel": "soft",
       "steps": [
         "G",
         "G",
-        "C|half",
-        "D|half",
+        "C|bhalf",
+        "D|bhalf",
         "G"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Strum it out",
+      "feel": "loud",
       "steps": [
         "Em|half",
         "D|half",
@@ -53,11 +59,12 @@
     },
     "outro": {
       "name": "Outro",
+      "cue": "Let the last G ring",
       "steps": [
         "G",
-        "C|half",
-        "D|half",
-        "G"
+        "C|bhalf",
+        "D|bhalf",
+        "G|ring"
       ]
     }
   },
@@ -69,6 +76,6 @@
     "chorus",
     "outro"
   ],
-  "notes": "G, C and D in the verses, then Em, D, C, G in the chorus. On the record each strum picks out the bass string first, then the rest: try hitting just the thickest string of each chord on beat one before you strum. Swap C for Cadd9 to keep your ring and pinky fingers still.",
+  "notes": "G, C and D in the verses, then Em, D, C, G in the chorus. On the record each strum picks out the bass string first, then the rest: that's the B at the start of the verse pattern. Swap C for Cadd9 to keep your ring and pinky fingers still.",
   "songsterr": "https://www.songsterr.com/a/wsa/green-day-good-riddance-time-of-your-life-tab-s75"
 }

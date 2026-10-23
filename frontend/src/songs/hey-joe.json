@@ -16,13 +16,25 @@
   "perBeat": 2,
   "patterns": {
     "half": "D - D U",
-    "full": "D - D U - U D U"
+    "full": "D - D U - U D U",
+    "ring": "D - - - - - - -",
+    "dhalf": "D U D U"
   },
   "defaultPattern": "half",
   "sections": {
+    "intro": {
+      "name": "Intro",
+      "cue": "Let the E ring",
+      "steps": [
+        "E|ring",
+        "E|ring"
+      ]
+    },
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Look ahead to NEXT",
+      "feel": "soft",
       "steps": [
         "C",
         "G",
@@ -31,13 +43,36 @@
         "E|full",
         "E|full"
       ]
+    },
+    "loud": {
+      "name": "Verse",
+      "repeat": 4,
+      "cue": "Dig in: down-ups",
+      "feel": "loud",
+      "steps": [
+        "C|dhalf",
+        "G|dhalf",
+        "D|dhalf",
+        "A|dhalf",
+        "E|full",
+        "E|full"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "E|ring"
+      ]
     }
   },
   "form": [
+    "intro",
     "verse",
+    "loud",
     "verse",
-    "verse",
-    "verse"
+    "loud",
+    "end"
   ],
   "notes": "Five chords going round and round: C, G, D, A, then two bars of E. Each one gets two beats, so the changes come fast. That makes it brilliant practice: look ahead at NEXT and start moving your fingers early.",
   "songsterr": "https://www.songsterr.com/a/wsa/the-jimi-hendrix-experience-hey-joe-tab-s22556"

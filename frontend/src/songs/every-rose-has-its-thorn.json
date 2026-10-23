@@ -15,13 +15,15 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Ring and pinky stay put",
       "steps": [
         "G*",
         "Cadd9"
@@ -30,6 +32,8 @@
     "verse": {
       "name": "Verse",
       "repeat": 4,
+      "cue": "Gentle",
+      "feel": "soft",
       "steps": [
         "G*",
         "Cadd9"
@@ -37,6 +41,8 @@
     },
     "chorus": {
       "name": "Chorus",
+      "cue": "Bigger for the chorus",
+      "feel": "loud",
       "steps": [
         "G*",
         "Cadd9",
@@ -47,6 +53,13 @@
         "G*",
         "G*"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G*|ring"
+      ]
     }
   },
   "form": [
@@ -55,7 +68,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Mostly G and Cadd9, using the same shapes as Wonderwall: keep your ring and pinky fingers on the 3rd fret of the top two strings and only move the other two. D comes in on the chorus. The record is tuned half a step down, so it sounds a little lower than this.",
   "songsterr": ""

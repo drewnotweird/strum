@@ -14,26 +14,48 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "boom": "B - D U B - D U",
+    "chuck": "D - X U - U X U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Bass note, then strum",
+      "feel": "soft",
       "steps": [
-        "G",
-        "G",
-        "Em",
-        "Em",
-        "C",
-        "D",
-        "G",
-        "G"
+        "G|boom",
+        "G|boom",
+        "Em|boom",
+        "Em|boom",
+        "C|boom",
+        "D|boom",
+        "G|boom",
+        "G|boom"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Add chucks on 2 and 4",
+      "steps": [
+        "G|chuck",
+        "G|chuck",
+        "Em|chuck",
+        "Em|chuck",
+        "C|chuck",
+        "D|chuck",
+        "G|chuck",
+        "G|chuck"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "G",
         "G",
@@ -45,18 +67,11 @@
         "G"
       ]
     },
-    "chorus": {
-      "name": "Chorus",
-      "repeat": 2,
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
       "steps": [
-        "G",
-        "G",
-        "Em",
-        "Em",
-        "C",
-        "D",
-        "G",
-        "G"
+        "G|ring"
       ]
     }
   },
@@ -66,7 +81,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Played with G shapes and a capo on 2 so you're in the record's key without the hard F#m chord. The same progression all the way through.",
   "songsterr": "https://www.songsterr.com/a/wsa/ben-e-king-stand-by-me-tab-s61064"

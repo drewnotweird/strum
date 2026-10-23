@@ -3,6 +3,8 @@ import { Link, useNavigate, useNavigationType } from 'react-router-dom'
 import { goLink, pageReady } from '../lib/transition.js'
 import { setEasyChords, setLefty, useStore } from '../lib/store.js'
 import { Switch } from '../components/SettingsPanel.jsx'
+import { STRUMS } from '../data/strums.js'
+import { glyph, slotKind } from '../lib/strum.js'
 
 // Icons drawn on a 24×24 grid, matching the pages they open
 const TOOLS = [
@@ -89,6 +91,27 @@ export default function Practice() {
           </li>
         ))}
       </ul>
+
+      <section className="strum-shelf" aria-labelledby="strums-title">
+        <div className="hub-section__head">
+          <h2 id="strums-title">Strumming patterns</h2>
+        </div>
+        <ul className="strum-cards">
+          {STRUMS.map((s) => (
+            <li key={s.id}>
+              <Link {...goLink(navigate, `/strums?p=${s.id}`)} className="strum-card">
+                <strong>{s.name}</strong>
+                <span className="strum-card__pattern" aria-hidden="true">
+                  {s.pattern.split(' ').map((t, k) => (
+                    <span key={k} className={slotKind(t)}>{glyph(t)}{t === 'M' && <small>PM</small>}</span>
+                  ))}
+                </span>
+                <span className="strum-card__blurb">{s.blurb}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="stat-card prefs">
         <h2>Preferences</h2>

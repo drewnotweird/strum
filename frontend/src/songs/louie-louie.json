@@ -22,6 +22,7 @@
     "riff": {
       "name": "Riff",
       "repeat": 4,
+      "cue": "1, 2, 3 · 1, 2",
       "steps": [
         "A|three",
         "D|two",
@@ -42,6 +43,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Dig in",
+      "feel": "loud",
       "steps": [
         "A|three",
         "D|two",

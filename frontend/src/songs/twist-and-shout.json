@@ -15,7 +15,9 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "drive": "D U D U D U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
@@ -40,8 +42,17 @@
     "build": {
       "name": "Build-up",
       "repeat": 4,
+      "cue": "Build it up: louder every bar",
+      "feel": "loud",
       "steps": [
-        "A"
+        "A|drive"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Big finish",
+      "steps": [
+        "D|ring"
       ]
     }
   },
@@ -52,7 +63,8 @@
     "build",
     "verse",
     "build",
-    "verse"
+    "verse",
+    "end"
   ],
   "notes": "D and G get two beats each, then a full bar of A. Round and round. The build-up is just A, getting louder.",
   "songsterr": "https://www.songsterr.com/a/wsa/beatles-twist-and-shout-tab-s26412"

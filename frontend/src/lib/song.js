@@ -10,7 +10,8 @@ export const getSong = (id) => songs.find((s) => s.id === id)
 
 // Flatten a song's form into the list of chords to play, one entry per chord change.
 // A step is "Chord" (default pattern) or "Chord|patternName". With `easy`, hard shapes
-// are swapped for their easy versions.
+// are swapped for their easy versions. Each step carries its section's `cue` (a short
+// coaching line shown while it plays) and `feel` ('soft' or 'loud', how hard the guitar plays).
 export function buildSteps(song, { easy = false } = {}) {
   const steps = []
   const sectionStarts = []
@@ -24,6 +25,8 @@ export function buildSteps(song, { easy = false } = {}) {
           chord: playable(chord, easy),
           pattern: song.patterns[patternName].split(/\s+/),
           section: section.name,
+          cue: section.cue || null,
+          feel: section.feel || null,
           formIndex,
         })
       })

@@ -14,23 +14,41 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "pick": "B 3 2 3 1 3 2 3",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Pick each string and let it ring",
+      "feel": "soft",
       "steps": [
-        "G",
-        "Em",
-        "D",
-        "C"
+        "G|pick",
+        "Em|pick",
+        "D|pick",
+        "C|pick"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Keep picking",
+      "feel": "soft",
+      "steps": [
+        "G|pick",
+        "Em|pick",
+        "D|pick",
+        "C|pick"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "repeat": 2,
+      "cue": "Strum it big",
+      "feel": "loud",
       "steps": [
         "G",
         "Em",
@@ -38,14 +56,11 @@
         "C"
       ]
     },
-    "chorus": {
-      "name": "Chorus",
-      "repeat": 2,
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring out",
       "steps": [
-        "G",
-        "Em",
-        "D",
-        "C"
+        "G|ring"
       ]
     }
   },
@@ -55,8 +70,9 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
-  "notes": "Capo on the 3rd fret, then G, Em, D, C, one bar each, the whole way through. It's slow: let every chord ring out.",
+  "notes": "Capo on the 3rd fret, then G, Em, D, C, one bar each, the whole way through. Pick the verses one string at a time (numbers are strings, 1 is the thinnest), then strum the chorus. It's slow: let every chord ring out.",
   "songsterr": "https://www.songsterr.com/a/wsa/poison-every-rose-has-its-thorn-tab-s385"
 }

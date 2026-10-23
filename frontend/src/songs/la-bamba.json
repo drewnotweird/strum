@@ -16,13 +16,17 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "chuck": "D - X U - U X U",
+    "chalf": "D - X U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 4,
+      "cue": "Bright and bouncy",
       "steps": [
         "C|half",
         "F|half",
@@ -32,18 +36,48 @@
     "verse": {
       "name": "Verse",
       "repeat": 8,
+      "cue": "Keep it bouncy",
       "steps": [
         "C|half",
         "F|half",
         "G"
+      ]
+    },
+    "chucks": {
+      "name": "Verse",
+      "repeat": 8,
+      "cue": "Add chucks on 2 and 4",
+      "steps": [
+        "C|chalf",
+        "F|chalf",
+        "G|chuck"
+      ]
+    },
+    "loud": {
+      "name": "Verse",
+      "repeat": 8,
+      "cue": "Big finish",
+      "feel": "loud",
+      "steps": [
+        "C|half",
+        "F|half",
+        "G"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
       ]
     }
   },
   "form": [
     "intro",
     "verse",
-    "verse",
-    "verse"
+    "chucks",
+    "loud",
+    "end"
   ],
   "notes": "A Mexican folk song. C and F for two beats each, then a bar of G, over and over. Keep it bouncy."
 }

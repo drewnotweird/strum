@@ -14,13 +14,16 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U - U D U"
+    "main": "D - D U - U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "D",
         "A",
@@ -35,6 +38,8 @@
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Lighter for the verse",
+      "feel": "soft",
       "steps": [
         "D",
         "D",
@@ -45,6 +50,13 @@
         "A",
         "A"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "D|ring"
+      ]
     }
   },
   "form": [
@@ -53,7 +65,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "In D, with an easy four-string Bm, so no barre chords. This chart is a first draft written from memory: the chorus is the most reliable part, and the verse may need fixing once you've played along with the record.",
   "songsterr": "https://www.songsterr.com/a/wsa/abba-super-trouper-tab-s658260"

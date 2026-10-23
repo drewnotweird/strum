@@ -16,6 +16,7 @@
   "perBeat": 2,
   "patterns": {
     "chug": "D D D D D D D D",
+    "pm": "M M M M M M M M",
     "stop": "D - - - - - - -"
   },
   "defaultPattern": "chug",
@@ -23,6 +24,7 @@
     "intro": {
       "name": "Intro",
       "repeat": 2,
+      "cue": "Big, even down-strums",
       "steps": [
         "C5",
         "G5",
@@ -33,16 +35,20 @@
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Palm mute: hand on the bridge",
+      "feel": "soft",
       "steps": [
-        "C5",
-        "G5",
-        "F5",
-        "G5"
+        "C5|pm",
+        "G5|pm",
+        "F5|pm",
+        "G5|pm"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Lift your hand: let it ring out",
+      "feel": "loud",
       "steps": [
         "C5",
         "G5",
@@ -52,6 +58,7 @@
     },
     "outro": {
       "name": "Outro",
+      "cue": "Stop dead on the last hit",
       "steps": [
         "C5",
         "G5",
@@ -68,6 +75,6 @@
     "chorus",
     "outro"
   ],
-  "notes": "Four power chords, one bar each, nearly the whole way through: C5, G5, F5, G5. The same shape moves between the A and low E strings. It is all about stamina: keep the down-strokes even and don't speed up. The bridge changes the order; learn it from Songsterr once this feels easy.",
+  "notes": "Four power chords, one bar each, nearly the whole way through: C5, G5, F5, G5. The same shape moves between the A and low E strings. Palm-mute the verses (PM): rest the side of your hand on the strings by the bridge, then lift it off for a big, open chorus. Keep the down-strokes even and don't speed up. The bridge changes the order; learn it from Songsterr once this feels easy.",
   "songsterr": "https://www.songsterr.com/a/wsa/blink-182-all-the-small-things-tab-s258"
 }

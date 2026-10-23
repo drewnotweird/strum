@@ -16,10 +16,44 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U D - D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "bass": "B - D U B - D U",
+    "bhalf": "B - D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
+    "first": {
+      "name": "Verse",
+      "cue": "Bass note, then strum",
+      "steps": [
+        "G|bass",
+        "G|bhalf",
+        "D|bhalf",
+        "G|bass",
+        "D|bhalf",
+        "G|bhalf",
+        "G|bass",
+        "G|bhalf",
+        "D|bhalf",
+        "G|bass",
+        "D|bhalf",
+        "G|bhalf",
+        "D|bass",
+        "D|bhalf",
+        "A|bhalf",
+        "D|bass",
+        "A|bhalf",
+        "D|bhalf",
+        "G|bass",
+        "C|bhalf",
+        "G|bhalf",
+        "C|bhalf",
+        "G|bhalf",
+        "D|bhalf",
+        "G|bhalf"
+      ]
+    },
     "verse": {
       "name": "Verse",
       "steps": [
@@ -49,12 +83,52 @@
         "D|half",
         "G|half"
       ]
+    },
+    "last": {
+      "name": "Verse",
+      "cue": "Last time: big and jolly",
+      "feel": "loud",
+      "steps": [
+        "G",
+        "G|half",
+        "D|half",
+        "G",
+        "D|half",
+        "G|half",
+        "G",
+        "G|half",
+        "D|half",
+        "G",
+        "D|half",
+        "G|half",
+        "D",
+        "D|half",
+        "A|half",
+        "D",
+        "A|half",
+        "D|half",
+        "G",
+        "C|half",
+        "G|half",
+        "C|half",
+        "G|half",
+        "D|half",
+        "G|half"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
+    "first",
     "verse",
-    "verse",
-    "verse"
+    "last",
+    "end"
   ],
   "notes": "A traditional Welsh carol, free for anyone to play. Each line is \"Deck the halls\" then \"fa la la la la, la la la la\". The third line moves to D and A, then the last line brings it home with C and G. Some chords only get two beats, so watch for the quick changes."
 }

@@ -5,6 +5,12 @@ import { bestStreak, lastDays, streakOf } from '../lib/store.js'
 import { BADGES, newlyEarned } from '../lib/badges.js'
 import { drumHits } from '../lib/drums.js'
 import { songOfTheDay } from '../lib/daily.js'
+import { getSong, buildSteps } from '../lib/song.js'
+import { STRUMS, strumFor } from '../data/strums.js'
+import { TOKEN } from '../lib/strum.js'
+import { SKILLS, songSkills, stepSkills } from '../lib/skills.js'
+import { fingersToMove, trickiestChange } from '../lib/changes.js'
+import { voiceFor } from '../lib/guitar.js'
 
 const index = makeCatalogue(songs)
 const titles = (opts) => search(index, opts).results.map((r) => r.song.title)
@@ -132,5 +138,78 @@ describe('song of the day', () => {
     const day = new Date(2026, 9, 15)
     const first = songOfTheDay(songs, [], day)
     expect(songOfTheDay(songs, [first.id], day).id).not.toBe(first.id)
+  })
+})
+
+describe('strum trainer patterns', () => {
+  it('are valid, fill whole bars and have something to strum', () => {
+    for (const strum of STRUMS) {
+      const slots = strum.pattern.split(' ')
+      for (const t of slots) expect(t, strum.id).toMatch(TOKEN)
+      expect(slots.length, strum.id).toBe((strum.beats || 4) * 2)
+      expect(slots.some((t) => t !== '-'), strum.id).toBe(true)
+    }
+  })
+
+  it('are recognised when a song uses one', () => {
+    expect(strumFor('D - X U - U X U').id).toBe('chuck')
+    expect(strumFor('D D')).toBeUndefined()
+  })
+})
+
+describe('techniques', () => {
+  it('are read from a chord and its pattern', () => {
+    expect(stepSkills('E5', ['M', 'M'])).toEqual(['power-chords', 'palm-muting'])
+    expect(stepSkills('G', ['B', '-', 'D', 'U'])).toEqual(['bass-strums'])
+    expect(stepSkills('Am', ['B', '3', '2', '1'])).toEqual(['picking'])
+    expect(stepSkills('C', ['D', '-', 'X', 'U'])).toEqual(['chucks'])
+  })
+
+  it('each have songs to practise them', () => {
+    expect(songSkills(getSong('im-yours'))).toContain('chucks')
+    expect(songSkills(getSong('house-of-the-rising-sun'))).toContain('picking')
+    const covered = new Set(songs.flatMap(songSkills))
+    for (const id of Object.keys(SKILLS)) expect(covered.has(id), id).toBe(true)
+  })
+
+  it('can be filtered on in the library', () => {
+    const chucky = search(index, { skill: 'chucks' }).results
+    expect(chucky.length).toBeGreaterThan(2)
+    for (const r of chucky) expect(r.skills).toContain('chucks')
+  })
+})
+
+describe('chord changes', () => {
+  it('count the fingers that move', () => {
+    expect(fingersToMove('C', 'C')).toBe(0)
+    expect(fingersToMove('C', 'Am')).toBe(1) // only the ring finger moves
+    expect(fingersToMove('F5', 'G5')).toBe(1) // the same shape, slid up
+    expect(fingersToMove('G', 'C')).toBe(3)
+  })
+
+  it('find the trickiest change in a song', () => {
+    const tricky = trickiestChange(buildSteps(getSong('creep')).steps)
+    expect(tricky.moves).toBeGreaterThanOrEqual(2)
+  })
+
+  it("leave out songs where the shape only slides", () => {
+    expect(trickiestChange(buildSteps(getSong('smells-like-teen-spirit')).steps)).toBeNull()
+  })
+})
+
+describe('guitar voices', () => {
+  it('play chucks and palm mutes as short, muted strums', () => {
+    expect(voiceFor('G', 'X').slap).toBe(true)
+    expect(voiceFor('G', 'M').muted).toBeGreaterThan(0)
+    expect(voiceFor('G', '-')).toBeNull()
+  })
+
+  it('play soft and loud sections at different strengths', () => {
+    expect(voiceFor('G', 'D', 0, 'soft').velocity).toBeLessThan(voiceFor('G', 'D').velocity)
+    expect(voiceFor('G', 'D', 0, 'loud').velocity).toBeGreaterThan(voiceFor('G', 'D').velocity)
+  })
+
+  it('carry each section cue onto its steps', () => {
+    expect(buildSteps(getSong('im-yours')).steps[0].cue).toBe('Chucks on 2 and 4')
   })
 })

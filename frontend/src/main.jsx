@@ -25,19 +25,20 @@ const Sheet = page(() => import('./pages/Sheet.jsx'))
 const Tuner = page(() => import('./pages/Tuner.jsx'))
 const Trainer = page(() => import('./pages/Trainer.jsx'))
 const Chords = page(() => import('./pages/Chords.jsx'))
+const Strums = page(() => import('./pages/Strums.jsx'))
 const Progress = page(() => import('./pages/Progress.jsx'))
 
 // Fetch the rest in the background once the first page is up, so every tap is instant
 const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200))
 window.addEventListener('load', () => idle(() => {
-  for (const P of [Songs, Player, Practice, Progress, Trainer, Tuner, Chords, Sheet]) P.preload().catch(() => {})
+  for (const P of [Songs, Player, Practice, Progress, Trainer, Strums, Tuner, Chords, Sheet]) P.preload().catch(() => {})
 }))
 
 // Each main page has its own colour (Home blue, Songs violet, Practice teal, Progress
 // orange); the practice tools share Practice's. Song pages keep the blue.
 const pageTheme = (pathname) => {
   if (pathname === '/songs') return 'songs'
-  if (['/practice', '/tuner', '/changes', '/chords'].includes(pathname)) return 'practice'
+  if (['/practice', '/tuner', '/changes', '/strums', '/chords'].includes(pathname)) return 'practice'
   if (pathname === '/progress') return 'progress'
   return 'home'
 }
@@ -73,6 +74,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/song/:id/sheet" element={<Sheet />} />
         <Route path="/tuner" element={<Tuner />} />
         <Route path="/changes" element={<Trainer />} />
+        <Route path="/strums" element={<Strums />} />
         <Route path="/chords" element={<Chords />} />
         <Route path="/progress" element={<Progress />} />
       </Routes>

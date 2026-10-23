@@ -3,24 +3,20 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { getSong, buildSteps, buildTimeline } from '../lib/song.js'
 import { createPlayer } from '../lib/player.js'
 import { songNotes, voiceFor } from '../lib/guitar.js'
-import { chords, chordLabel } from '../data/chords.js'
+import { chordLabel } from '../data/chords.js'
 import ChordDiagram from '../components/ChordDiagram.jsx'
 import SettingsPanel from '../components/SettingsPanel.jsx'
 import SongCover from '../components/SongCover.jsx'
 import { confetti } from '../lib/confetti.js'
 import { go, travels } from '../lib/transition.js'
+import { describePattern, glyph, isPick, slotKind } from '../lib/strum.js'
 import { keepAwake } from '../lib/wakeLock.js'
 import { listenToMicrophone } from '../lib/listen.js'
-import { addPlayedChord, addPractice, setBeat, setEasyChords, setLastPlayed, setLefty, toggleLearned, useStore } from '../lib/store.js'
+import { addPlayedChord, addPractice, addSkillsPlayed, getState, setBeat, setEasyChords, setLastPlayed, setLefty, setSongSpeed, toggleLearned, useStore } from '../lib/store.js'
+import { stepSkills } from '../lib/skills.js'
+import GetReady from '../components/GetReady.jsx'
 import FavouriteButton from '../components/FavouriteButton.jsx'
 
-function tokenLabel(token, chord) {
-  if (token === 'D') return '↓'
-  if (token === 'U') return '↑'
-  if (token === '-') return '·'
-  if (token === 'B') return String(chords[chord]?.root ?? 'B')
-  return token
-}
 
 // Feedback goes by email: the same address as on the drewnotweird.co.uk contact page
 const mailto = (subject, body) =>
@@ -28,18 +24,7 @@ const mailto = (subject, body) =>
 
 const LEVELS = { 1: 'Easy', 2: 'Medium', 3: 'Tricky' }
 
-const isPick = (token) => token === 'B' || /^\d$/.test(token)
 
-// What a screen reader says for a strum pattern
-function describePattern(pattern, chord) {
-  const words = pattern.map((t) => {
-    if (t === 'D') return 'down'
-    if (t === 'U') return 'up'
-    if (t === '-') return 'rest'
-    return `string ${tokenLabel(t, chord)}`
-  })
-  return `${pattern.some(isPick) ? 'Picking' : 'Strum'} pattern: ${words.join(', ')}`
-}
 
 export default function Player() {
   const { id } = useParams()
@@ -72,6 +57,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     () => steps.map((st) => st.pattern.reduce((last, token, k) => (token === '-' ? last : k), 0)),
     [steps]
   )
+  // The techniques each step uses, recorded for Progress as he plays them
+  const stepSkillList = useMemo(() => steps.map((st) => stepSkills(st.chord, st.pattern)), [steps])
   // The chord that follows step s, wrapping round when a section is looping
   const loopRef = useRef(null)
   const followingStep = (s) => {
@@ -87,7 +74,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const [countIn, setCountIn] = useState(0)
   const [playing, setPlaying] = useState(false)
   const [ended, setEnded] = useState(false)
-  const [speed, setSpeed] = useState(0.7)
+  // Each song opens at the speed he last played it at
+  const [speed, setSpeed] = useState(() => (trackable && getState().speeds[song.id]) || 0.7)
   // "Hear this section": plays the section once with the guitar, then stops
   const [previewing, setPreviewing] = useState(false)
   const previewRef = useRef(null)
@@ -236,7 +224,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       notes: songNotes([...new Set(steps.map((st) => st.chord))], song.capo),
       voiceAt: (i) => {
         const { step, slot } = timeline[i]
-        return voiceFor(steps[step].chord, steps[step].pattern[slot], song.capo)
+        return voiceFor(steps[step].chord, steps[step].pattern[slot], song.capo, steps[step].feel)
       },
       onSlot: (i, beatsLeft) => {
         if (beatsLeft > 0) {
@@ -251,7 +239,10 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
           return
         }
         slotRef.current = slot
-        if (!previewRef.current && steps[step].pattern[slot] !== '-') addPlayedChord(chordLabel(steps[step].chord))
+        if (!previewRef.current && steps[step].pattern[slot] !== '-') {
+          addPlayedChord(chordLabel(steps[step].chord))
+          addSkillsPlayed(stepSkillList[step])
+        }
         if (step !== stepRef.current) {
           // A jump: the first slot after a seek or a restart
           stepRef.current = step
@@ -278,7 +269,10 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
         confetti(r ? { x: r.left + r.width / 2, y: r.top + r.height / 3 } : undefined)
       },
       // The speed trainer nudges the tempo up each time round the loop
-      onSpeed: (s) => setSpeed(s),
+      onSpeed: (s) => {
+        setSpeed(s)
+        if (trackable) setSongSpeed(song.id, s)
+      },
       // A section preview finished: back to the start of that section, guitar as it was
       onStopAt: () => {
         const from = previewRef.current
@@ -302,7 +296,8 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
 
   const announce = (s) => {
     const after = steps[s + 1]
-    setAnnouncement(`Now ${chordLabel(steps[s].chord)}${after ? `, next ${chordLabel(after.chord)}` : ', last chord'}`)
+    const cue = steps[s].cue ? `. ${steps[s].cue}` : ''
+    setAnnouncement(`Now ${chordLabel(steps[s].chord)}${after ? `, next ${chordLabel(after.chord)}` : ', last chord'}${cue}`)
   }
 
   const goTo = (step) => {
@@ -357,6 +352,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
     slotRef.current = k
     paintSlot()
     addPlayedChord(chordLabel(steps[step].chord))
+    addSkillsPlayed(stepSkillList[step])
     const dot = heardRef.current
     if (dot) {
       dot.classList.remove('is-heard')
@@ -423,6 +419,14 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
   const changeSpeed = (s) => {
     setSpeed(s)
     playerRef.current.setSpeed(s)
+    if (trackable) setSongSpeed(song.id, s)
+  }
+
+  // Finished below full speed: go again, a notch faster
+  const fasterSpeed = Math.min(1, Math.round((speed + 0.05) * 100) / 100)
+  const playFaster = () => {
+    changeSpeed(fasterSpeed)
+    play()
   }
 
   const setGuitar = (on) => {
@@ -615,11 +619,15 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                 Listening
               </span>
             )}
+            {!ended && now.cue && <span className="stage__cue">{now.cue}</span>}
           </span>
           {ended ? (
             <div className="now__done">
               <p>Nice one.</p>
               <button className="btn btn--primary" onClick={play}>Play again</button>
+              {speed < 1 && !listenMode && (
+                <button className="btn btn--faster" onClick={playFaster}>Again at {Math.round(fasterSpeed * 100)}%</button>
+              )}
               {learnedButton}
             </div>
           ) : (
@@ -643,8 +651,9 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
                   aria-label={describePattern(now.pattern, now.chord)}
                 >
                   {now.pattern.map((token, k) => (
-                    <span key={k} className={`strum__slot ${token === '-' ? 'is-rest' : ''}`} aria-hidden="true">
-                      {tokenLabel(token, now.chord)}
+                    <span key={k} className={`strum__slot ${slotKind(token)}`} aria-hidden="true">
+                      {glyph(token, now.chord)}
+                      {token === 'M' && <small className="strum__pm">PM</small>}
                     </span>
                   ))}
                 </div>
@@ -823,6 +832,7 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       {(song.notes || songPicks || song.songsterr || !song.checked) && (
         <section className="tips" aria-labelledby="tips-title">
           <h2 id="tips-title">Tips</h2>
+          {trackable && <GetReady song={song} steps={steps} />}
           {song.notes && <p>{song.notes}</p>}
           {songPicks && <p className="tips__hint">Numbers are strings to pick. 1 is the thinnest, 6 the thickest.</p>}
           {song.songsterr && (

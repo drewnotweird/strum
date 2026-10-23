@@ -360,6 +360,9 @@ h1[tabindex='-1']:focus { outline: none; }
 .strum--pick .strum__slot { font-size: 30px; }
 
 .strum__slot.is-rest { color: var(--rest); }
+/* A chuck is a muted slap; a palm mute is a down-strum with "PM" under it */
+.strum__slot.is-chuck { color: var(--muted); }
+.strum__pm { position: absolute; bottom: 3px; left: 0; right: 0; font-size: 9px; font-weight: 900; line-height: 1; letter-spacing: 0.04em; text-align: center; }
 .strum__slot.is-done { background: var(--brand-soft); border-color: var(--brand-edge); color: var(--brand-dark); }
 .strum__slot.is-on {
   background: var(--brand);
@@ -1239,8 +1242,8 @@ h1[tabindex='-1']:focus { outline: none; }
 .sheet__shapes li { display: grid; justify-items: center; gap: 2px; padding: 8px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; font-weight: 900; font-size: 18px; }
 .diagram--sheet { width: 70px; }
 .sheet__patterns { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.sheet__patterns li { display: flex; align-items: center; gap: 10px; }
-.sheet__pattern-name { min-width: 60px; color: var(--muted); font-weight: 800; font-size: 13px; text-transform: uppercase; }
+.sheet__patterns li { display: grid; gap: 4px; justify-items: start; }
+.sheet__pattern-name { color: var(--muted); font-weight: 800; font-size: 13px; }
 .sheet__pattern { display: inline-flex; gap: 4px; }
 .sheet__pattern span { width: 28px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: var(--surface); border: 2px solid var(--line); font-weight: 900; }
 .sheet__sections { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
@@ -2017,3 +2020,120 @@ body.has-tabbar { padding-bottom: calc(76px + env(safe-area-inset-bottom)); }
 /* Blob colour changes smoothly when switching tabs */
 .blob { transition: transform 0.6s cubic-bezier(0.3, 1, 0.4, 1), fill 0.4s ease; }
 @media (prefers-reduced-motion: reduce) { .blob { transition: none; } }
+
+/* ---------- Section cues: a short coaching line in NOW while that part plays ---------- */
+.stage__cue {
+  display: block;
+  width: fit-content;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: 9px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Finished below full speed: go again, a notch faster */
+.now__done .btn--faster { padding: 12px 22px; border-radius: 16px; font-size: 16px; font-weight: 900; color: var(--brand-dark); }
+
+/* ---------- Get ready: what's in the song, before he plays ---------- */
+.ready { list-style: none; margin: 0; padding: 0 0 12px; display: grid; gap: 10px; border-bottom: 2px solid var(--line); }
+.ready li { display: grid; gap: 4px; }
+.ready__label { font-size: 12px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.ready__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ready__row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.ready__row strong { font-size: 17px; font-weight: 900; }
+.ready__go {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+}
+.ready__go:hover { text-decoration: underline; }
+.skill-chip { padding: 3px 10px; border-radius: 10px; border: 2px solid var(--brand); background: var(--brand-soft); color: var(--brand-dark); font-size: 13px; font-weight: 900; }
+
+/* ---------- Strum marks: chucks and palm mutes ---------- */
+.sheet__pattern span.is-muted, .strum-card__pattern .is-muted { position: relative; }
+.sheet__pattern .is-muted small, .strum-card__pattern .is-muted small {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  right: 0;
+  font-size: 7px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+.sheet__pattern span.is-chuck, .strum-card__pattern .is-chuck { color: var(--muted); }
+.sheet__legend { display: grid; gap: 4px; margin: 10px 0 0; color: var(--muted); font-size: 14px; font-weight: 700; }
+.sheet__cue { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 8px; background: var(--brand-soft); color: var(--brand-dark); font-size: 13px; font-weight: 800; }
+
+/* ---------- Strumming patterns on the Practice page ---------- */
+.strum-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.strum-cards li { display: grid; }
+.strum-card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.12s, border-color 0.12s;
+}
+.strum-card:hover { border-color: var(--brand); }
+.strum-card:active { transform: translateY(2px); border-bottom-width: 2px; margin-bottom: 2px; }
+.strum-card strong { font-size: 17px; font-weight: 900; }
+.strum-card__pattern { display: flex; gap: 4px; }
+.strum-card__pattern span {
+  flex: 1 1 0;
+  max-width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 17px;
+  font-weight: 900;
+}
+.strum-card__pattern .is-rest { background: var(--raised); color: var(--rest); }
+.strum-card__blurb { color: var(--muted); font-size: 14px; font-weight: 700; line-height: 1.35; }
+
+/* The strum trainer's two pickers sit side by side, even on phones */
+.trainer-setup--strums { grid-template-columns: 1fr 1fr; }
+@media (max-width: 560px) {
+  .trainer-setup--strums > .picker:last-child { grid-column: auto; }
+}
+
+/* ---------- Techniques on the Progress page ---------- */
+.skill-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 6px; }
+.skill-list li { display: flex; align-items: center; gap: 10px; }
+.skill-list__mark {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  color: var(--brand-ink);
+  font-weight: 900;
+  font-size: 14px;
+}
+.skill-list .is-done .skill-list__mark { background: var(--brand); border-color: var(--brand-deep); }
+.skill-list a { display: grid; flex: 1; min-width: 0; padding: 6px 0; text-decoration: none; color: var(--text); }
+.skill-list a strong { font-weight: 900; }
+.skill-list a span { color: var(--muted); font-size: 14px; font-weight: 700; }
+.skill-list a:hover strong { text-decoration: underline; }
+.skill-list__go { flex: none; color: var(--brand-dark); font-weight: 900; }

@@ -1,4 +1,5 @@
 import { chordLabel } from '../data/chords.js'
+import { songSkills } from './skills.js'
 
 // The song list's search, kept separate from the page so it can be tested.
 
@@ -15,6 +16,7 @@ export function makeCatalogue(songs) {
       song,
       chords,
       chordSet: new Set(chords.map((c) => c.toLowerCase())),
+      skills: songSkills(song),
       text: `${song.title} ${song.artist}`.toLowerCase(),
     }
   })
@@ -27,7 +29,7 @@ export function makeCatalogue(songs) {
 // Otherwise it matches song titles and artists.
 export function search(
   { catalogue, allChords },
-  { query = '', level = null, learnedOnly = false, learned = [], favouritesOnly = false, favourites = [], tag = null, knownChords = null } = {}
+  { query = '', level = null, learnedOnly = false, learned = [], favouritesOnly = false, favourites = [], tag = null, skill = null, knownChords = null } = {}
 ) {
   const q = query.trim().toLowerCase()
   const tokens = q.split(/[\s,]+/).filter(Boolean)
@@ -38,6 +40,7 @@ export function search(
     if (learnedOnly && !learned.includes(entry.song.id)) return false
     if (favouritesOnly && !favourites.includes(entry.song.id)) return false
     if (tag && !(entry.song.tags || []).includes(tag)) return false
+    if (skill && !entry.skills.includes(skill)) return false
     // Chords I know: only songs that need nothing beyond them
     if (knownChords && ![...entry.chordSet].every((c) => knownChords.has(c))) return false
     if (!q) return true

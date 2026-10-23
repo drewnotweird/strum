@@ -4,6 +4,7 @@ import { songs } from '../lib/song.js'
 import { makeCatalogue, search } from '../lib/search.js'
 import { chordLabel } from '../data/chords.js'
 import { TAGS } from '../data/collections.js'
+import { SKILLS } from '../lib/skills.js'
 import { pageReady } from '../lib/transition.js'
 import { setKnownChords, useStore } from '../lib/store.js'
 import SongCard, { LEVELS } from '../components/SongCard.jsx'
@@ -15,7 +16,7 @@ const capitalise = (c) => chordLabel(c.charAt(0).toUpperCase() + c.slice(1))
 const ALL_CHORDS = [...new Set(index.catalogue.flatMap((e) => e.chords))].sort((a, b) => a.localeCompare(b))
 
 // The whole library: search plus filters. Everything lives in the address (?q=, ?level=,
-// ?tag=, ?fav=1, ?learned=1, ?known=1) so the home page can link straight into any view.
+// ?tag=, ?skill=, ?fav=1, ?learned=1, ?known=1) so other pages can link straight into any view.
 export default function Songs() {
   const navigationType = useNavigationType()
   const [params, setParams] = useSearchParams()
@@ -27,6 +28,7 @@ export default function Songs() {
   const query = params.get('q') || ''
   const level = Number(params.get('level')) || null
   const tag = TAGS[params.get('tag')] ? params.get('tag') : null
+  const skill = SKILLS[params.get('skill')] ? params.get('skill') : null
   const favouritesOnly = params.get('fav') === '1'
   const learnedOnly = params.get('learned') === '1'
   const knownOnly = params.get('known') === '1' && knownChords.length > 0
@@ -48,10 +50,10 @@ export default function Songs() {
 
   const known = useMemo(() => new Set(knownChords.map((c) => c.toLowerCase())), [knownChords])
   const { results, chordQuery } = useMemo(
-    () => search(index, { query, level, learnedOnly, learned, favouritesOnly, favourites, tag, knownChords: knownOnly ? known : null }),
-    [query, level, learnedOnly, learned, favouritesOnly, favourites, tag, knownOnly, known]
+    () => search(index, { query, level, learnedOnly, learned, favouritesOnly, favourites, tag, skill, knownChords: knownOnly ? known : null }),
+    [query, level, learnedOnly, learned, favouritesOnly, favourites, tag, skill, knownOnly, known]
   )
-  const filtered = Boolean(query || level || tag || favouritesOnly || learnedOnly || knownOnly)
+  const filtered = Boolean(query || level || tag || skill || favouritesOnly || learnedOnly || knownOnly)
   const highlight = chordQuery || (knownOnly ? known : null)
 
   const chip = (label, on, onClick, extra = '') => (
@@ -95,6 +97,7 @@ export default function Songs() {
           chip(name, level === Number(n), () => update({ level: level === Number(n) ? '' : n }), `filter-chip--level-${n}`))}
         {chip('✓ Learned', learnedOnly, () => update({ learned: learnedOnly ? '' : '1' }))}
         {Object.entries(TAGS).map(([id, name]) => chip(name, tag === id, () => update({ tag: tag === id ? '' : id })))}
+        {Object.entries(SKILLS).map(([id, s]) => chip(s.name, skill === id, () => update({ skill: skill === id ? '' : id }), 'filter-chip--skill'))}
       </div>
 
       {(knownOnly || filtered) && (

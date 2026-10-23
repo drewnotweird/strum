@@ -63,16 +63,32 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
   "checked": false, "capo": 2, "bpm": 87, "beatsPerBar": 4, "perBeat": 2,
   "patterns": { "main": "D - D U - U D U" },
   "defaultPattern": "main",
-  "sections": { "verse": { "name": "Verse", "repeat": 4, "steps": ["Em7", "G*", "A|two"] } },
+  "sections": { "verse": { "name": "Verse", "repeat": 4, "cue": "Keep it steady", "feel": "soft", "steps": ["Em7", "G*", "A|two"] } },
   "form": ["intro", "verse", "chorus"],
   "notes": "...", "songsterr": "https://..."
 }
 ```
 
 - `perBeat`: pattern slots per beat (2 = eighth notes). `bpm` counts beats.
-- Pattern tokens: `D` down, `U` up, `-` rest, `B` bass string of the chord, `1`–`6` a string to pick.
+- Pattern tokens (`src/lib/strum.js`): `D` down, `U` up, `-` rest, `X` chuck (a muted slap, shown ×), `M` palm-muted
+  down (shown ↓ with PM), `B` bass string of the chord, `1`–`6` a string to pick. Every pattern needs at least one
+  non-rest, or listen mode would never move on (a test checks).
+- Section `cue`: a short coaching line (≤ 40 characters) shown in NOW while that part plays, and on the chord sheet.
+- Section `feel`: `soft` or `loud`, how hard the synthesised guitar plays that part.
+- Give each part its own feel: a lighter verse, a bigger chorus, an ending that rings. Same chords as the record;
+  the strumming, cues and endings are our own arrangement.
 - A step is `"Chord"` (default pattern) or `"Chord|patternName"`. Each step is one Now box, and its pattern is however long that chord lasts. Louie Louie uses a 6-slot pattern on A and a 2-slot one on D.
 - Chord shapes live in `src/data/chords.js`. Variants with a `*` (e.g. `G*`, the Wonderwall G) show their `label`.
+
+## Learning helpers
+- **Strum trainer** (`/strums?p=chuck&c=G`): the patterns in `src/data/strums.js` on any chord, looping, in the normal
+  player. The Practice page shows them as cards. A song pattern that matches one exactly links to it.
+- **Get ready** (top of a song's Tips): the techniques it uses, chords he hasn't played yet, the trickiest change
+  (`src/lib/changes.js`: most fingers to move in the least time; a shape that only slides counts as one move) with a
+  link to the chord change trainer, and its strum patterns with links to the strum trainer.
+- **Techniques** (`src/lib/skills.js`): power chords, bass strums, chucks, palm muting, picking. Worked out from the
+  charts, never tagged by hand. Filter on the Songs page (`?skill=`), tracked on Progress as he plays them, with badges.
+- **Speed per song**: each song opens at the speed he last played it. Finishing below full speed offers "Again at +5%".
 
 ## Tech
 - Vite + React, deployed to Fasthosts via FTP at `/strum/` (own repo: drewnotweird/strum).
@@ -93,7 +109,13 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 - **2026-10-13:** Chord moves NOW on its last strum. Listen mode added (tuned on synthesised strums:
   fast/slow strumming, chugging, picking, noisy and quiet rooms; not yet tried with a real guitar and mic).
 
+- **2026-10-23:** Charts got richer: verses and choruses played differently, cues and soft/loud feel per section,
+  endings that ring, chucks, palm mutes, bass strums and picked intros where they suit the song. New: I'm Yours
+  (chucks), Wellerman (stomp and chuck), Hallelujah (picking in a 12/8 feel: `perBeat: 3`) and a 12-bar blues
+  boogie drill (two-string 5/6 shapes). Iron Man's drill reordered so it no longer follows the riff.
+- **2026-10-23:** Strum trainer, Get ready, techniques on Progress and the Songs filter, speed per song, play again faster.
+
 ## Future ideas
 - Full barre F once the easy F is comfortable
-- Palm-muted sound for the power chord drills
+- Accents and sixteenth-note patterns (Mr. Brightside, Basket Case)
 - Sync progress between devices (would need accounts)

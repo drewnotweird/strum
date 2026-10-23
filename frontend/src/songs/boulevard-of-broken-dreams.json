@@ -15,14 +15,17 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "mute": "D D D D D D D D",
-    "open": "D - D U - U D U"
+    "mute": "M M M M M M M M",
+    "open": "D - D U - U D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "mute",
   "sections": {
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Palm-muted downs",
+      "feel": "soft",
       "steps": [
         "Em",
         "G",
@@ -33,6 +36,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Lift your hand: let it ring",
+      "feel": "loud",
       "steps": [
         "C|open",
         "G|open",
@@ -42,11 +47,20 @@
     },
     "bridge": {
       "name": "Bridge",
+      "cue": "Big strums",
+      "feel": "loud",
       "steps": [
         "C|open",
         "G|open",
         "D|open",
         "Em|open"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "Em|ring"
       ]
     }
   },
@@ -56,8 +70,9 @@
     "verse",
     "chorus",
     "bridge",
-    "chorus"
+    "chorus",
+    "end"
   ],
-  "notes": "Capo on the first fret. The verses are palm-muted: rest the side of your picking hand on the strings by the bridge and keep the down-strokes even and chunky. Lift your hand off for the chorus so the chords open right up. That quiet-to-big switch is the whole song.",
+  "notes": "Capo on the first fret. The verses are palm-muted (PM): rest the side of your picking hand on the strings by the bridge and keep the down-strokes even and chunky. Lift your hand off for the chorus so the chords open right up. That quiet-to-big switch is the whole song.",
   "songsterr": "https://www.songsterr.com/a/wsa/green-day-boulevard-of-broken-dreams-tab-s92866"
 }

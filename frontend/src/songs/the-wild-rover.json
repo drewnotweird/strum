@@ -14,19 +14,39 @@
   "beatsPerBar": 3,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D U D U"
+    "main": "D - D U D U",
+    "bass": "B - D U D U",
+    "ring": "D - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
+      "cue": "Bass note, then strum",
       "steps": [
-        "G",
-        "G",
-        "C",
-        "C",
-        "G",
-        "G",
+        "G|bass",
+        "G|bass",
+        "C|bass",
+        "C|bass",
+        "G|bass",
+        "G|bass",
+        "D|bass",
+        "D|bass",
+        "G|bass",
+        "G|bass",
+        "C|bass",
+        "C|bass",
+        "G|bass",
+        "D|bass",
+        "G|bass",
+        "G|bass"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "cue": "Clap in the gaps",
+      "feel": "loud",
+      "steps": [
         "D",
         "D",
         "G",
@@ -39,19 +59,11 @@
         "G"
       ]
     },
-    "chorus": {
-      "name": "Chorus",
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
       "steps": [
-        "D",
-        "D",
-        "G",
-        "G",
-        "C",
-        "C",
-        "G",
-        "D",
-        "G",
-        "G"
+        "G|ring"
       ]
     }
   },
@@ -61,7 +73,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "An Irish drinking song in 3/4. Clap on the gaps in the chorus. Only G, C and D."
 }

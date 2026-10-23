@@ -1,0 +1,112 @@
+{
+  "id": "hallelujah",
+  "title": "Hallelujah",
+  "artist": "Leonard Cohen",
+  "emoji": "😇",
+  "level": 2,
+  "tags": [
+    "classic"
+  ],
+  "licence": "chords-only",
+  "checked": false,
+  "capo": 0,
+  "bpm": 56,
+  "beatsPerBar": 4,
+  "perBeat": 3,
+  "patterns": {
+    "pick": "B 3 2 1 2 3",
+    "strum": "D - U D - U",
+    "ring": "B - - - - -"
+  },
+  "defaultPattern": "pick",
+  "sections": {
+    "intro": {
+      "name": "Intro",
+      "cue": "Pick: bass, then 3, 2, 1, 2, 3",
+      "feel": "soft",
+      "steps": [
+        "C",
+        "C",
+        "Am",
+        "Am",
+        "C",
+        "C",
+        "Am",
+        "Am"
+      ]
+    },
+    "verse": {
+      "name": "Verse",
+      "feel": "soft",
+      "steps": [
+        "C",
+        "C",
+        "Am",
+        "Am",
+        "C",
+        "C",
+        "Am",
+        "Am",
+        "F",
+        "F",
+        "G",
+        "G",
+        "C",
+        "C",
+        "G",
+        "G",
+        "C",
+        "C",
+        "F",
+        "F",
+        "G",
+        "G",
+        "Am",
+        "Am",
+        "F",
+        "F",
+        "G",
+        "G",
+        "E",
+        "E",
+        "Am",
+        "Am"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "cue": "Strum it this time",
+      "feel": "loud",
+      "steps": [
+        "F|strum",
+        "F|strum",
+        "Am|strum",
+        "Am|strum",
+        "F|strum",
+        "F|strum",
+        "C|strum",
+        "C|strum",
+        "G|strum",
+        "G|strum",
+        "C|strum",
+        "C|strum"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "C|ring"
+      ]
+    }
+  },
+  "form": [
+    "intro",
+    "verse",
+    "chorus",
+    "verse",
+    "chorus",
+    "end"
+  ],
+  "notes": "Count it in fours, with three little pulses in each beat: 1-and-a, 2-and-a. Pick the verses one string at a time (numbers are strings, 1 is the thinnest), then strum the chorus. The F is the easy four-string one."
+}

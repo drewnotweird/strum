@@ -16,7 +16,7 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "quiet": "D - - - D - - -",
+    "quiet": "M - - - M - - -",
     "loud": "D D D D D D D D"
   },
   "defaultPattern": "quiet",
@@ -24,6 +24,8 @@
     "quiet": {
       "name": "Quiet bit",
       "repeat": 2,
+      "cue": "Barely touch the strings",
+      "feel": "soft",
       "steps": [
         "E5",
         "A5",
@@ -34,6 +36,8 @@
     "loud": {
       "name": "Loud bit",
       "repeat": 2,
+      "cue": "Now dig in!",
+      "feel": "loud",
       "steps": [
         "E5|loud",
         "A5|loud",

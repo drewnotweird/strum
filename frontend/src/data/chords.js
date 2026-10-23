@@ -8,6 +8,7 @@ export const chords = {
   Asus4: { frets: [-1, 0, 2, 2, 3, 0], fingers: [0, 0, 1, 2, 3, 0], root: 5 },
   C:  { frets: [-1, 3, 2, 0, 1, 0], fingers: [0, 3, 2, 0, 1, 0], root: 5 },
   D:  { frets: [-1, -1, 0, 2, 3, 2], fingers: [0, 0, 0, 1, 3, 2], root: 4 },
+  Dm: { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 0, 2, 3, 1], root: 4 },
   E:  { frets: [0, 2, 2, 1, 0, 0], fingers: [0, 2, 3, 1, 0, 0], root: 6 },
   Em: { frets: [0, 2, 2, 0, 0, 0], fingers: [0, 2, 3, 0, 0, 0], root: 6 },
   // Easy four-string F. The full barre comes later.
@@ -47,6 +48,14 @@ export const chords = {
   Db5:   { frets: [-1, 4, 6, 6, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
   C5:    { frets: [-1, 3, 5, 5, -1, -1], fingers: [0, 1, 3, 4, 0, 0], root: 5 },
   D5:    { frets: [-1, -1, 0, 2, 3, -1], fingers: [0, 0, 0, 1, 2, 0], root: 4 },
+
+  // The blues boogie: a two-string 5 shape, then the pinky reaches two frets up for the 6
+  A5d: { frets: [-1, 0, 2, -1, -1, -1], fingers: [0, 0, 1, 0, 0, 0], root: 5, label: 'A5' },
+  A6:  { frets: [-1, 0, 4, -1, -1, -1], fingers: [0, 0, 4, 0, 0, 0], root: 5 },
+  D5d: { frets: [-1, -1, 0, 2, -1, -1], fingers: [0, 0, 0, 1, 0, 0], root: 4, label: 'D5' },
+  D6:  { frets: [-1, -1, 0, 4, -1, -1], fingers: [0, 0, 0, 4, 0, 0], root: 4 },
+  E5d: { frets: [0, 2, -1, -1, -1, -1], fingers: [0, 1, 0, 0, 0, 0], root: 6, label: 'E5' },
+  E6:  { frets: [0, 4, -1, -1, -1, -1], fingers: [0, 4, 0, 0, 0, 0], root: 6 },
 }
 
 export const chordLabel = (name) => chords[name]?.label || name

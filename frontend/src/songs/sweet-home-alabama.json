@@ -16,22 +16,26 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "pick4": "B 3 2 1",
+    "pick8": "B 3 2 1 2 3 2 1"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
       "repeat": 4,
+      "cue": "Pick through the chords",
       "steps": [
-        "D|half",
-        "C|half",
-        "G"
+        "D|pick4",
+        "C|pick4",
+        "G|pick8"
       ]
     },
     "verse": {
       "name": "Verse",
       "repeat": 8,
+      "cue": "Steady strum",
       "steps": [
         "D|half",
         "C|half",
@@ -41,6 +45,8 @@
     "chorus": {
       "name": "Chorus",
       "repeat": 4,
+      "cue": "Big chorus",
+      "feel": "loud",
       "steps": [
         "D|half",
         "C|half",

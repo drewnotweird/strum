@@ -15,12 +15,28 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U D - D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "stomp": "D - X - D - X -",
+    "shalf": "D - X -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
+      "cue": "Stomp: down, chuck, down, chuck",
+      "steps": [
+        "Am|stomp",
+        "G|stomp",
+        "Am|stomp",
+        "G|shalf",
+        "Am|shalf"
+      ]
+    },
+    "chorus": {
+      "name": "Chorus",
+      "cue": "Big and rowdy",
+      "feel": "loud",
       "steps": [
         "Am",
         "G",
@@ -29,14 +45,11 @@
         "Am|half"
       ]
     },
-    "chorus": {
-      "name": "Chorus",
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
       "steps": [
-        "Am",
-        "G",
-        "Am",
-        "G|half",
-        "Am|half"
+        "Am|ring"
       ]
     }
   },
@@ -46,7 +59,8 @@
     "verse",
     "chorus",
     "verse",
-    "chorus"
+    "chorus",
+    "end"
   ],
-  "notes": "A sea shanty: stomp along. Am, G, Am, then a quick G to Am at the end of each line."
+  "notes": "A sea shanty: stomp along. Am, G, Am, then a quick G to Am at the end of each line. In the verses, the × is a chuck: slap the strings on 2 and 4, like a clap."
 }

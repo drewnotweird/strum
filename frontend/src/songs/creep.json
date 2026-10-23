@@ -16,28 +16,44 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "chunk": "D D D D D D D D"
+    "chunk": "D D D D D D D D",
+    "chk": "D - D U X - X -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
-      "repeat": 2,
+      "cue": "Gentle, then two muted hits",
+      "feel": "soft",
       "steps": [
         "G",
         "B",
         "C",
-        "Cm"
+        "Cm",
+        "G",
+        "B",
+        "C",
+        "Cm|chk"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Loud: dig right in",
+      "feel": "loud",
       "steps": [
         "G|chunk",
         "B|chunk",
         "C|chunk",
         "Cm|chunk"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it fade",
+      "steps": [
+        "G|ring"
       ]
     }
   },
@@ -46,8 +62,9 @@
     "chorus",
     "verse",
     "chorus",
-    "verse"
+    "verse",
+    "end"
   ],
-  "notes": "Four chords, one bar each, the whole way through: G, B, C, Cm. B and Cm are your first stretch shapes. Here they are four-string versions; the full barre chords come later. Go from C to Cm by moving just two fingers. The chorus is the same chords played loud.",
+  "notes": "Four chords, one bar each, the whole way through: G, B, C, Cm. B and Cm are your first stretch shapes. Here they are four-string versions; the full barre chords come later. Go from C to Cm by moving just two fingers. The chorus is the same chords played loud. The two × at the end of each verse are the muted hits before the chorus: slap the strings with your strumming hand.",
   "songsterr": "https://www.songsterr.com/a/wsa/radiohead-creep-tab-s97"
 }

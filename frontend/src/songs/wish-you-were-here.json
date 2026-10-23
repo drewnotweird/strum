@@ -16,12 +16,14 @@
   "perBeat": 2,
   "patterns": {
     "main": "D - D U - U D U",
-    "half": "D - D U"
+    "half": "D - D U",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "intro": {
       "name": "Intro",
+      "cue": "Ring and pinky barely move",
       "steps": [
         "Em7|half",
         "G|half",
@@ -36,6 +38,7 @@
     },
     "verse": {
       "name": "Verse",
+      "cue": "Relaxed strum",
       "steps": [
         "C",
         "D",
@@ -46,6 +49,13 @@
         "Am",
         "G"
       ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
+      ]
     }
   },
   "form": [
@@ -53,7 +63,8 @@
     "verse",
     "intro",
     "verse",
-    "intro"
+    "intro",
+    "end"
   ],
   "notes": "The intro sits between Em7, G and A7sus4: your ring and pinky fingers barely move. The verse brings in C, D and Am. The record has a famous picked riff over the intro chords: learn that on Songsterr once the strumming feels relaxed.",
   "songsterr": "https://www.songsterr.com/a/wsa/pink-floyd-wish-you-were-here-tab-s153"

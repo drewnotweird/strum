@@ -15,27 +15,32 @@
   "beatsPerBar": 4,
   "perBeat": 2,
   "patterns": {
-    "main": "D - D - D - D U"
+    "main": "D - D - D - D U",
+    "boom": "B - D - B - D -",
+    "ring": "D - - - - - - -"
   },
   "defaultPattern": "main",
   "sections": {
     "verse": {
       "name": "Verse",
       "repeat": 2,
+      "cue": "Boom-chuck: bass, then strum",
       "steps": [
-        "G",
-        "G",
-        "G",
-        "C",
-        "C",
-        "D",
-        "D",
-        "G"
+        "G|boom",
+        "G|boom",
+        "G|boom",
+        "C|boom",
+        "C|boom",
+        "D|boom",
+        "D|boom",
+        "G|boom"
       ]
     },
     "chorus": {
       "name": "Chorus",
       "repeat": 2,
+      "cue": "Big and bouncy",
+      "feel": "loud",
       "steps": [
         "G",
         "G",
@@ -45,6 +50,13 @@
         "G",
         "D",
         "G"
+      ]
+    },
+    "end": {
+      "name": "Ending",
+      "cue": "Let it ring",
+      "steps": [
+        "G|ring"
       ]
     }
   },
@@ -54,7 +66,8 @@
     "chorus",
     "verse",
     "chorus",
-    "chorus"
+    "chorus",
+    "end"
   ],
   "notes": "Written in 1857, so it's free for anyone to play. Just G, C and D, with a bouncy strum: four down-strums and a quick up at the end of each bar, like sleigh bells."
 }
