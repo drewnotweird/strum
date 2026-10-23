@@ -62,5 +62,17 @@
     "chorus",
     "end"
   ],
-  "notes": "A sea shanty: stomp along. Am, G, Am, then a quick G to Am at the end of each line. In the verses, the × is a chuck: slap the strings on 2 and 4, like a clap."
+  "notes": "A sea shanty: stomp along. Am, G, Am, then a quick G to Am at the end of each line. In the verses, the × is a chuck: slap the strings on 2 and 4, like a clap.",
+  "melody": [
+    {
+      "name": "Verse",
+      "notes": "4-2:2 4-2:1 4-2:1 4-2:2 4-2:1 4-2:1 | 4-2:2 3-2:2 2-1:2 1-0:2 | 4-0:2 4-0:1 4-0:1 4-0:2 4-0:1 4-0:1 | 4-0:2 3-0:2 2-0:2 2-3:2 | 4-2:2 4-2:1 4-2:1 4-2:2 4-2:1 4-2:1 | 4-2:2 4-4:2 3-0:2 3-2:2 | 3-0:2 4-2:2 4-0:2 5-2:2 | 5-0:4 5-0:4",
+      "chords": "Am:8 | Am:8 | G:8 | G:8 | Am:8 | Am:8 | G:8 | Am:8"
+    },
+    {
+      "name": "Chorus",
+      "notes": "4-2:2 4-2:1 4-2:1 4-2:2 4-2:1 4-2:1 | 4-2:2 3-2:2 2-1:2 1-0:2 | 4-0:2 4-0:1 4-0:1 4-0:2 4-0:1 4-0:1 | 4-0:2 3-0:2 2-0:2 2-3:2 | 4-2:2 4-2:1 4-2:1 4-2:2 4-2:1 4-2:1 | 4-2:2 4-4:2 3-0:2 3-2:2 | 3-0:2 4-2:2 4-0:2 5-2:2 | 5-0:4 5-0:4",
+      "chords": "Am:8 | Am:8 | G:8 | G:8 | Am:8 | Am:8 | G:8 | Am:8"
+    }
+  ]
 }

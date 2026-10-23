@@ -90,7 +90,9 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
   In melody mode each one is strummed softly where it starts, on a second guitar so it never cuts a note short.
   Tests check each chord track is exactly as long as its tune.
 - Never for copyrighted songs: their melody is the protected part. Those link to Songsterr.
-- Melodies so far: Happy Birthday, Jingle Bells (chorus), Deck the Halls, When the Saints, Amazing Grace.
+- Melodies so far: Happy Birthday, Jingle Bells (chorus), Deck the Halls, When the Saints, Amazing Grace, Drunken
+  Sailor, Oh! Susanna. Not yet (tune not certain enough to write note by note): House of the Rising Sun, La Bamba,
+  The Wild Rover, Wellerman.
 
 ## Learning helpers
 - **Strum trainer** (`/strums?p=chuck&c=G`): the patterns in `src/data/strums.js` on any chord, looping, in the normal
