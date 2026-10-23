@@ -3,7 +3,7 @@ import { songs, buildSteps, buildTimeline, barsOf, lastStrumOf } from '../lib/so
 import { chords, EASY, playable } from '../data/chords.js'
 import { TAGS } from '../data/collections.js'
 import { TOKEN } from '../lib/strum.js'
-import { melodyLength, melodySong, melodyTab, noteShape, parseMelody } from '../lib/melody.js'
+import { chordTrack, melodyLength, melodySong, melodyTab, noteShape, parseMelody } from '../lib/melody.js'
 
 // Every song file has to be playable: these catch typos before they reach the site
 describe('song files', () => {
@@ -43,6 +43,11 @@ describe('song files', () => {
               expect(n.slots, part.name).toBeGreaterThan(0)
             }
             expect(melodyLength(part.notes) % (song.perBeat * song.beatsPerBar), `${part.name} length`).toBe(0)
+            if (part.chords) {
+              const track = chordTrack(part.chords)
+              expect(track.length, `${part.name} chords match the tune`).toBe(melodyLength(part.notes))
+              for (const c of track.filter(Boolean)) expect(chords[c], `chord "${c}"`).toBeDefined()
+            }
             const lines = melodyTab(part.notes).split('\n')
             expect(new Set(lines.map((l) => l.length)).size, 'tab lines line up').toBe(1)
           }

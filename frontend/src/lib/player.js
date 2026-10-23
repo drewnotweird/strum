@@ -12,7 +12,10 @@ import { drumHits, playDrums } from './drums.js'
 
 const LOOKAHEAD = 0.12
 
-export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, notes = [], onSlot, onEnd, onSpeed, onStopAt }) {
+// backingAt(i): chords to play quietly under a melody on slot i, on their own guitar so they
+// never cut the melody notes short
+export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, backingAt = null, notes = [], onSlot, onEnd, onSpeed, onStopAt }) {
+  let backing = null
   let ctx = null
   let guitar = null
   let guitarOn = true
@@ -87,6 +90,8 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
         const hits = drumHits(mod(i, slotsPerBar), slotsPerBeat, slotsPerBar / slotsPerBeat)
         playDrums(ctx, ctx.destination, time, hits).forEach((osc) => scheduled.push({ osc, time }))
       }
+      const under = guitarOn && backingAt && i >= firstIndex ? backingAt(i) : null
+      if (under) backing.play(time, under).forEach((osc) => scheduled.push({ osc, time }))
       const voice = guitarOn && i >= firstIndex ? voiceAt(i) : null
       if (voice) guitar.play(time, voice).forEach((osc) => scheduled.push({ osc, time }))
       nextToSchedule++
@@ -125,7 +130,10 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
       if (time > now) try { osc.stop() } catch {}
     })
     scheduled = scheduled.filter((c) => c.time <= now)
-    if (damp) guitar?.damp(now)
+    if (damp) {
+      guitar?.damp(now)
+      backing?.damp(now)
+    }
   }
 
   function ensureAudio() {
@@ -133,6 +141,7 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
     if (!guitar) {
       guitar = createGuitar(ctx)
       guitar.prewarm(notes)
+      if (backingAt) backing = createGuitar(ctx)
     }
     ctx.resume()
   }
@@ -195,7 +204,10 @@ export function createPlayer({ length, slotsPerBeat, slotsPerBar, bpm, voiceAt, 
     setBeat: (b) => { beat = b },
     setGuitar: (on) => {
       guitarOn = on
-      if (!on && ctx) guitar.damp(ctx.currentTime)
+      if (!on && ctx) {
+        guitar.damp(ctx.currentTime)
+        backing?.damp(ctx.currentTime)
+      }
     },
     // Play one strum straight away, e.g. when the chord diagram is tapped
     preview: (voice) => {

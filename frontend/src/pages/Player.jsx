@@ -240,7 +240,15 @@ export function SongPlayer({ song, extra = null, defaultLoop = false, trackable 
       slotsPerBeat: song.perBeat,
       slotsPerBar: song.perBeat * song.beatsPerBar,
       bpm: song.bpm,
-      notes: songNotes([...new Set(steps.map((st) => st.chord))], song.capo),
+      notes: songNotes([...new Set([...steps.map((st) => st.chord), ...(song.backing || []).filter(Boolean)])], song.capo),
+      // Under a melody: each chord strummed softly where it starts, left to ring
+      backingAt: song.backing
+        ? (i) => {
+          const chord = song.backing[i]
+          const voice = chord && voiceFor(chord, 'D', 0)
+          return voice && { ...voice, velocity: 0.38 }
+        }
+        : null,
       voiceAt: (i) => {
         const { step, slot } = timeline[i]
         return voiceFor(steps[step].chord, steps[step].pattern[slot], song.capo, steps[step].feel)

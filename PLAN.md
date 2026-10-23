@@ -86,6 +86,9 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 - `src/lib/melody.js` turns it into a normal song, one step per note (each note a one-dot shape), so the player,
   listen mode, loop and speed all work. Chords / Melody switch on the song page (`?mode=melody`); the chord sheet
   shows it as tab. Tests check every part fills whole bars.
+- Each part can carry `chords` ("G:6 | C:4 D:2", chord:slots, `-` for none), written against the tune bar by bar.
+  In melody mode each one is strummed softly where it starts, on a second guitar so it never cuts a note short.
+  Tests check each chord track is exactly as long as its tune.
 - Never for copyrighted songs: their melody is the protected part. Those link to Songsterr.
 - Melodies so far: Happy Birthday, Jingle Bells (chorus), Deck the Halls, When the Saints, Amazing Grace.
 
@@ -128,6 +131,6 @@ One JSON file per song in `frontend/src/songs/`, picked up automatically.
 
 ## Future ideas
 - Full barre F once the easy F is comfortable
-- Melody: hear it quietly over the chords; listen mode that checks the pitch, not just that a note was played
+- Melody: listen mode that checks the pitch, not just that a note was played
 - Accents and sixteenth-note patterns (Mr. Brightside, Basket Case)
 - Sync progress between devices (would need accounts)

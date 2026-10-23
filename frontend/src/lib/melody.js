@@ -70,6 +70,10 @@ export function melodySong(song) {
       steps: parseMelody(part.notes).map((note) => `${noteShape(note.string, note.fret)}|${patternFor(note)}`),
     }
   })
+  // The chords underneath, slot by slot across the whole melody (repeats included)
+  const backing = song.melody.flatMap((part) =>
+    part.chords ? Array.from({ length: part.repeat || 1 }, () => chordTrack(part.chords)).flat() : Array(melodyLength(part.notes) * (part.repeat || 1)).fill(null)
+  )
   return {
     ...song,
     capo: 0,
@@ -78,7 +82,20 @@ export function melodySong(song) {
     sections,
     form: Object.keys(sections),
     mode: 'melody',
+    backing,
   }
+}
+
+// A part's chords, "G:6 | C:4 D:2" (chord:slots, "-" for none), as one entry per slot: the
+// chord on the slot where it starts, null everywhere else
+export function chordTrack(text) {
+  const slots = []
+  for (const token of text.split(/\s+/)) {
+    if (!token || token === '|') continue
+    const [chord, length] = token.split(':')
+    slots.push(chord === '-' ? null : chord, ...Array(Number(length) - 1).fill(null))
+  }
+  return slots
 }
 
 // Tab for the chord sheet: six lines, high e at the top, two characters per slot
